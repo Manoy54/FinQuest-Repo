@@ -1,9 +1,11 @@
+import heroBg from '../../assets/images/image.png';
+
 export function HeroSection() {
     return (
         <section
             className="pt-[140px] px-8 md:px-16 pb-20 min-h-screen relative flex flex-col justify-center"
             style={{
-                backgroundImage: 'url("https://images.unsplash.com/photo-1579532507281-2860d4a7b0ef?auto=format&fit=crop&q=80")',
+                backgroundImage: `url(${heroBg})`,
                 backgroundAttachment: 'fixed',
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
