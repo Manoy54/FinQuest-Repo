@@ -1,6 +1,5 @@
 
 import { HeroSection, GameModeSection } from '../pages/home';
-import { ParallaxSection } from './components/ParallaxSection';
 import { FeaturesSection } from './components/FeaturesSection';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
@@ -10,7 +9,6 @@ export default function App() {
     <div className="bg-white min-h-screen">
       <Header />
       <HeroSection />
-      <ParallaxSection />
       <GameModeSection />
       <FeaturesSection />
       <Footer />
