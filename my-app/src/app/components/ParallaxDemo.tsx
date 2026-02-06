@@ -36,8 +36,8 @@ export function ParallaxDemo() {
     }
 
     return (
-        <div style={{ background: '#dfdfdf', height: '80vh', width: '100%' }}>
-            <Parallax className="container" ref={parallax} pages={5} horizontal>
+        <div style={{ background: '#dfdfdf', height: '100vh', width: '100%' }}>
+            <Parallax className="parallax-container" ref={parallax} pages={5} horizontal>
                 <Page offset={0} gradient="pink" onClick={() => scroll(1)} />
                 <Page offset={1} gradient="teal" onClick={() => scroll(2)} />
                 <Page offset={2} gradient="tomato" onClick={() => scroll(3)} />
