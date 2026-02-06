@@ -1,7 +1,6 @@
 
-import { HeroSection } from './components/HeroSection';
+import { HeroSection, GameModeSection } from '../pages/home';
 import { ParallaxSection } from './components/ParallaxSection';
-import { GameModeSection } from './components/GameModeSection';
 import { FeaturesSection } from './components/FeaturesSection';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
