@@ -12,8 +12,8 @@ export default function App() {
       <div className="bg-white min-h-screen">
         <Header />
         <HeroSection />
-        <GameModeSection />
         <ParallaxDemo />
+        <GameModeSection />
         <FeaturesSection />
         <Footer />
       </div>
