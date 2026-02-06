@@ -3,6 +3,7 @@ import { HeroSection, GameModeSection } from '../pages/home';
 import { FeaturesSection } from './components/FeaturesSection';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { ParallaxDemo } from './components/ParallaxDemo';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Header />
       <HeroSection />
       <GameModeSection />
+      <ParallaxDemo />
       <FeaturesSection />
       <Footer />
     </div>

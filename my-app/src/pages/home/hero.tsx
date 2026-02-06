@@ -1,6 +1,6 @@
 export function HeroSection() {
     return (
-        <section className="pt-[140px] px-8 md:px-16 pb-20 min-h-screen">
+        <section className="pt-[140px] px-8 md:px-16 pb-20 min-h-screen bg-[#349C55]">
             <h1 className="text-[64px] md:text-[96px] font-normal text-black mb-8">
                 FINQUEST
             </h1>
