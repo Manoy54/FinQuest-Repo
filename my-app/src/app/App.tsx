@@ -1,7 +1,7 @@
 
 import { Routes, Route } from 'react-router-dom';
 import { HeroSection, GameModeSection } from '../pages/home';
-import { MonetaryMastery } from '../pages/games/MonetaryMastery';
+import { MonetaryMastery, QuizBee } from '../pages/games';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { SmoothScroll } from './components/SmoothScroll';
@@ -24,6 +24,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<MonetaryMastery />} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/quiz-bee" element={<QuizBee />} />
     </Routes>
   );
 }
