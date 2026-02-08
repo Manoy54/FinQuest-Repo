@@ -68,14 +68,14 @@ export function QuestionCard({
     };
 
     return (
-        <div className="w-full max-w-3xl backdrop-blur-xl bg-white/5 rounded-3xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+        <div className="w-full max-w-3xl backdrop-blur-xl bg-white/5 rounded-3xl p-6 border border-white/10 shadow-2xl relative overflow-hidden">
             {/* Glow effect */}
             <div className="absolute -top-20 -right-20 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
 
             <h2
-                className={`font-bold text-white mb-8 leading-relaxed relative z-10 text-center ${question.question.length > 200 ? 'text-lg md:text-xl' :
+                className={`font-bold text-white mb-6 leading-relaxed relative z-10 text-center ${question.question.length > 200 ? 'text-lg md:text-xl' :
                     question.question.length > 100 ? 'text-xl md:text-2xl' :
                         'text-2xl md:text-3xl'
                     }`}

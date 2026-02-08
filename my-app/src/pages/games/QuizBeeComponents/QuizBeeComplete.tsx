@@ -9,9 +9,11 @@ interface QuizBeeCompleteProps {
     tier: Difficulty;
     isVictory: boolean;
     onRestart: () => void;
+    exp: number;
+    coins: number;
 }
 
-export function QuizBeeComplete({ score, highScore, tier, isVictory, onRestart }: QuizBeeCompleteProps) {
+export function QuizBeeComplete({ score, highScore, tier, isVictory, onRestart, exp, coins }: QuizBeeCompleteProps) {
     const getRank = () => {
         if (isVictory) return 'GRANDMASTER';
         if (tier === 'EXPERT') return 'SCHOLAR'; // Reached Expert but failed
@@ -45,14 +47,22 @@ export function QuizBeeComplete({ score, highScore, tier, isVictory, onRestart }
                     <p className="text-2xl font-bold" style={{ color: getRankColor() }}>{rank}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                    <div className="bg-white/5 rounded-xl p-4">
-                        <p className="text-gray-400 text-xs">Final Score</p>
-                        <p className="text-2xl font-mono font-bold text-white">{score}</p>
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                        <p className="text-gray-400 text-[10px] uppercase tracking-wider">Final Score</p>
+                        <p className="text-xl font-mono font-bold text-white">{score}</p>
                     </div>
-                    <div className="bg-white/5 rounded-xl p-4">
-                        <p className="text-gray-400 text-xs">High Score</p>
-                        <p className="text-2xl font-mono font-bold text-amber-400">{highScore}</p>
+                    <div className="bg-white/5 rounded-xl p-3 border border-white/5">
+                        <p className="text-gray-400 text-[10px] uppercase tracking-wider">High Score</p>
+                        <p className="text-xl font-mono font-bold text-amber-400">{highScore}</p>
+                    </div>
+                    <div className="bg-blue-500/10 rounded-xl p-3 border border-blue-500/20">
+                        <p className="text-blue-400/70 text-[100px] uppercase tracking-wider" style={{ fontSize: '10px' }}>EXP Gained</p>
+                        <p className="text-xl font-mono font-bold text-blue-400">+{exp}</p>
+                    </div>
+                    <div className="bg-amber-500/10 rounded-xl p-3 border border-amber-500/20">
+                        <p className="text-amber-400/70 text-[100px] uppercase tracking-wider" style={{ fontSize: '10px' }}>Coins Gained</p>
+                        <p className="text-xl font-mono font-bold text-amber-400">+{coins}</p>
                     </div>
                 </div>
 

@@ -117,6 +117,116 @@ export const questions = {
                 D: "Marginal cost"
             },
             correctAnswer: "B"
+        },
+        {
+            id: 11,
+            question: "What is the \"core concept\" in economics that describes the condition where resources are insufficient to satisfy everyone's wants?",
+            options: {
+                A: "Inflation",
+                B: "Scarcity",
+                C: "Surplus",
+                D: "Efficiency"
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 12,
+            question: "In a Balance Sheet, what term refers to assets that are expected to be converted into cash in less than one year?",
+            options: {
+                A: "Non-current assets",
+                B: "Intangible assets",
+                C: "Current assets",
+                D: "Fixed assets"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 13,
+            question: "Which branch of economics focuses on the behavior of individual households and firms?",
+            options: {
+                A: "Macroeconomics",
+                B: "Positive economics",
+                C: "Microeconomics",
+                D: "Normative economics"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 14,
+            question: "In the \"Three C’s of Credit,\" which one refers to the borrower's moral obligation and willingness to pay?",
+            options: {
+                A: "Capital",
+                B: "Capacity",
+                C: "Character",
+                D: "Collateral"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 15,
+            question: "Which financial statement is described as a \"snapshot\" of a company's financial position at a specific point in time?",
+            options: {
+                A: "Income Statement",
+                B: "Cash Flow Statement",
+                C: "Balance Sheet",
+                D: "Retained Earnings Statement"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 16,
+            question: "What is the main objective of portfolio management that aims to avoid putting \"all eggs in one basket\"?",
+            options: {
+                A: "Capital appreciation",
+                B: "Risk diversification",
+                C: "Liquidity",
+                D: "Income generation"
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 17,
+            question: "In a Command Economy, who primarily controls the production and distribution of goods?",
+            options: {
+                A: "Private businesses",
+                B: "Individual consumers",
+                C: "The government",
+                D: "Foreign investors"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 18,
+            question: "Which of the following is considered a \"Non-current Asset\" on a balance sheet?",
+            options: {
+                A: "Inventory",
+                B: "Cash",
+                C: "Property, Plant, and Equipment (PPE)",
+                D: "Accounts Receivable"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 19,
+            question: "What is the primary difference between saving and investing?",
+            options: {
+                A: "Saving is for long-term wealth; investing is for emergencies.",
+                B: "Saving is risky; investing is safe.",
+                C: "Saving is for safety and accessibility; investing is for growth and higher potential returns.",
+                D: "There is no difference."
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 20,
+            question: "Which economic principle states that people face \"trade-offs\" because resources are limited?",
+            options: {
+                A: "Principle 1: People Face Trade-offs",
+                B: "Principle 5: Trade makes everyone better off",
+                C: "Principle 9: Prices rise when the government prints too much money",
+                D: "Principle 3: Rational people think at the margin"
+            },
+            correctAnswer: "A"
         }
     ],
     INTERMEDIATE: [
@@ -229,6 +339,61 @@ export const questions = {
                 D: "The Balance Sheet"
             },
             correctAnswer: "B"
+        },
+        {
+            id: 11,
+            question: "In the Production Possibility Frontier (PPF), what do points inside the curve indicate?",
+            options: {
+                A: "Efficient production",
+                B: "Unattainable production levels",
+                C: "Inefficiency or underutilized resources",
+                D: "Economic growth"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 12,
+            question: "Which type of credit requires the full payment of the balance at the end of each period, such as a utility bill?",
+            options: {
+                A: "Revolving credit",
+                B: "Installment credit",
+                C: "Open credit",
+                D: "Trade credit"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 13,
+            question: "According to Mankiw's principles, what is the primary cause of a country's variation in \"Standard of Living\"?",
+            options: {
+                A: "The amount of gold reserves",
+                B: "Differences in productivity levels",
+                C: "The total population size",
+                D: "The number of banks in the country"
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 14,
+            question: "What does the Cash Flow Statement \"undo\" to show the actual cash movement of a business?",
+            options: {
+                A: "Tax regulations",
+                B: "Accrual accounting principles",
+                C: "Management salaries",
+                D: "Marketing expenses"
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 15,
+            question: "Which economic system is described as a combination of market and command economies, where the government owns major industries but minor ones are private?",
+            options: {
+                A: "Pure Capitalism",
+                B: "Socialism",
+                C: "Agricultural System",
+                D: "Traditional Economy"
+            },
+            correctAnswer: "B"
         }
     ],
     EXPERT: [
@@ -286,6 +451,62 @@ export const questions = {
                 D: "The company is using \"Accrual Accounting\" and has recorded many sales on credit, but has not actually collected the cash from customers yet."
             },
             correctAnswer: "D"
+        },
+        {
+            id: 6,
+            question: "If a government excessively prints money, what is the direct long-term consequence according to the Principles of Economics?",
+            options: {
+                A: "Increased purchasing power",
+                B: "Lowering of prices (Deflation)",
+                C: "Loss of currency value and rising prices (Inflation)",
+                D: "Improved standard of living for all"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 7,
+            question: "Which specific element of the \"Advanced Guide Questions\" in IPM suggests that a lack of climate expertise on a Board of Directors (G) might lead to underestimating Environmental risks (E)?",
+            options: {
+                A: "The E to S Link",
+                B: "Greenwashing Detection",
+                C: "The G to E Link",
+                D: "Regulatory Fines"
+            },
+            correctAnswer: "C"
+        },
+        {
+            id: 8,
+            question: "In Microeconomics, what is the difference between \"Positive Economics\" and \"Normative Economics\"?",
+            options: {
+                A: "Positive is about growth; Normative is about recession.",
+                B: "Positive deals with objective facts (\"what is\"); Normative deals with value judgments (\"what should be\").",
+                C: "Positive is for businesses; Normative is for individuals.",
+                D: "There is no distinction between the two."
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 9,
+            question: "What is the short-term trade-off that every country faces according to Economic Principle 10?",
+            options: {
+                A: "Trade-off between Scarcity and Opportunity Cost",
+                B: "Trade-off between Inflation and Unemployment",
+                C: "Trade-off between Taxes and Subsidies",
+                D: "Trade-off between Supply and Demand"
+            },
+            correctAnswer: "B"
+        },
+        {
+            id: 10,
+            question: "In the history of credit in the Philippines, which 16th-century Spanish colonial era institutions provided both credit and non-credit services?",
+            options: {
+                A: "Bangko Sentral ng Pilipinas",
+                B: "Obras Pias",
+                C: "PNB and BPI",
+                D: "Microfinance Institutions"
+            },
+            correctAnswer: "B"
         }
     ]
+
 };

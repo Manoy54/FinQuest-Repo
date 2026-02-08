@@ -35,6 +35,8 @@ export function QuizBee() {
     const [highScore, setHighScore] = useState(0);
     const [lives, setLives] = useState(5);
     const [timer, setTimer] = useState(20);
+    const [expGained, setExpGained] = useState(0);
+    const [coinsGained, setCoinsGained] = useState(0);
 
     // Refs for critical game loop state
     const tierCorrectCountRef = useRef(0);
@@ -97,7 +99,7 @@ export function QuizBee() {
         setShowFeedback(false);
         setHiddenOptions([]);
         setIsTimeFrozen(false);
-        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 40 : 20);
+        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
 
         // Check if lives exhausted
         if (livesRef.current <= 0) {
@@ -158,6 +160,8 @@ export function QuizBee() {
             const multiplier = currentTier === 'BEGINNER' ? 1 : currentTier === 'INTERMEDIATE' ? 2 : 3;
             const speedBonus = timer * multiplier;
             setScore((prev) => prev + 100 + speedBonus);
+            setExpGained((prev) => prev + 25);
+            setCoinsGained((prev) => prev + 50);
 
             tierCorrectCountRef.current += 1;
         } else {
@@ -188,7 +192,7 @@ export function QuizBee() {
 
     const startNextTier = () => {
         setGameState('PLAYING');
-        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 40 : 20);
+        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
     };
 
     const restartGame = () => {
@@ -200,17 +204,19 @@ export function QuizBee() {
         setCurrentQuestionIndex(0);
         setLifelines({ skip: true });
         setTimer(20);
+        setExpGained(0);
+        setCoinsGained(0);
         tierCorrectCountRef.current = 0;
         setTimeout(() => setGameState('PLAYING'), 100);
     };
 
     if (gameState === 'START') {
         return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-y-auto"
+            <div className="h-screen w-full flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
 
-                <header className="absolute top-0 left-0 w-full p-8 z-10">
+                <header className="absolute top-0 left-0 w-full p-6 z-10">
                     <Link
                         to="/home"
                         className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm"
@@ -220,7 +226,7 @@ export function QuizBee() {
                     </Link>
                 </header>
 
-                <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full transform transition-all duration-700 hover:scale-[1.02]">
+                <div className="z-10 text-center p-12 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full transform transition-all duration-700 hover:scale-[1.02]">
                     <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
                         style={{
                             fontFamily: "'Outfit', sans-serif",
@@ -253,7 +259,7 @@ export function QuizBee() {
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-blue-400 text-lg">🕒</span>
-                            <span>{currentTier === 'EXPERT' ? '60s' : currentTier === 'INTERMEDIATE' ? '40s' : '20s'}/Q</span>
+                            <span>{currentTier === 'EXPERT' ? '60s' : currentTier === 'INTERMEDIATE' ? '30s' : '20s'}/Q</span>
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-amber-400 text-lg">📋</span>
@@ -267,13 +273,13 @@ export function QuizBee() {
     }
 
     return (
-        <div className="min-h-screen w-full flex flex-col items-center relative overflow-y-auto font-sans"
+        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden font-sans"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
 
             {/* Header matches first image */}
-            <header className="relative z-10 w-full px-6 pt-8 pb-4 shrink-0">
+            <header className="relative z-10 w-full px-6 pt-4 pb-2 shrink-0">
                 <div className="flex items-center justify-between">
                     <Link
                         to="/home"
@@ -319,8 +325,8 @@ export function QuizBee() {
             </header>
 
             {/* Progress Bar - Matches MM Header Progress */}
-            <div className="w-full max-w-2xl px-4 mt-12 mb-8 z-10 text-center">
-                <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-3">
+            <div className="w-full max-w-2xl px-4 mt-24 mb-4 z-10 text-center">
+                <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-2">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
                     <span>{Math.round(((currentQuestionIndex) / currentQuestions.length) * 100)}% Complete</span>
@@ -334,7 +340,7 @@ export function QuizBee() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10">
+            <div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-6">
                 <QuestionCard
                     question={currentQuestion}
                     selectedOption={selectedOption}
@@ -344,7 +350,7 @@ export function QuizBee() {
                     showFeedback={showFeedback}
                 />
 
-                <div className="mt-12">
+                <div className="mt-8">
                     <Lifelines
                         lifelines={lifelines}
                         onUseLifeline={handleLifeline}
@@ -365,6 +371,8 @@ export function QuizBee() {
                     tier={currentTier}
                     isVictory={gameState === 'VICTORY'}
                     onRestart={restartGame}
+                    exp={expGained}
+                    coins={coinsGained}
                 />
             )}
 
