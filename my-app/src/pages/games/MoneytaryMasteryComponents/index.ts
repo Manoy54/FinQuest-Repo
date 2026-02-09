@@ -1,5 +1,5 @@
 // Data
-export { beginnerCards } from './FlashCardData';
+export { beginnerCards, level11Cards, level21Cards, level31Cards } from './FlashCardData';
 export type { FlashCard as FlashCardType } from './FlashCardData';
 
 // Components
