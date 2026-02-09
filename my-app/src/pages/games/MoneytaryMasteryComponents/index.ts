@@ -11,6 +11,7 @@ export { GameControls, NavigationButtons } from './GameControls';
 export { GameComplete } from './GameComplete';
 export { GameTitle } from './GameTitle';
 export { useGameSounds } from './useGameSounds';
+export { LevelProgress } from './LevelProgress';
 
 // Styles
 export { GameStyles } from './GameStyles';
