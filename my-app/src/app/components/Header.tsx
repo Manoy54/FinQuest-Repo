@@ -16,7 +16,8 @@ const navItems: CardNavItem[] = [
         bgColor: '#f3f4f6',
         textColor: '#000000',
         links: [
-            { label: 'Single Player', href: '#', ariaLabel: 'Single Player' },
+            { label: 'Monetary Mastery', href: '/', ariaLabel: 'Monetary Mastery' },
+            { label: 'Data Diver', href: '/word-hunt', ariaLabel: 'Data Diver' },
             { label: 'Multiplayer', href: '#', ariaLabel: 'Multiplayer' }
         ]
     },

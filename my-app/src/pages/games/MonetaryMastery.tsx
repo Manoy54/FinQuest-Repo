@@ -1,26 +1,44 @@
 import { useState } from 'react';
 import {
     beginnerCards,
+    level11Cards,
+    level21Cards,
+    level31Cards,
     AnimatedBackground,
-    ProgressBar,
     FlashCard,
-    NavigationButtons,
     GameComplete,
     GameStyles,
-    useGameSounds
+    useGameSounds,
+    LevelProgress
 } from './MoneytaryMasteryComponents';
-import { Link } from 'react-router-dom';
+
 
 export function MonetaryMastery() {
+    const [activeCards, setActiveCards] = useState(beginnerCards);
+    const [levelOffset, setLevelOffset] = useState(0);
+    const [levelStartScore, setLevelStartScore] = useState(0);
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
     const [score, setScore] = useState(0);
+    const [exp, setExp] = useState(0);
+    const [coins, setCoins] = useState(0);
+    const [levelStartExp, setLevelStartExp] = useState(0);
+    const [levelStartCoins, setLevelStartCoins] = useState(0);
     const [answeredCards, setAnsweredCards] = useState<Set<number>>(new Set());
     const [gameComplete, setGameComplete] = useState(false);
     const { playSound } = useGameSounds();
 
-    const currentCard = beginnerCards[currentCardIndex];
-    const progress = (answeredCards.size / beginnerCards.length) * 100;
+    const currentCard = activeCards[currentCardIndex];
+    // Progress for current level
+    const currentLevelScore = score - levelStartScore;
+    const progress = (currentLevelScore / activeCards.length) * 100;
+
+    // Level Logic
+    const XP_PER_LEVEL = 30;
+    const level = currentCardIndex + 1 + levelOffset;
+    const MAX_LEVEL = 40;
+    const TOTAL_GAME_XP = MAX_LEVEL * XP_PER_LEVEL;
+    const progressPercentage = Math.min((exp / TOTAL_GAME_XP) * 100, 100);
 
     const handleFlip = () => {
         playSound('flip');
@@ -31,6 +49,8 @@ export function MonetaryMastery() {
         playSound('correct');
         if (!answeredCards.has(currentCardIndex)) {
             setScore(score + 1);
+            setExp(exp + 30);
+            setCoins(coins + 50);
             setAnsweredCards(new Set([...answeredCards, currentCardIndex]));
         }
         goToNextCard();
@@ -46,7 +66,7 @@ export function MonetaryMastery() {
 
     const goToNextCard = () => {
         setIsFlipped(false);
-        if (currentCardIndex < beginnerCards.length - 1) {
+        if (currentCardIndex < activeCards.length - 1) {
             setTimeout(() => {
                 setCurrentCardIndex(currentCardIndex + 1);
             }, 300);
@@ -66,11 +86,67 @@ export function MonetaryMastery() {
     };
 
     const restartGame = () => {
+        setActiveCards(beginnerCards);
+        setLevelOffset(0);
+        setLevelStartScore(0);
         setCurrentCardIndex(0);
         setIsFlipped(false);
         setScore(0);
+        setExp(0);
+        setCoins(0);
+        setLevelStartExp(0);
+        setLevelStartCoins(0);
         setAnsweredCards(new Set());
         setGameComplete(false);
+    };
+
+    const handleReplayLevel = () => {
+        // Keeps the current activeCards and levelOffset
+        // Resets current level progress but keeps cumulative score baseline
+        setCurrentCardIndex(0);
+        setIsFlipped(false);
+        setScore(levelStartScore); // Reset score to what it was at start of level
+        setExp(levelStartExp); // Reset EXP to start of level
+        setCoins(levelStartCoins); // Reset Coins to start of level
+        setAnsweredCards(new Set());
+        setGameComplete(false);
+    };
+
+    const handleNextLevel = () => {
+        if (levelOffset === 0) {
+            setActiveCards(level11Cards);
+            setLevelOffset(10); // Start at level 11
+        } else if (levelOffset === 10) {
+            setActiveCards(level21Cards);
+            setLevelOffset(20); // Start at level 21
+        } else if (levelOffset === 20) {
+            setActiveCards(level31Cards);
+            setLevelOffset(30); // Start at level 31
+        }
+
+        // Lock in the score from the previous level (score becomes the baseline for next level)
+        setLevelStartScore(score);
+        setLevelStartExp(exp);
+        setLevelStartCoins(coins);
+
+        setCurrentCardIndex(0);
+        setIsFlipped(false);
+        setAnsweredCards(new Set());
+        setGameComplete(false);
+    };
+
+    const hasNextLevel = levelOffset < 30; // 30 is start of Level 31 block, if it's the last one, we stop there? Or is it active?
+    // If level31Cards is empty, maybe we shouldn't proceed? User asked button to exist.
+    // If we transition to empty set, game might break. Let's assume user will add cards later or we just show button.
+
+    // Actually, if level31Cards is empty, activeCards array is empty, which might cause issues.
+    // But user asked for the button.
+
+    const getNextLevelLabel = () => {
+        if (levelOffset === 0) return "PROCEED TO LEVEL 11 🚀";
+        if (levelOffset === 10) return "PROCEED TO LEVEL 21 🚀";
+        if (levelOffset === 20) return "PROCEED TO LEVEL 31 🚀";
+        return "PROCEED TO NEXT LEVEL 🚀";
     };
 
     // Show completion screen
@@ -78,8 +154,21 @@ export function MonetaryMastery() {
         return (
             <GameComplete
                 score={score}
-                totalCards={beginnerCards.length}
+                levelScore={currentLevelScore}
+                exp={exp}
+                coins={coins}
+                totalCards={levelOffset + activeCards.length}
                 onRestart={restartGame}
+                onReplayLevel={handleReplayLevel}
+                onNextLevel={hasNextLevel ? handleNextLevel : undefined}
+                nextLevelLabel={getNextLevelLabel()}
+                showComingSoon={!hasNextLevel}
+                comingSoonLabel="LEVEL 41 COMING SOON 🚀"
+                requiredScore={
+                    levelOffset === 0 ? 9 :
+                        levelOffset === 10 ? 18 :
+                            27 // For Level 31 unlock (after finishing Level 21-30, accumulated score 27/30?)
+                }
             />
         );
     }
@@ -94,92 +183,86 @@ export function MonetaryMastery() {
             <AnimatedBackground />
 
             {/* Combined Header with Title */}
-            <header className="relative z-10 px-4 pt-8 pb-4 shrink-0">
-                <div className="flex items-center justify-between mb-1">
-                    <Link
-                        to="/home"
-                        className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm"
-                        style={{ textDecoration: 'none' }}
-                    >
-                        <span>←</span>
-                        <span>Back</span>
-                    </Link>
-                    {/* Fixed centered title - relative to viewport width */}
-                    <div className="fixed left-0 w-full top-8 flex justify-center pointer-events-none z-10">
-                        <h1 className="text-2xl md:text-3xl font-bold"
-                            style={{
-                                fontFamily: "'Outfit', sans-serif",
-                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent'
-                            }}
-                        >
-                            Monetary Mastery
-                        </h1>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="px-3 py-1 rounded-full text-sm"
-                            style={{
-                                background: 'rgba(255, 255, 255, 0.1)',
-                                backdropFilter: 'blur(10px)'
-                            }}
-                        >
-                            <span className="text-amber-400 font-bold">Score: {score}</span>
-                        </div>
-                        <div className="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">
-                            BEGINNER
-                        </div>
-                    </div>
-                </div>
+            <header className="relative z-10 px-4 pt-8 shrink-0">
+
+
+                <LevelProgress
+                    currentExp={exp}
+                    level={level}
+                    expToNextLevel={XP_PER_LEVEL}
+                    progress={progressPercentage}
+                    coins={coins}
+                    totalLevel={MAX_LEVEL}
+                />
             </header>
 
-            <ProgressBar
-                currentIndex={currentCardIndex}
-                totalCards={beginnerCards.length}
-                progress={progress}
-            />
 
-            {/* Flashcard with overlapping navigation buttons and answer buttons below */}
-            <div className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 pt-4 min-h-0">
-                <div className="relative w-full max-w-2xl">
-                    <NavigationButtons
-                        currentCardIndex={currentCardIndex}
-                        onPrevCard={goToPrevCard}
-                        onNextCard={goToNextCard}
-                    />
-                    <FlashCard
-                        card={currentCard}
-                        isFlipped={isFlipped}
-                        onFlip={handleFlip}
-                    />
-                </div>
 
-                {/* Answer buttons - right below the flashcard */}
-                <div className="w-full max-w-2xl mt-4">
-                    <div className="flex justify-center gap-4">
-                        <button
-                            onClick={handleDidntKnow}
-                            className="flex-1 max-w-[180px] py-3 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105"
-                            style={{
-                                background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                                color: '#fff',
-                                boxShadow: '0 8px 25px rgba(239, 68, 68, 0.3)'
-                            }}
-                        >
-                            ❌ Didn't Know
-                        </button>
-                        <button
-                            onClick={handleKnew}
-                            className="flex-1 max-w-[180px] py-3 rounded-xl font-semibold text-base transition-all duration-300 hover:scale-105"
-                            style={{
-                                background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
-                                color: '#fff',
-                                boxShadow: '0 8px 25px rgba(34, 197, 94, 0.3)'
-                            }}
-                        >
-                            ✓ Knew It!
-                        </button>
+            {/* Main Content Area - Maximized Space */}
+            <div className="relative z-10 flex-1 w-full px-4 pt-4 pb-4 min-h-0 flex flex-col items-center justify-center">
+                <div className="relative w-full max-w-2xl h-full flex flex-col">
+                    <div className="text-center text-white/50 text-sm font-medium mb-2 tracking-wide">
+                        Card {currentCardIndex + 1 + levelOffset} of {MAX_LEVEL} | {Math.round(progressPercentage)}% Complete
                     </div>
+
+                    <div className="flex-1 min-h-0 w-full mt-4 relative">
+                        {/* Navigation Buttons Outside Card */}
+                        <div className="absolute top-1/2 -translate-y-1/2 -left-16 z-20">
+                            <button
+                                onClick={goToPrevCard}
+                                disabled={currentCardIndex === 0}
+                                className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 text-4xl hover:text-white transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
+                                style={{ outline: 'none', boxShadow: 'none' }}
+                            >
+                                ←
+                            </button>
+                        </div>
+                        <div className="absolute top-1/2 -translate-y-1/2 -right-16 z-20">
+                            <button
+                                onClick={goToNextCard}
+                                className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 text-4xl hover:text-white transition-all duration-300 hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
+                                style={{ outline: 'none', boxShadow: 'none' }}
+                            >
+                                →
+                            </button>
+                        </div>
+
+                        <FlashCard
+                            card={currentCard}
+                            isFlipped={isFlipped}
+                            onFlip={handleFlip}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Fixed Answer Buttons Footer - Always Visible */}
+            <div className="relative z-20 px-4 pb-8 pt-2 w-full flex justify-center shrink-0">
+                <div className="w-full max-w-2xl flex justify-center gap-4">
+                    <button
+                        onClick={handleDidntKnow}
+                        className="flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+                        style={{
+                            background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                            color: '#fff',
+                            boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)',
+                            border: '1px solid rgba(255,255,255,0.1)'
+                        }}
+                    >
+                        ❌ Didn't Know
+                    </button>
+                    <button
+                        onClick={handleKnew}
+                        className="flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+                        style={{
+                            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                            color: '#fff',
+                            boxShadow: '0 4px 15px rgba(34, 197, 94, 0.4)',
+                            border: '1px solid rgba(255,255,255,0.1)'
+                        }}
+                    >
+                        ✓ Knew It!
+                    </button>
                 </div>
             </div>
 
