@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { Parallax, ParallaxLayer, type IParallax } from '@react-spring/parallax';
 
 // We'll use inline styles or standard class names since we added the CSS to index.css
@@ -37,12 +38,20 @@ export function ParallaxDemo() {
 
     return (
         <div style={{ background: '#dfdfdf', height: '100vh', width: '100%' }}>
-            <Parallax className="parallax-container" ref={parallax} pages={5} horizontal>
+            <Parallax className="parallax-container" ref={parallax} pages={3} horizontal>
                 <Page offset={0} gradient="pink" onClick={() => scroll(1)} />
                 <Page offset={1} gradient="teal" onClick={() => scroll(2)} />
-                <Page offset={2} gradient="tomato" onClick={() => scroll(3)} />
-                <Page offset={3} gradient="purple" onClick={() => scroll(4)} />
-                <Page offset={4} gradient="orange" onClick={() => scroll(0)} />
+                <Page offset={2} gradient="tomato" onClick={() => scroll(0)} />
+
+                <ParallaxLayer offset={1} speed={0.5} className="flex flex-col items-center justify-center pointer-events-none text-white">
+                    <div className="pointer-events-auto text-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl">
+                        <h2 className="text-5xl font-bold mb-4 drop-shadow-md">Quiz Bee</h2>
+                        <p className="text-xl mb-8 max-w-md">Test your financial knowledge in our exciting timed quiz mode!</p>
+                        <Link to="/quiz-bee" className="px-8 py-3 bg-white text-teal-600 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-lg inline-block">
+                            Play Now
+                        </Link>
+                    </div>
+                </ParallaxLayer>
             </Parallax>
         </div>
     )
