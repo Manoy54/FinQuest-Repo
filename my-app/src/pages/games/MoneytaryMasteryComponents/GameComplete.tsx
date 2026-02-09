@@ -3,9 +3,9 @@ import { AnimatedParticles } from './AnimatedBackground';
 
 interface GameCompleteProps {
     score: number;
-    levelScore?: number; // Optional to support legacy calls if any, but we'll pass it
-    exp: number;
-    coins: number;
+    levelScore?: number;
+    exp?: number;
+    coins?: number;
     totalCards: number;
     onRestart: () => void;
     onNextLevel?: () => void;
@@ -17,7 +17,7 @@ interface GameCompleteProps {
 }
 
 
-export function GameComplete({ score, levelScore, exp, coins, totalCards, onRestart, onNextLevel, nextLevelLabel = "PROCEED TO NEXT LEVEL 🚀", requiredScore = 9, onReplayLevel, showComingSoon, comingSoonLabel }: GameCompleteProps) {
+export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards, onRestart, onNextLevel, nextLevelLabel = "PROCEED TO NEXT LEVEL 🚀", requiredScore = 9, onReplayLevel, showComingSoon, comingSoonLabel }: GameCompleteProps) {
     // defaults to score if levelScore not provided (for first level)
     const currentScore = levelScore ?? score;
 
@@ -59,6 +59,7 @@ export function GameComplete({ score, levelScore, exp, coins, totalCards, onRest
                 >
                     Game Complete!
                 </h2>
+
                 <p className="text-2xl text-gray-300 mb-2">Results</p>
                 <div className="flex justify-center gap-6 mb-6">
                     <div className="text-center">
@@ -67,18 +68,22 @@ export function GameComplete({ score, levelScore, exp, coins, totalCards, onRest
                             {score} / {totalCards}
                         </p>
                     </div>
-                    <div className="text-center">
-                        <p className="text-sm text-gray-400 mb-1">EXP</p>
-                        <p className="text-4xl font-bold text-blue-400 border-l border-gray-600 pl-6">
-                            +{exp}
-                        </p>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-sm text-gray-400 mb-1">Coins</p>
-                        <p className="text-4xl font-bold text-yellow-400 border-l border-gray-600 pl-6">
-                            +{coins}
-                        </p>
-                    </div>
+                    {exp > 0 && (
+                        <div className="text-center">
+                            <p className="text-sm text-gray-400 mb-1">EXP</p>
+                            <p className="text-4xl font-bold text-blue-400 border-l border-gray-600 pl-6">
+                                +{exp}
+                            </p>
+                        </div>
+                    )}
+                    {coins > 0 && (
+                        <div className="text-center">
+                            <p className="text-sm text-gray-400 mb-1">Coins</p>
+                            <p className="text-4xl font-bold text-yellow-400 border-l border-gray-600 pl-6">
+                                +{coins}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <p className="text-xl mb-8" style={{ color: getResultColor() }}>
