@@ -31,7 +31,6 @@ export function MonetaryMastery() {
     const currentCard = activeCards[currentCardIndex];
     // Progress for current level
     const currentLevelScore = score - levelStartScore;
-    const progress = (currentLevelScore / activeCards.length) * 100;
 
     // Level Logic
     const XP_PER_LEVEL = 30;

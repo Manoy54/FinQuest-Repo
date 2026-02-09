@@ -16,9 +16,10 @@ const navItems: CardNavItem[] = [
         bgColor: '#f3f4f6',
         textColor: '#000000',
         links: [
-            { label: 'Monetary Mastery', href: '/', ariaLabel: 'Monetary Mastery' },
-            { label: 'Data Diver', href: '/word-hunt', ariaLabel: 'Data Diver' },
-            { label: 'Multiplayer', href: '#', ariaLabel: 'Multiplayer' }
+            { label: 'Monetary Mastery', href: '/monetary-mastery', ariaLabel: 'Play Monetary Mastery' },
+            { label: 'Data Diver', href: '/word-hunt', ariaLabel: 'Play Data Diver' },
+            { label: 'Capital Cup', href: '/quiz-bee', ariaLabel: 'Play Capital Cup' },
+            { label: 'Capital Crossword', href: '/crossword', ariaLabel: 'Play Capital Crossword' }
         ]
     },
     {
