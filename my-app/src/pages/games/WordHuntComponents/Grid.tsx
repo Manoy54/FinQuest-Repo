@@ -73,32 +73,6 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
         }
     };
 
-    // Global mouse up handler to catch releases outside grid
-    useEffect(() => {
-        const handleGlobalMouseUp = () => {
-            if (isSelecting) handleEnd();
-        };
-        window.addEventListener('mouseup', handleGlobalMouseUp);
-        return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
-    }, [isSelecting, selectionStart, selectionEnd]); // Dependencies important for closure
-
-    // Touch support helpers
-    const handleTouchStart = (e: React.TouchEvent, r: number, c: number) => {
-        e.preventDefault(); // Prevent scroll
-        handleStart(r, c);
-    };
-
-    const handleTouchMove = (e: React.TouchEvent) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const target = document.elementFromPoint(touch.clientX, touch.clientY);
-        if (target && target.hasAttribute('data-row')) {
-            const r = parseInt(target.getAttribute('data-row')!);
-            const c = parseInt(target.getAttribute('data-col')!);
-            handleMove(r, c);
-        }
-    };
-
     // Calculate current selected word for preview
     const getCurrentWord = () => {
         if (!selectionStart || !selectionEnd || !isValidLine(selectionStart, selectionEnd)) return '';
@@ -185,10 +159,46 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
         }
     }, [isSelecting, selectionStart, selectionEnd]);
 
+    // Unified Pointer Events
+    const handlePointerDown = (e: React.PointerEvent, r: number, c: number) => {
+        e.preventDefault();
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId); // Identify element under pointer
+        handleStart(r, c);
+    };
+
+    const handlePointerMove = (e: React.PointerEvent) => {
+        e.preventDefault();
+        // Use elementFromPoint to find target under pointer as it moves
+        const target = document.elementFromPoint(e.clientX, e.clientY);
+        if (target && target.hasAttribute('data-row')) {
+            const r = parseInt(target.getAttribute('data-row')!);
+            const c = parseInt(target.getAttribute('data-col')!);
+            handleMove(r, c);
+        }
+    };
+
+    const handlePointerUp = (e: React.PointerEvent) => {
+        e.preventDefault();
+        handleEnd();
+    };
+
+    // Global pointer up handler
+    useEffect(() => {
+        const handleGlobalPointerUp = () => {
+            if (isSelecting) handleEnd();
+        };
+        window.addEventListener('pointerup', handleGlobalPointerUp);
+        window.addEventListener('pointercancel', handleGlobalPointerUp);
+        return () => {
+            window.removeEventListener('pointerup', handleGlobalPointerUp);
+            window.removeEventListener('pointercancel', handleGlobalPointerUp);
+        };
+    }, [isSelecting, selectionStart, selectionEnd]);
+
     return (
         <div className={`
-            select-none touch-none p-6 md:p-8 rounded-[2rem] relative group
-            h-full flex flex-col items-center justify-center gap-8
+            select-none touch-none p-4 md:p-5 lg:p-6 rounded-[2rem] relative group
+            h-full flex flex-col items-center justify-center gap-4
         `}
             style={{
                 background: 'rgba(255, 255, 255, 0.05)',
@@ -196,35 +206,32 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                 border: '1px solid rgba(255, 255, 255, 0.1)',
                 boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)'
             }}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleEnd}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onContextMenu={(e) => e.preventDefault()}
         >
             {/* Glow Effect */}
             <div className="absolute inset-0 bg-blue-500/5 rounded-[2rem] blur-xl -z-10 group-hover:bg-blue-500/10 transition-colors duration-500" />
 
-            {/* Preview Pill */}
-            <div className={`
-                h-14 min-w-[200px] rounded-full flex items-center justify-center px-8
-                transition-all duration-300 transform
-                ${currentWord ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}
-                shadow-xl border-2 border-white/20
-            `}
-                style={{
-                    background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)'
-                }}
-            >
-                <span className="text-2xl font-black text-white tracking-widest uppercase filter drop-shadow-md">
-                    {currentWord}
-                </span>
-            </div>
+            {/* Preview Pill - only rendered when selecting */}
+            {currentWord && (
+                <div className="h-10 min-w-[160px] rounded-full flex items-center justify-center px-6 shadow-xl border-2 border-white/20 animate-in fade-in"
+                    style={{
+                        background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)'
+                    }}
+                >
+                    <span className="text-lg font-black text-white tracking-widest uppercase filter drop-shadow-md">
+                        {currentWord}
+                    </span>
+                </div>
+            )}
 
             <div
                 ref={containerRef}
-                className="grid gap-2 md:gap-3 relative z-10"
+                className="grid gap-1 relative z-10"
                 style={{
                     gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`
                 }}
-                onMouseLeave={handleEnd}
             >
                 {/* SVG Overlay for Drag Line */}
                 <svg className="absolute inset-0 pointer-events-none z-0 overflow-visible w-full h-full">
@@ -269,23 +276,20 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 key={`${r}-${c}`}
                                 data-row={r}
                                 data-col={c}
-                                onMouseDown={() => handleStart(r, c)}
-                                onMouseEnter={() => handleMove(r, c)}
-                                onMouseUp={handleEnd}
-                                onTouchStart={(e) => handleTouchStart(e, r, c)}
+                                onPointerDown={(e) => handlePointerDown(e, r, c)}
                                 className={`
-                                        w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 flex items-center justify-center
-                                        text-lg md:text-xl lg:text-2xl font-black rounded-lg md:rounded-xl
+                                        w-8 h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 xl:w-12 xl:h-12 flex items-center justify-center
+                                        text-lg md:text-xl lg:text-2xl xl:text-3xl font-black rounded md:rounded-lg
                                         transition-all duration-200 cursor-pointer
-                                        select-none relative
+                                        select-none relative z-20
                                         ${!foundColor && !isSelected ? 'bg-white/90 text-gray-800' : ''} 
                                         ${foundColor ? 'text-white scale-110' : ''}
                                         ${isSelected ? 'text-white scale-110' : ''}
-                                        ${!foundColor && !isSelected ? 'shadow-[0_2px_0_0_rgba(0,0,0,0.1)] hover:translate-y-[-1px] hover:shadow-md' : ''}
+                                        ${!foundColor && !isSelected ? 'shadow-[0_1px_0_0_rgba(0,0,0,0.1)] hover:translate-y-[-1px] hover:shadow-sm' : ''}
                                         ${foundColor || isSelected ? 'bg-transparent shadow-none' : ''}
                                     `}
                             >
-                                <span className="relative z-10 drop-shadow-md" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
+                                <span className="relative z-10 drop-shadow-sm pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                                     {cell.letter}
                                 </span>
                             </div>

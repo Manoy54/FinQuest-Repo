@@ -14,8 +14,8 @@ import {
 
 // Level Thresholds
 const XP_THRESHOLDS = {
-    INTERMEDIATE: 400, // Completing Beginner (8 words * 50 = 400)
-    EXPERT: 850        // Completing Intermediate (9 words * 50 = 450 + 400 = 850)
+    INTERMEDIATE: 1250, // Completing all Beginners (approx 25 words * 50 = 1250)
+    EXPERT: 2300        // Completing all Intermediates (approx 21 words * 50 = 1050 + 1250 = 2300)
 };
 
 const WORDS_XP = 50;
@@ -46,9 +46,9 @@ export function WordHunt() {
     // Session-based State (No Persistence)
     // Unlock all levels by default as per user request ("no backend yet")
     const [unlockedLevels, setUnlockedLevels] = useState<string[]>([
-        'beginner', 'intermediate', 'expert',
-        'beginner2', 'intermediate2', 'expert2',
-        'beginner3', 'intermediate3', 'expert3'
+        'beginner', 'beginner2', 'beginner3',
+        'intermediate', 'intermediate2', 'intermediate3',
+        'expert', 'expert2', 'expert3'
     ]);
     const [xp, setXp] = useState<number>(0);
     const [coins, setCoins] = useState<number>(0);
@@ -106,6 +106,12 @@ export function WordHunt() {
         if (xp >= XP_THRESHOLDS.EXPERT) return 3;
         if (xp >= XP_THRESHOLDS.INTERMEDIATE) return 2;
         return 1;
+    }, [xp]);
+
+    const playerRank = useMemo(() => {
+        if (xp >= XP_THRESHOLDS.EXPERT) return "Expert";
+        if (xp >= XP_THRESHOLDS.INTERMEDIATE) return "Intermediate";
+        return "Beginner";
     }, [xp]);
 
     const nextLevelXP = useMemo(() => {
@@ -235,11 +241,11 @@ export function WordHunt() {
             <AnimatedBackground />
 
             {/* Header */}
-            <header className="relative z-10 p-4 flex flex-col md:flex-row items-center justify-between bg-transparent shrink-0 gap-4 md:gap-0">
+            <header className="relative z-10 p-2 flex flex-col md:flex-row items-center justify-between bg-transparent shrink-0 gap-2 md:gap-0">
                 <div className="w-[80px] hidden md:block"></div>{/* Balance spacer */}
 
-                <div className="flex flex-col items-center gap-2 w-full md:w-auto">
-                    <h1 className="text-2xl md:text-5xl font-black tracking-tight font-['Outfit'] drop-shadow-sm"
+                <div className="flex flex-col items-center gap-1 w-full md:w-auto">
+                    <h1 className="text-3xl md:text-5xl font-black tracking-tight font-['Outfit'] drop-shadow-sm"
                         style={{
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
                             WebkitBackgroundClip: 'text',
@@ -253,7 +259,7 @@ export function WordHunt() {
                 <div className="w-[80px] hidden md:block"></div>{/* Balance spacer */}
             </header>
 
-            <main className="relative z-10 container mx-auto px-4 pb-4 flex-1 flex flex-col items-center gap-4 min-h-0">
+            <main className="relative z-10 container mx-auto px-4 pb-2 flex-1 flex flex-col items-center gap-1 h-full overflow-hidden">
 
                 {/* Level Progress Bar */}
                 <div className="w-full shrink-0">
@@ -263,13 +269,14 @@ export function WordHunt() {
                         expToNextLevel={nextLevelXP}
                         progress={(xp / nextLevelXP) * 100}
                         coins={coins}
-                        totalLevel={1}
+                        totalLevel={3} // Changed from 1 to 3 to represent max level stages
+                        customLevelLabel={playerRank}
                     />
                 </div>
 
-                <div className="flex flex-col xl:flex-row gap-6 items-start justify-center w-full max-w-7xl flex-1 min-h-0">
+                <div className="flex flex-col lg:flex-row gap-3 items-center lg:items-stretch justify-center w-full max-w-7xl flex-1 h-full overflow-hidden pb-4">
                     {/* Grid Container */}
-                    <div className="flex-1 flex justify-center perspective-1000 order-2 xl:order-1 h-full overflow-y-auto">
+                    <div className="w-full lg:w-auto flex justify-center order-2 lg:order-1 h-full overflow-y-auto">
                         <Grid
                             grid={grid}
                             onWordSelection={handleWordSelection}
@@ -279,7 +286,7 @@ export function WordHunt() {
                     </div>
 
                     {/* Word List Container */}
-                    <div className="w-full xl:w-[280px] shrink-0 order-1 xl:order-2 flex flex-col h-[200px] xl:h-full min-h-0 overflow-hidden">
+                    <div className="w-full lg:w-[280px] shrink-0 order-1 lg:order-2 flex flex-col h-[200px] lg:h-full overflow-hidden">
                         <WordList words={words} />
                     </div>
                 </div>

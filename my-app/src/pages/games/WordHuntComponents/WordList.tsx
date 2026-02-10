@@ -26,7 +26,30 @@ import {
     FaCalculator,
     FaChartPie,
     FaCalendarCheck,
-    FaSeedling
+    FaSeedling,
+    // New Icons
+    FaShoppingCart,
+    FaLightbulb,
+    FaHardHat,
+    FaHandHoldingUsd,
+    FaLaptopCode,
+    FaArrowsAltH,
+    FaShieldAlt,
+    FaGem,
+    FaTint,
+    FaShoppingBasket,
+    FaBoxOpen,
+    FaShoppingBag,
+    FaRulerHorizontal,
+    FaCreditCard,
+    FaSlidersH,
+    FaInfinity,
+    FaIndustry,
+    FaBoxes,
+    FaPuzzlePiece,
+    FaTrophy,
+    FaHourglassHalf,
+    FaUserTie
 } from 'react-icons/fa';
 
 interface WordListProps {
@@ -65,6 +88,61 @@ const getIcon = (word: string) => {
         case 'CAPM': return <FaChartPie className="text-purple-500" />;
         case 'EAR': return <FaCalendarCheck className="text-blue-300" />;
         case 'DGM': return <FaSeedling className="text-green-300" />;
+
+        // Beginner 2 & 3
+        case 'CONSUMERS': return <FaShoppingCart className="text-pink-400" />;
+        case 'OPPORTUNITY': return <FaLightbulb className="text-yellow-300" />;
+        case 'LABOR': return <FaHardHat className="text-orange-500" />;
+        case 'LENDING': return <FaHandHoldingUsd className="text-green-400" />;
+        case 'AVAILABLE': return <FaBoxes className="text-blue-300" />;
+        case 'TECHNOLOGY': return <FaLaptopCode className="text-purple-400" />;
+        case 'ELASTICITY': return <FaArrowsAltH className="text-indigo-400" />;
+        case 'RISKFREE': return <FaShieldAlt className="text-teal-400" />;
+        case 'ASSETS': return <FaGem className="text-emerald-400" />;
+        case 'LIQUIDITY': return <FaTint className="text-cyan-400" />;
+        case 'DEMAND': return <FaShoppingBasket className="text-rose-400" />;
+        case 'INPUTS': return <FaBoxOpen className="text-amber-500" />;
+        case 'LOAN': return <FaFileInvoiceDollar className="text-red-400" />;
+        case 'YIELD': return <FaSeedling className="text-green-500" />;
+        case 'TRUST': return <FaHandshake className="text-blue-400" />;
+        case 'RISK': return <FaExclamationTriangle className="text-orange-400" />;
+        case 'BUYERS': return <FaShoppingBag className="text-violet-400" />;
+
+        // Intermediate 2 & 3
+        case 'MARGINAL': return <FaRulerHorizontal className="text-gray-400" />;
+        case 'CREDIT SCORE': return <FaCreditCard className="text-blue-500" />;
+        case 'VARIABLE': return <FaSlidersH className="text-indigo-500" />;
+        case 'UNLIMITED': return <FaInfinity className="text-purple-500" />;
+        case 'CREDITORS': return <FaUserTie className="text-teal-500" />;
+        case 'MACROECONOMICS': return <FaGlobeAmericas className="text-blue-600" />;
+        case 'SHORTRUN': return <FaStopwatch className="text-red-500" />;
+        case 'SHORTAGE': return <FaExclamationTriangle className="text-orange-500" />;
+        case 'EQUITY': return <FaChartPie className="text-cyan-500" />;
+        case 'PAYMENT': return <FaMoneyBillWave className="text-green-500" />;
+        case 'LENDER': return <FaHandHoldingUsd className="text-yellow-500" />;
+        case 'FUTURE': return <FaCalendarCheck className="text-pink-500" />;
+
+        // Expert 2 & 3
+        case 'SHAREHOLDER': return <FaUserTie className="text-blue-400" />;
+        case 'OBLIGATION': return <FaFileContract className="text-gray-300" />;
+        case 'EFFICIENT': return <FaStopwatch className="text-green-400" />;
+        case 'VALUATION': return <FaTag className="text-yellow-400" />;
+        case 'EXPECTATIONS': return <FaLightbulb className="text-purple-400" />;
+        case 'PORTFOLIOS': return <FaLayerGroup className="text-indigo-400" />;
+        case 'PRODUCTION': return <FaIndustry className="text-orange-400" />;
+        case 'INVENTORY': return <FaBoxes className="text-amber-400" />;
+        case 'MATCHING': return <FaPuzzlePiece className="text-teal-400" />;
+        case 'INEFFICIENCY': return <FaExclamationTriangle className="text-red-500" />;
+        case 'MANAGEMENT': return <FaUserTie className="text-blue-500" />;
+        case 'SOCIAL': return <FaGlobeAmericas className="text-green-500" />;
+        case 'RESOURCES': return <FaGem className="text-emerald-500" />;
+        case 'RATIONALITY': return <FaBalanceScale className="text-indigo-500" />;
+        case 'ACQUISITION': return <FaHandshake className="text-pink-500" />;
+        case 'COMPETITION': return <FaTrophy className="text-yellow-500" />;
+        case 'FISCAL': return <FaUniversity className="text-gray-500" />;
+        case 'INVESTMENT': return <FaChartLine className="text-blue-500" />;
+        case 'SCARCITY': return <FaHourglassHalf className="text-orange-500" />;
+        case 'SUBSTITUTES': return <FaExchangeAlt className="text-purple-500" />;
 
         default: return <FaMoneyBillWave className="text-gray-400" />;
     }
