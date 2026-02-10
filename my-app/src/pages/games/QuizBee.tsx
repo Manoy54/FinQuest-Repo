@@ -1,14 +1,18 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 import { questions } from './QuizBeeComponents/questions';
 import type { GameState, Difficulty, Question } from './QuizBeeComponents/types';
 import { QuestionCard } from './QuizBeeComponents/QuestionCard';
 import { Lifelines } from './QuizBeeComponents/Lifelines';
-import { QuizBeeComplete } from './QuizBeeComponents/QuizBeeComplete';
 import { TierUnlock } from './QuizBeeComponents/TierUnlock';
-import { useGameSounds } from './MoneytaryMasteryComponents/useGameSounds';
-import { AnimatedBackground } from './MoneytaryMasteryComponents/AnimatedBackground';
+import {
+    AnimatedBackground,
+    useGameSounds,
+    GameComplete,
+    LevelProgress,
+    GameRatingModal
+} from './MoneytaryMasteryComponents';
 
 // Copying keyframes to ensure animations work
 const GameStyles = `
@@ -24,7 +28,30 @@ const GameStyles = `
         0%, 100% { box-shadow: 0 0 15px rgba(251, 146, 60, 0.4); }
         50% { box-shadow: 0 0 30px rgba(251, 146, 60, 0.8); }
     }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(251, 191, 36, 0.3);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(251, 191, 36, 0.5);
+    }
 `;
+
+// Level Thresholds
+const XP_THRESHOLDS = {
+    INTERMEDIATE: 500,
+    EXPERT: 1250
+};
+
+const QUESTION_XP = 50;
+const QUESTION_COINS = 20;
 
 export function QuizBee() {
     // Game State
@@ -35,6 +62,10 @@ export function QuizBee() {
     const [highScore, setHighScore] = useState(0);
     const [lives, setLives] = useState(5);
     const [timer, setTimer] = useState(20);
+    const [xp, setXp] = useState(0);
+    const [coins, setCoins] = useState(0);
+    const [totalCorrect, setTotalCorrect] = useState(0);
+    const [showRating, setShowRating] = useState(false);
 
     // Refs for critical game loop state
     const tierCorrectCountRef = useRef(0);
@@ -88,6 +119,25 @@ export function QuizBee() {
     const currentQuestions = questions[currentTier];
     const currentQuestion: Question = currentQuestions[currentQuestionIndex];
 
+    // Derived stats for LevelProgress
+    const playerLevel = useMemo(() => {
+        if (xp >= XP_THRESHOLDS.EXPERT) return 3;
+        if (xp >= XP_THRESHOLDS.INTERMEDIATE) return 2;
+        return 1;
+    }, [xp]);
+
+    const playerRank = useMemo(() => {
+        if (xp >= XP_THRESHOLDS.EXPERT) return "Expert";
+        if (xp >= XP_THRESHOLDS.INTERMEDIATE) return "Intermediate";
+        return "Beginner";
+    }, [xp]);
+
+    const nextLevelXP = useMemo(() => {
+        if (playerLevel === 1) return XP_THRESHOLDS.INTERMEDIATE;
+        if (playerLevel === 2) return XP_THRESHOLDS.EXPERT;
+        return xp; // Max level
+    }, [playerLevel, xp]);
+
     // Callback to handle next question transitions
     const handleNextQuestion = useCallback(() => {
         // Reset turn state
@@ -95,7 +145,7 @@ export function QuizBee() {
         setShowFeedback(false);
         setHiddenOptions([]);
         setIsTimeFrozen(false);
-        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 40 : 20);
+        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
 
         // Check if lives exhausted
         if (livesRef.current <= 0) {
@@ -112,6 +162,8 @@ export function QuizBee() {
                 if (currentTier === 'BEGINNER') {
                     setCurrentTier('INTERMEDIATE');
                     setGameState('TIER_COMPLETE');
+                    // Show rating modal after beginner mode
+                    setShowRating(true);
                 } else if (currentTier === 'INTERMEDIATE') {
                     setCurrentTier('EXPERT');
                     setGameState('TIER_COMPLETE');
@@ -157,6 +209,11 @@ export function QuizBee() {
             const speedBonus = timer * multiplier;
             setScore((prev) => prev + 100 + speedBonus);
 
+            // Award XP and Coins
+            setXp(prev => prev + QUESTION_XP);
+            setCoins(prev => prev + QUESTION_COINS);
+            setTotalCorrect(prev => prev + 1);
+
             tierCorrectCountRef.current += 1;
         } else {
             playSound('wrong');
@@ -175,12 +232,15 @@ export function QuizBee() {
 
     const startNextTier = () => {
         setGameState('PLAYING');
-        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 40 : 20);
+        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
     };
 
     const restartGame = () => {
         setGameState('START');
         setScore(0);
+        setXp(0);
+        setCoins(0);
+        setTotalCorrect(0);
         setLives(5);
         livesRef.current = 5;
         setCurrentTier('BEGINNER');
@@ -189,6 +249,15 @@ export function QuizBee() {
         setTimer(20);
         tierCorrectCountRef.current = 0;
         setTimeout(() => setGameState('PLAYING'), 100);
+    };
+
+    const handleRetryTier = () => {
+        setLives(5);
+        livesRef.current = 5;
+        setCurrentQuestionIndex(0);
+        tierCorrectCountRef.current = 0;
+        setGameState('PLAYING');
+        setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
     };
 
     if (gameState === 'START') {
@@ -232,7 +301,7 @@ export function QuizBee() {
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-blue-400 text-lg">🕒</span>
-                            <span>{currentTier === 'EXPERT' ? '60' : currentTier === 'INTERMEDIATE' ? '40' : '20'} Seconds Per Question</span>
+                            <span>{currentTier === 'EXPERT' ? '60' : currentTier === 'INTERMEDIATE' ? '30' : '20'} Seconds Per Question</span>
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-amber-400 text-lg">📋</span>
@@ -245,8 +314,21 @@ export function QuizBee() {
         );
     }
 
+    if (gameState === 'GAME_OVER' || gameState === 'VICTORY') {
+        return (
+            <GameComplete
+                score={totalCorrect}
+                totalCards={totalQuestions}
+                exp={xp}
+                coins={coins}
+                onRestart={restartGame}
+                onReplayLevel={handleRetryTier}
+            />
+        );
+    }
+
     return (
-        <div className="min-h-screen w-full flex flex-col items-center relative overflow-y-auto font-sans"
+        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden font-sans"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
@@ -294,8 +376,22 @@ export function QuizBee() {
                 </div>
             </header>
 
+            {/* Level Progress Bar */}
+            <div className="relative z-10 w-full max-w-4xl px-4 mt-8">
+                <LevelProgress
+                    currentExp={xp}
+                    level={playerLevel}
+                    expToNextLevel={nextLevelXP}
+                    progress={(xp / nextLevelXP) * 100}
+                    coins={coins}
+                    totalLevel={3}
+                    customLevelLabel={playerRank}
+                    showBadge={false}
+                />
+            </div>
+
             {/* Progress Bar - Matches MM Header Progress */}
-            <div className="w-full max-w-2xl px-4 mt-12 mb-8 z-10 text-center">
+            <div className="w-full max-w-2xl px-4 mt-8 mb-6 z-10 text-center shrink-0">
                 <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-3">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
@@ -310,7 +406,7 @@ export function QuizBee() {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10">
+            <div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10 min-h-0">
                 <QuestionCard
                     question={currentQuestion}
                     selectedOption={selectedOption}
@@ -333,15 +429,11 @@ export function QuizBee() {
                 <TierUnlock nextTier={currentTier} onContinue={startNextTier} />
             )}
 
-            {(gameState === 'GAME_OVER' || gameState === 'VICTORY') && (
-                <QuizBeeComplete
-                    score={score}
-                    highScore={highScore}
-                    tier={currentTier}
-                    isVictory={gameState === 'VICTORY'}
-                    onRestart={restartGame}
-                />
-            )}
+            <GameRatingModal
+                isOpen={showRating}
+                onClose={() => setShowRating(false)}
+                gameId="quiz_bee"
+            />
 
             <style>{GameStyles}</style>
         </div>

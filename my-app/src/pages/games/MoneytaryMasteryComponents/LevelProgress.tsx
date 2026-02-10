@@ -8,9 +8,10 @@ interface LevelProgressProps {
     coins: number;
     totalLevel: number;
     customLevelLabel?: string;
+    showBadge?: boolean;
 }
 
-export function LevelProgress({ currentExp, level, expToNextLevel, progress, coins, totalLevel, customLevelLabel }: LevelProgressProps) {
+export function LevelProgress({ currentExp, level, expToNextLevel, progress, coins, totalLevel, customLevelLabel, showBadge = true }: LevelProgressProps) {
     // Level Titles
 
 
@@ -39,15 +40,16 @@ export function LevelProgress({ currentExp, level, expToNextLevel, progress, coi
 
             <div className="relative z-10 flex items-center gap-3 flex-1">
                 {/* Left: Level Badge & Title */}
-                <div className="flex items-center gap-2 shrink-0">
-                    <div className={`h-9 rounded-xl bg-white/10 flex flex-col items-center justify-center border border-white/20 shadow-inner backdrop-blur-sm ${customLevelLabel ? 'px-2 w-auto' : 'w-9'}`}>
-                        {!customLevelLabel && <span className="text-[8px] text-blue-200 font-bold uppercase tracking-wider leading-none mb-0.5">Lvl</span>}
-                        <span className={`font-bold text-white leading-none ${customLevelLabel ? 'text-sm' : 'text-sm'}`}>
-                            {customLevelLabel || level}
-                        </span>
+                {showBadge && (
+                    <div className="flex items-center gap-2 shrink-0">
+                        <div className={`h-9 rounded-xl bg-white/10 flex flex-col items-center justify-center border border-white/20 shadow-inner backdrop-blur-sm ${customLevelLabel ? 'px-2 w-auto' : 'w-9'}`}>
+                            {!customLevelLabel && <span className="text-[8px] text-blue-200 font-bold uppercase tracking-wider leading-none mb-0.5">Lvl</span>}
+                            <span className={`font-bold text-white leading-none ${customLevelLabel ? 'text-sm' : 'text-sm'}`}>
+                                {customLevelLabel || level}
+                            </span>
+                        </div>
                     </div>
-
-                </div>
+                )}
 
                 {/* Middle: Progress Bar */}
                 <div className="flex-1 flex flex-col justify-center">
