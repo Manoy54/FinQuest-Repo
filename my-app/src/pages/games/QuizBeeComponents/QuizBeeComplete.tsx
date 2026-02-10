@@ -65,7 +65,7 @@ export function QuizBeeComplete({ score, highScore, tier, isVictory, onRestart }
                 </button>
 
                 <Link
-                    to="/games"
+                    to="/"
                     className="block w-full py-3 rounded-xl font-bold text-white/50 hover:text-white hover:bg-white/5 transition-colors"
                 >
                     Back to Games

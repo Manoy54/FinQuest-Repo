@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+
 import { questions } from './QuizBeeComponents/questions';
 import type { GameState, Difficulty, Question } from './QuizBeeComponents/types';
 import { QuestionCard } from './QuizBeeComponents/QuestionCard';
@@ -41,9 +41,7 @@ export function QuizBee() {
     const livesRef = useRef(5);
 
     // Lifelines (Only Skip remains)
-    const [lifelines, setLifelines] = useState({
-        skip: true
-    });
+
 
     // Turn State
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -164,27 +162,16 @@ export function QuizBee() {
             playSound('wrong');
             livesRef.current -= 1;
             setLives(livesRef.current);
-        }
-
-        // Wait 1.5s then next
-        setTimeout(() => {
+            // Check for immediate game over on wrong answer if lives hit 0? 
+            // Original code checked inside timeout. We should check here.
             if (livesRef.current <= 0) {
-                setGameState('GAME_OVER');
-            } else {
-                handleNextQuestion();
+                setTimeout(() => setGameState('GAME_OVER'), 500); // Short delay for effect
+                return;
             }
-        }, 1500);
-    };
-
-    const handleLifeline = (type: 'skip') => {
-        if (!lifelines[type]) return;
-
-        if (type === 'skip') {
-            setLifelines(prev => ({ ...prev, skip: false }));
-            handleNextQuestion();
-            playSound('click');
         }
     };
+
+
 
     const startNextTier = () => {
         setGameState('PLAYING');
@@ -198,7 +185,7 @@ export function QuizBee() {
         livesRef.current = 5;
         setCurrentTier('BEGINNER');
         setCurrentQuestionIndex(0);
-        setLifelines({ skip: true });
+
         setTimer(20);
         tierCorrectCountRef.current = 0;
         setTimeout(() => setGameState('PLAYING'), 100);
@@ -210,15 +197,7 @@ export function QuizBee() {
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
 
-                <header className="absolute top-0 left-0 w-full p-8 z-10">
-                    <Link
-                        to="/home"
-                        className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm"
-                        style={{ textDecoration: 'none' }}
-                    >
-                        <span>← Back</span>
-                    </Link>
-                </header>
+
 
                 <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full transform transition-all duration-700 hover:scale-[1.02]">
                     <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
@@ -253,7 +232,7 @@ export function QuizBee() {
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-blue-400 text-lg">🕒</span>
-                            <span>{currentTier === 'EXPERT' ? '60s' : currentTier === 'INTERMEDIATE' ? '40s' : '20s'}/Q</span>
+                            <span>{currentTier === 'EXPERT' ? '60' : currentTier === 'INTERMEDIATE' ? '40' : '20'} Seconds Per Question</span>
                         </div>
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-amber-400 text-lg">📋</span>
@@ -274,14 +253,8 @@ export function QuizBee() {
 
             {/* Header matches first image */}
             <header className="relative z-10 w-full px-6 pt-8 pb-4 shrink-0">
-                <div className="flex items-center justify-between">
-                    <Link
-                        to="/home"
-                        className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm font-bold"
-                        style={{ textDecoration: 'none' }}
-                    >
-                        <span>← Back</span>
-                    </Link>
+                <div className="flex items-center justify-end">
+
 
                     {/* Centered Title - copied exactly from MM logic */}
                     <div className="fixed left-0 w-full top-8 flex justify-center pointer-events-none z-10">
@@ -307,7 +280,10 @@ export function QuizBee() {
                             <span className="text-red-500">❤️</span>
                             <span className="text-white">{lives}</span>
                         </div>
-                        <div className={`px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl flex items-center gap-2 ${timer < 5 ? 'animate-pulse text-red-500' : 'text-blue-400'}`}>
+                        <div className={`px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl transition-all duration-300 ${timer <= 5
+                            ? 'bg-red-500/20 border border-red-500 text-red-100 scale-110 shadow-[0_0_15px_rgba(239,68,68,0.5)]'
+                            : 'bg-white/10 border border-white/5 text-blue-400 shadow-2xl'
+                            } flex items-center gap-2`}>
                             <span>⏱️</span>
                             <span>{timer}s</span>
                         </div>
@@ -346,9 +322,8 @@ export function QuizBee() {
 
                 <div className="mt-12">
                     <Lifelines
-                        lifelines={lifelines}
-                        onUseLifeline={handleLifeline}
-                        disabled={showFeedback || gameState !== 'PLAYING'}
+                        onClick={handleNextQuestion}
+                        disabled={!showFeedback}
                     />
                 </div>
             </div>

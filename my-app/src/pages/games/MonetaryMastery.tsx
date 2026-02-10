@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     beginnerCards,
     level11Cards,
@@ -9,7 +9,8 @@ import {
     GameComplete,
     GameStyles,
     useGameSounds,
-    LevelProgress
+    LevelProgress,
+    GameRatingModal
 } from './MoneytaryMasteryComponents';
 
 
@@ -26,6 +27,9 @@ export function MonetaryMastery() {
     const [levelStartCoins, setLevelStartCoins] = useState(0);
     const [answeredCards, setAnsweredCards] = useState<Set<number>>(new Set());
     const [gameComplete, setGameComplete] = useState(false);
+    const [showRating, setShowRating] = useState(false);
+    // Randomly select a question number between 10 and 40 to trigger the rating
+    const [ratingTarget] = useState(() => Math.floor(Math.random() * (40 - 10 + 1)) + 10);
     const { playSound } = useGameSounds();
 
     const currentCard = activeCards[currentCardIndex];
@@ -38,6 +42,15 @@ export function MonetaryMastery() {
     const MAX_LEVEL = 40;
     const TOTAL_GAME_XP = MAX_LEVEL * XP_PER_LEVEL;
     const progressPercentage = Math.min((exp / TOTAL_GAME_XP) * 100, 100);
+
+    // Check for rating trigger whenever level changes
+    useEffect(() => {
+        if (level === ratingTarget) {
+            // Small delay to let the card transition finish slightly
+            const timer = setTimeout(() => setShowRating(true), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [level, ratingTarget]);
 
     const handleFlip = () => {
         playSound('flip');
@@ -67,7 +80,8 @@ export function MonetaryMastery() {
         setIsFlipped(false);
         if (currentCardIndex < activeCards.length - 1) {
             setTimeout(() => {
-                setCurrentCardIndex(currentCardIndex + 1);
+                const nextIndex = currentCardIndex + 1;
+                setCurrentCardIndex(nextIndex);
             }, 300);
         } else {
             setGameComplete(true);
@@ -142,9 +156,9 @@ export function MonetaryMastery() {
     // But user asked for the button.
 
     const getNextLevelLabel = () => {
-        if (levelOffset === 0) return "PROCEED TO LEVEL 11 🚀";
-        if (levelOffset === 10) return "PROCEED TO LEVEL 21 🚀";
-        if (levelOffset === 20) return "PROCEED TO LEVEL 31 🚀";
+        if (levelOffset === 0) return "PROCEED TO LEVEL 2 🚀";
+        if (levelOffset === 10) return "PROCEED TO LEVEL 3 🚀";
+        if (levelOffset === 20) return "PROCEED TO LEVEL 4 🚀";
         return "PROCEED TO NEXT LEVEL 🚀";
     };
 
@@ -162,7 +176,7 @@ export function MonetaryMastery() {
                 onNextLevel={hasNextLevel ? handleNextLevel : undefined}
                 nextLevelLabel={getNextLevelLabel()}
                 showComingSoon={!hasNextLevel}
-                comingSoonLabel="LEVEL 41 COMING SOON 🚀"
+                comingSoonLabel="LEVEL 5 COMING SOON 🚀"
                 requiredScore={
                     levelOffset === 0 ? 9 :
                         levelOffset === 10 ? 18 :
@@ -187,7 +201,7 @@ export function MonetaryMastery() {
 
                 <LevelProgress
                     currentExp={exp}
-                    level={level}
+                    level={Math.floor((level - 1) / 10) + 1}
                     expToNextLevel={XP_PER_LEVEL}
                     progress={progressPercentage}
                     coins={coins}
@@ -240,24 +254,28 @@ export function MonetaryMastery() {
                 <div className="w-full max-w-2xl flex justify-center gap-4">
                     <button
                         onClick={handleDidntKnow}
-                        className="flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+                        disabled={!isFlipped}
+                        className={`flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
                         style={{
                             background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                             color: '#fff',
-                            boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)',
-                            border: '1px solid rgba(255,255,255,0.1)'
+                            boxShadow: !isFlipped ? 'none' : '0 4px 15px rgba(239, 68, 68, 0.4)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            pointerEvents: !isFlipped ? 'none' : 'auto'
                         }}
                     >
                         ❌ Didn't Know
                     </button>
                     <button
                         onClick={handleKnew}
-                        className="flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+                        disabled={!isFlipped}
+                        className={`flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
                         style={{
                             background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                             color: '#fff',
-                            boxShadow: '0 4px 15px rgba(34, 197, 94, 0.4)',
-                            border: '1px solid rgba(255,255,255,0.1)'
+                            boxShadow: !isFlipped ? 'none' : '0 4px 15px rgba(34, 197, 94, 0.4)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            pointerEvents: !isFlipped ? 'none' : 'auto'
                         }}
                     >
                         ✓ Knew It!
@@ -266,6 +284,12 @@ export function MonetaryMastery() {
             </div>
 
             <style>{GameStyles}</style>
+
+            <GameRatingModal
+                isOpen={showRating}
+                onClose={() => setShowRating(false)}
+                gameId="monetary_mastery"
+            />
         </div>
     );
 }

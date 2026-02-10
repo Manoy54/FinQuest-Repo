@@ -165,7 +165,7 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
 
                         {/* Secondary Action */}
                         <Link
-                            to="/home"
+                            to="/"
                             className="w-full block px-4 py-3 text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 text-white/70 hover:text-white"
                             style={{
                                 textDecoration: 'none'

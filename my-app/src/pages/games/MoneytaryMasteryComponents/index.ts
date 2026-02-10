@@ -12,6 +12,7 @@ export { GameComplete } from './GameComplete';
 export { GameTitle } from './GameTitle';
 export { useGameSounds } from './useGameSounds';
 export { LevelProgress } from './LevelProgress';
+export { GameRatingModal } from './GameRatingModal';
 
 // Styles
 export { GameStyles } from './GameStyles';
