@@ -7,6 +7,7 @@ import {
 } from './CrosswordComponents/data';
 import { CrosswordGrid } from './CrosswordComponents/CrosswordGrid';
 import { ClueList } from './CrosswordComponents/ClueList';
+import { HowToPlayModal } from './CrosswordComponents/HowToPlayModal';
 import {
     AnimatedBackground,
     useGameSounds,
@@ -20,6 +21,7 @@ export function Crossword() {
     const [activeDirection, setActiveDirection] = useState<'across' | 'down'>('across');
     const [gameComplete, setGameComplete] = useState(false);
     const [showValidation, setShowValidation] = useState(false);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
     const [zoom, setZoom] = useState(0.8);
     const { playSound } = useGameSounds();
 
@@ -235,6 +237,13 @@ export function Crossword() {
                     >
                         Check
                     </button>
+                    <button
+                        onClick={() => setShowHowToPlay(true)}
+                        className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                        title="How to Play"
+                    >
+                        <span className="text-xl">❓</span>
+                    </button>
                 </div>
             </header>
 
@@ -304,6 +313,11 @@ export function Crossword() {
                 </div>
 
             </main>
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
+            />
         </div>
     );
 }

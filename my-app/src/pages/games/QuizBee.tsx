@@ -6,6 +6,7 @@ import type { GameState, Difficulty, Question } from './QuizBeeComponents/types'
 import { QuestionCard } from './QuizBeeComponents/QuestionCard';
 import { Lifelines } from './QuizBeeComponents/Lifelines';
 import { TierUnlock } from './QuizBeeComponents/TierUnlock';
+import { HowToPlayModal } from './QuizBeeComponents/HowToPlayModal';
 import {
     AnimatedBackground,
     useGameSounds,
@@ -66,6 +67,7 @@ export function QuizBee() {
     const [coins, setCoins] = useState(0);
     const [totalCorrect, setTotalCorrect] = useState(0);
     const [showRating, setShowRating] = useState(false);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
 
     // Refs for critical game loop state
     const tierCorrectCountRef = useRef(0);
@@ -372,6 +374,14 @@ export function QuizBee() {
                         <div className={`px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase ${currentTier === 'BEGINNER' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : currentTier === 'INTERMEDIATE' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}`}>
                             {currentTier}
                         </div>
+
+                        <button
+                            onClick={() => setShowHowToPlay(true)}
+                            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm z-50 ml-2"
+                            title="How to Play"
+                        >
+                            <span className="text-xl md:text-2xl">❓</span>
+                        </button>
                     </div>
                 </div>
             </header>
@@ -388,10 +398,10 @@ export function QuizBee() {
                     customLevelLabel={playerRank}
                     showBadge={false}
                 />
-            </div>
+            </div >
 
             {/* Progress Bar - Matches MM Header Progress */}
-            <div className="w-full max-w-2xl px-4 mt-8 mb-6 z-10 text-center shrink-0">
+            < div className="w-full max-w-2xl px-4 mt-8 mb-6 z-10 text-center shrink-0" >
                 <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-3">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
@@ -403,10 +413,10 @@ export function QuizBee() {
                         style={{ width: `${((currentQuestionIndex) / currentQuestions.length) * 100}%` }}
                     />
                 </div>
-            </div>
+            </div >
 
             {/* Main Content */}
-            <div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10 min-h-0">
+            < div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10 min-h-0" >
                 <QuestionCard
                     question={currentQuestion}
                     selectedOption={selectedOption}
@@ -422,12 +432,14 @@ export function QuizBee() {
                         disabled={!showFeedback}
                     />
                 </div>
-            </div>
+            </div >
 
             {/* Modals */}
-            {gameState === 'TIER_COMPLETE' && (
-                <TierUnlock nextTier={currentTier} onContinue={startNextTier} />
-            )}
+            {
+                gameState === 'TIER_COMPLETE' && (
+                    <TierUnlock nextTier={currentTier} onContinue={startNextTier} />
+                )
+            }
 
             <GameRatingModal
                 isOpen={showRating}
@@ -435,7 +447,12 @@ export function QuizBee() {
                 gameId="quiz_bee"
             />
 
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
+            />
+
             <style>{GameStyles}</style>
-        </div>
+        </div >
     );
 }

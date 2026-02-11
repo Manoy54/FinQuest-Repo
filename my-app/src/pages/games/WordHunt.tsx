@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 
 import { levels } from './WordHuntComponents/data';
 import type { TargetWord, GridCell, GameLevel } from './WordHuntComponents/data';
-import { Grid, WordList } from './WordHuntComponents';
+import { Grid, WordList, HowToPlayModal } from './WordHuntComponents';
 
 
 import {
@@ -93,6 +93,7 @@ export function WordHunt() {
 
     // Rating Modal State
     const [showRating, setShowRating] = useState(false);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
     const [totalWordsFound, setTotalWordsFound] = useState(0);
     // Trigger rating after finding between 3 and 12 words randomly across the session
     const [ratingTarget] = useState(() => Math.floor(Math.random() * 10) + 3);
@@ -348,6 +349,14 @@ export function WordHunt() {
                 </div>
 
                 <div className="w-[80px] hidden md:block"></div>{/* Balance spacer */}
+
+                <button
+                    onClick={() => setShowHowToPlay(true)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm z-50"
+                    title="How to Play"
+                >
+                    <span className="text-xl md:text-2xl">❓</span>
+                </button>
             </header>
 
             <main className="relative z-10 container mx-auto px-4 pb-2 flex-1 flex flex-col items-center gap-1 h-full overflow-hidden">
@@ -388,6 +397,11 @@ export function WordHunt() {
                 isOpen={showRating}
                 onClose={() => setShowRating(false)}
                 gameId="word_hunt"
+            />
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
             />
         </div>
     );

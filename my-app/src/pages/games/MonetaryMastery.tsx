@@ -10,7 +10,8 @@ import {
     GameStyles,
     useGameSounds,
     LevelProgress,
-    GameRatingModal
+    GameRatingModal,
+    HowToPlayModal
 } from './MoneytaryMasteryComponents';
 
 
@@ -28,6 +29,7 @@ export function MonetaryMastery() {
     const [answeredCards, setAnsweredCards] = useState<Set<number>>(new Set());
     const [gameComplete, setGameComplete] = useState(false);
     const [showRating, setShowRating] = useState(false);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
     // Randomly select a question number between 10 and 40 to trigger the rating
     const [ratingTarget] = useState(() => Math.floor(Math.random() * (40 - 10 + 1)) + 10);
     const { playSound } = useGameSounds();
@@ -195,18 +197,25 @@ export function MonetaryMastery() {
         >
             <AnimatedBackground />
 
-            {/* Combined Header with Title */}
-            <header className="relative z-10 px-4 pt-8 shrink-0">
+            <header className="relative z-10 px-4 pt-8 shrink-0 flex items-center justify-between gap-4">
+                <div className="flex-1">
+                    <LevelProgress
+                        currentExp={exp}
+                        level={Math.floor((level - 1) / 10) + 1}
+                        expToNextLevel={XP_PER_LEVEL}
+                        progress={progressPercentage}
+                        coins={coins}
+                        totalLevel={MAX_LEVEL}
+                    />
+                </div>
 
-
-                <LevelProgress
-                    currentExp={exp}
-                    level={Math.floor((level - 1) / 10) + 1}
-                    expToNextLevel={XP_PER_LEVEL}
-                    progress={progressPercentage}
-                    coins={coins}
-                    totalLevel={MAX_LEVEL}
-                />
+                <button
+                    onClick={() => setShowHowToPlay(true)}
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                    title="How to Play"
+                >
+                    <span className="text-xl md:text-2xl">❓</span>
+                </button>
             </header>
 
 
@@ -289,6 +298,11 @@ export function MonetaryMastery() {
                 isOpen={showRating}
                 onClose={() => setShowRating(false)}
                 gameId="monetary_mastery"
+            />
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
             />
         </div>
     );

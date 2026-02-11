@@ -13,6 +13,7 @@ export { GameTitle } from './GameTitle';
 export { useGameSounds } from './useGameSounds';
 export { LevelProgress } from './LevelProgress';
 export { GameRatingModal } from './GameRatingModal';
+export { HowToPlayModal } from './HowToPlayModal';
 
 // Styles
 export { GameStyles } from './GameStyles';
