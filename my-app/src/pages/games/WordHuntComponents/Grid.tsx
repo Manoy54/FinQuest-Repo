@@ -278,8 +278,8 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 data-col={c}
                                 onPointerDown={(e) => handlePointerDown(e, r, c)}
                                 className={`
-                                        w-8 h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 xl:w-12 xl:h-12 flex items-center justify-center
-                                        text-lg md:text-xl lg:text-2xl xl:text-3xl font-black rounded md:rounded-lg
+                                        w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 flex items-center justify-center
+                                        text-sm md:text-base lg:text-lg font-black rounded md:rounded-md
                                         transition-all duration-200 cursor-pointer
                                         select-none relative z-20
                                         ${!foundColor && !isSelected ? 'bg-white/90 text-gray-800' : ''} 

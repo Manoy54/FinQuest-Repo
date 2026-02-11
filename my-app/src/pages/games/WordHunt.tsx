@@ -9,8 +9,10 @@ import {
     AnimatedBackground,
     useGameSounds,
     GameComplete,
-    LevelProgress
+    LevelProgress,
+    GameRatingModal
 } from '../games/MoneytaryMasteryComponents';
+import { generateLevel } from './WordHuntComponents/gridGenerator';
 
 // Level Thresholds
 const XP_THRESHOLDS = {
@@ -42,9 +44,39 @@ const getCellsBetween = (start: { r: number, c: number }, end: { r: number, c: n
     return cells;
 };
 
+// Helper to select a subset of words based on difficulty
+const selectWordsForLevel = (level: GameLevel) => {
+    let count = level.words.length;
+    if (level.id.includes('beginner')) {
+        count = Math.floor(Math.random() * 2) + 5; // 5 or 6
+    } else if (level.id.includes('intermediate')) {
+        count = Math.floor(Math.random() * 2) + 6; // 6 or 7
+    } else {
+        count = 8; // Expert: 8 words
+    }
+
+    // Shuffle and slice
+    return [...level.words]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, Math.min(count, level.words.length));
+};
+
 export function WordHunt() {
     // Session-based State (No Persistence)
     // Unlock all levels by default as per user request ("no backend yet")
+    // Generate initial grid
+    const initialGridData = useMemo(() => {
+        const selectedWords = selectWordsForLevel(levels[0]);
+        // Find longest word to determine minimum grid size needed for vertical placement
+        const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
+
+        // Ensure grid is large enough to fit the longest word VERTICALLY
+        const size = Math.max(10, longestWord + 1);
+
+        // For Beginner, we kept it square-ish or rectangular, but it MUST be tall enough.
+        return generateLevel(selectedWords, size, size + 2); // Add +2 cols for a bit of width breathing room
+    }, []);
+
     const [unlockedLevels, setUnlockedLevels] = useState<string[]>([
         'beginner', 'beginner2', 'beginner3',
         'intermediate', 'intermediate2', 'intermediate3',
@@ -54,10 +86,23 @@ export function WordHunt() {
     const [coins, setCoins] = useState<number>(0);
     const [currentLevel, setCurrentLevel] = useState<GameLevel>(levels[0]);
 
-    const [gridValues, setGridValues] = useState<string[][]>(levels[0].grid);
-    const [words, setWords] = useState<TargetWord[]>(levels[0].words.map(w => ({ ...w, isFound: false })));
+    const [gridValues, setGridValues] = useState<string[][]>(initialGridData?.grid || levels[0].grid);
+    const [words, setWords] = useState<TargetWord[]>(initialGridData?.placedWords || levels[0].words.map(w => ({ ...w, isFound: false })));
     const [foundColors, setFoundColors] = useState<Map<string, string>>(new Map());
     const [gameComplete, setGameComplete] = useState(false);
+
+    // Rating Modal State
+    const [showRating, setShowRating] = useState(false);
+    const [totalWordsFound, setTotalWordsFound] = useState(0);
+    // Trigger rating after finding between 3 and 12 words randomly across the session
+    const [ratingTarget] = useState(() => Math.floor(Math.random() * 10) + 3);
+
+    useEffect(() => {
+        if (totalWordsFound === ratingTarget && totalWordsFound > 0) {
+            const timer = setTimeout(() => setShowRating(true), 1500); // Delay to let celebration finish
+            return () => clearTimeout(timer);
+        }
+    }, [totalWordsFound, ratingTarget]);
 
     const { playSound } = useGameSounds();
 
@@ -82,9 +127,40 @@ export function WordHunt() {
 
 
     // Reset game when level changes
+    // Reset game when level changes
     useEffect(() => {
-        setGridValues(currentLevel.grid);
-        setWords(currentLevel.words.map(w => ({ ...w, isFound: false })));
+        // Select subset of words based on difficulty
+        const selectedWords = selectWordsForLevel(currentLevel);
+
+        // Calculate dynamic size - tight fit
+        const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
+
+        // Ensure grid is always tall/wide enough for the longest word to fit vertically/horizontally
+        // Add +1 buffer to make placement easier (reducing forced fallbacks)
+        const minSize = Math.max(10, longestWord + 1);
+
+        let rows = minSize;
+        let cols = minSize;
+
+        if (currentLevel.id.includes('intermediate')) {
+            cols = minSize + 2;
+        } else if (!currentLevel.id.includes('beginner')) {
+            // Expert: make it larger
+            rows = minSize + 2;
+            cols = minSize + 2;
+        }
+
+        const generated = generateLevel(selectedWords, rows, cols);
+
+        if (generated) {
+            setGridValues(generated.grid);
+            setWords(generated.placedWords.map(w => ({ ...w, isFound: false })));
+        } else {
+            // Fallback to static if generation fails (unlikely)
+            setGridValues(currentLevel.grid);
+            setWords(currentLevel.words.map(w => ({ ...w, isFound: false })));
+        }
+
         setFoundColors(new Map());
         setGameComplete(false);
     }, [currentLevel]);
@@ -144,6 +220,7 @@ export function WordHunt() {
                 // Award XP and Coins
                 setXp(prev => prev + WORDS_XP);
                 setCoins(prev => prev + WORDS_COINS);
+                setTotalWordsFound(prev => prev + 1);
 
                 const cells = getCellsBetween(
                     { r: word.start[0], c: word.start[1] },
@@ -176,7 +253,21 @@ export function WordHunt() {
     };
 
     const handleRetryLevel = () => {
-        setWords(currentLevel.words.map(w => ({ ...w, isFound: false })));
+        // Regenerate for a fresh attempt at the same level
+        const longestWord = Math.max(...currentLevel.words.map(w => w.word.replace(/ /g, '').length));
+        const size = Math.max(12, longestWord + 1, currentLevel.grid.length, currentLevel.grid[0].length);
+
+        const generated = generateLevel(currentLevel.words, size, size);
+
+        if (generated) {
+            setGridValues(generated.grid);
+            setWords(generated.placedWords.map(w => ({ ...w, isFound: false })));
+        } else {
+            // Fallback
+            setGridValues(currentLevel.grid);
+            setWords(currentLevel.words.map(w => ({ ...w, isFound: false })));
+        }
+
         setFoundColors(new Map());
         setGameComplete(false);
     };
@@ -292,6 +383,12 @@ export function WordHunt() {
                 </div>
 
             </main>
+
+            <GameRatingModal
+                isOpen={showRating}
+                onClose={() => setShowRating(false)}
+                gameId="word_hunt"
+            />
         </div>
     );
 }
