@@ -71,10 +71,10 @@ export function WordHunt() {
         const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
 
         // Ensure grid is large enough to fit the longest word VERTICALLY
-        const size = Math.max(10, longestWord + 1);
+        const size = Math.max(8, longestWord + 1);
 
         // For Beginner, we kept it square-ish or rectangular, but it MUST be tall enough.
-        return generateLevel(selectedWords, size, size + 2); // Add +2 cols for a bit of width breathing room
+        return generateLevel(selectedWords, size, size); // Tight fit
     }, []);
 
     const [unlockedLevels, setUnlockedLevels] = useState<string[]>([
@@ -138,18 +138,14 @@ export function WordHunt() {
 
         // Ensure grid is always tall/wide enough for the longest word to fit vertically/horizontally
         // Add +1 buffer to make placement easier (reducing forced fallbacks)
-        const minSize = Math.max(10, longestWord + 1);
+        const minSize = Math.max(8, longestWord + 1);
 
         let rows = minSize;
         let cols = minSize;
 
-        if (currentLevel.id.includes('intermediate')) {
-            cols = minSize + 2;
-        } else if (!currentLevel.id.includes('beginner')) {
-            // Expert: make it larger
-            rows = minSize + 2;
-            cols = minSize + 2;
-        }
+        // Keep it tight for all levels
+        // Expert might naturally have longer words, so minSize handles it.
+        // We remove the artificial +2 padding.
 
         const generated = generateLevel(selectedWords, rows, cols);
 
@@ -307,6 +303,30 @@ export function WordHunt() {
         return unlockedLevels.includes(nextLevelId);
     }, [currentLevel, unlockedLevels]);
 
+    // Scaling Logic
+    const [scale, setScale] = useState(1);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const TARGET_WIDTH = 1280;
+            const TARGET_HEIGHT = 800;
+
+            // Calculate scale to fit strictly within the viewport
+            // Use 'contain' logic: fit completely visible
+            const scaleX = window.innerWidth / TARGET_WIDTH;
+            const scaleY = window.innerHeight / TARGET_HEIGHT;
+
+            // Choose the smaller scale to ensure it fits entirely
+            const newScale = Math.min(scaleX, scaleY);
+
+            setScale(newScale * 0.95); // 95% to leave a small safe margin
+        };
+
+        handleResize(); // Initial
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     if (gameComplete) {
         const score = words.filter(w => w.isFound).length;
         return (
@@ -325,73 +345,99 @@ export function WordHunt() {
     }
 
     return (
-        <div className="h-screen font-sans overflow-hidden flex flex-col"
+        <div className="h-screen w-screen bg-[#1a1a2e] overflow-hidden flex items-center justify-center relative font-sans"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
             <AnimatedBackground />
 
-            {/* Header */}
-            <header className="relative z-10 p-2 flex flex-col md:flex-row items-center justify-between bg-transparent shrink-0 gap-2 md:gap-0">
-                <div className="w-[80px] hidden md:block"></div>{/* Balance spacer */}
+            {/* Scaled Container - The Rigid "Stage" */}
+            <div
+                className="relative flex flex-col items-center shadow-2xl overflow-hidden"
+                style={{
+                    width: '1280px',
+                    height: '800px',
+                    transform: `scale(${scale})`,
+                    // transformOrigin: 'center center', // Default
+                    border: '1px solid rgba(255,255,255,0.05)',
+                    borderRadius: '24px',
+                    background: 'rgba(0,0,0,0.2)',
+                    backdropFilter: 'blur(10px)'
+                }}
+            >
+                {/* Header */}
+                <header className="w-full h-[80px] px-8 flex items-center justify-between shrink-0 relative z-20 hover:bg-white/5 transition-colors">
+                    {/* Left: Spacer to balance */}
+                    <div className="w-[120px]">
+                        {/* Optional: Add Back Button here later if needed */}
+                    </div>
 
-                <div className="flex flex-col items-center gap-1 w-full md:w-auto">
-                    <h1 className="text-3xl md:text-5xl font-black tracking-tight font-['Outfit'] drop-shadow-sm"
-                        style={{
-                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent'
-                        }}
-                    >
-                        DATA DIVER
-                    </h1>
-                </div>
+                    <div className="flex flex-col items-center">
+                        <h1 className="text-5xl font-black tracking-tight font-['Outfit'] drop-shadow-sm select-none"
+                            style={{
+                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent'
+                            }}
+                        >
+                            DATA DIVER
+                        </h1>
+                    </div>
 
-                <div className="w-[80px] hidden md:block"></div>{/* Balance spacer */}
+                    {/* Right: Controls */}
+                    <div className="w-[120px] flex justify-end">
+                        <button
+                            onClick={() => setShowHowToPlay(true)}
+                            className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                            title="How to Play"
+                        >
+                            <span className="text-2xl">❓</span>
+                        </button>
+                    </div>
+                </header>
 
-                <button
-                    onClick={() => setShowHowToPlay(true)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm z-50"
-                    title="How to Play"
-                >
-                    <span className="text-xl md:text-2xl">❓</span>
-                </button>
-            </header>
-
-            <main className="relative z-10 container mx-auto px-4 pb-2 flex-1 flex flex-col items-center gap-1 h-full overflow-hidden">
-
-                {/* Level Progress Bar */}
-                <div className="w-full shrink-0">
+                {/* Progress Bar Area */}
+                <div className="w-full px-12 py-2 shrink-0 z-20">
                     <LevelProgress
                         currentExp={xp}
                         level={playerLevel}
                         expToNextLevel={nextLevelXP}
                         progress={(xp / nextLevelXP) * 100}
                         coins={coins}
-                        totalLevel={3} // Changed from 1 to 3 to represent max level stages
+                        totalLevel={3}
                         customLevelLabel={playerRank}
                     />
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-3 items-center lg:items-stretch justify-center w-full max-w-7xl flex-1 h-full overflow-hidden pb-4">
-                    {/* Grid Container */}
-                    <div className="w-full lg:w-auto flex justify-center order-2 lg:order-1 h-full overflow-y-auto">
-                        <Grid
-                            grid={grid}
-                            onWordSelection={handleWordSelection}
-                            foundColors={foundColors}
-                            words={words}
-                        />
+                {/* Main Content Area - Fixed Grid Layout */}
+                <div className="flex-1 w-full px-12 pb-8 pt-4 flex gap-12 overflow-hidden z-10 justify-center items-center">
+
+                    {/* Left Column: Grid Container (Square) - Dominant */}
+                    <div className="w-[600px] h-[600px] flex items-center justify-center relative shrink-0">
+                        {/* 
+                            We constrain the grid container to be fitted 
+                            within the available space. 
+                        */}
+                        <div className="max-h-full flex items-center justify-center">
+                            <Grid
+                                grid={grid}
+                                onWordSelection={handleWordSelection}
+                                foundColors={foundColors}
+                                words={words}
+                            />
+                        </div>
                     </div>
 
-                    {/* Word List Container */}
-                    <div className="w-full lg:w-[280px] shrink-0 order-1 lg:order-2 flex flex-col h-[200px] lg:h-full overflow-hidden">
-                        <WordList words={words} />
+                    {/* Right Column: Mission List (Half Width) - Smaller */}
+                    <div className="w-[300px] h-[600px] shrink-0 flex flex-col justify-center">
+                        <div className="w-full h-full">
+                            <WordList words={words} />
+                        </div>
                     </div>
+
                 </div>
-
-            </main>
+            </div>
 
             <GameRatingModal
                 isOpen={showRating}

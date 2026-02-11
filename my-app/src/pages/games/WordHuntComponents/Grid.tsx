@@ -110,29 +110,25 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
         if (!containerRef.current) return;
 
         const lines: { x1: number, y1: number, x2: number, y2: number, color: string, strokeWidth: number }[] = [];
-        const containerRect = containerRef.current.getBoundingClientRect();
 
         words.filter(w => w.isFound).forEach(word => {
-            const startEl = containerRef.current?.querySelector(`[data-row="${word.start[0]}"][data-col="${word.start[1]}"]`);
-            const endEl = containerRef.current?.querySelector(`[data-row="${word.end[0]}"][data-col="${word.end[1]}"]`);
+            const startEl = containerRef.current?.querySelector(`[data-row="${word.start[0]}"][data-col="${word.start[1]}"]`) as HTMLElement;
+            const endEl = containerRef.current?.querySelector(`[data-row="${word.end[0]}"][data-col="${word.end[1]}"]`) as HTMLElement;
 
             if (startEl && endEl) {
-                const startRect = startEl.getBoundingClientRect();
-                const endRect = endEl.getBoundingClientRect();
-
                 lines.push({
-                    x1: startRect.left - containerRect.left + startRect.width / 2,
-                    y1: startRect.top - containerRect.top + startRect.height / 2,
-                    x2: endRect.left - containerRect.left + endRect.width / 2,
-                    y2: endRect.top - containerRect.top + endRect.height / 2,
+                    x1: startEl.offsetLeft + startEl.offsetWidth / 2,
+                    y1: startEl.offsetTop + startEl.offsetHeight / 2,
+                    x2: endEl.offsetLeft + endEl.offsetWidth / 2,
+                    y2: endEl.offsetTop + endEl.offsetHeight / 2,
                     color: word.color || '#4ECDC4',
-                    strokeWidth: startRect.width * 0.8
+                    strokeWidth: startEl.offsetWidth * 0.8
                 });
             }
         });
         setFoundLines(lines);
 
-    }, [words, grid]); // Re-run when words change (found status updates)
+    }, [words, grid]); // Re-run when words change
 
     useEffect(() => {
         if (isSelecting && selectionStart && selectionEnd && containerRef.current) {
@@ -140,17 +136,13 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
             const endEl = containerRef.current.querySelector(`[data-row="${selectionEnd.r}"][data-col="${selectionEnd.c}"]`) as HTMLElement;
 
             if (startEl && endEl) {
-                const containerRect = containerRef.current.getBoundingClientRect();
-                const startRect = startEl.getBoundingClientRect();
-                const endRect = endEl.getBoundingClientRect();
-
-                const x1 = startRect.left - containerRect.left + startRect.width / 2;
-                const y1 = startRect.top - containerRect.top + startRect.height / 2;
-                const x2 = endRect.left - containerRect.left + endRect.width / 2;
-                const y2 = endRect.top - containerRect.top + endRect.height / 2;
+                const x1 = startEl.offsetLeft + startEl.offsetWidth / 2;
+                const y1 = startEl.offsetTop + startEl.offsetHeight / 2;
+                const x2 = endEl.offsetLeft + endEl.offsetWidth / 2;
+                const y2 = endEl.offsetTop + endEl.offsetHeight / 2;
 
                 // Use 80% of cell width as stroke width
-                const strokeWidth = startRect.width * 0.8;
+                const strokeWidth = startEl.offsetWidth * 0.8;
 
                 setLineCoords({ x1, y1, x2, y2, strokeWidth });
             }
@@ -196,10 +188,8 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
     }, [isSelecting, selectionStart, selectionEnd]);
 
     return (
-        <div className={`
-            select-none touch-none p-4 md:p-5 lg:p-6 rounded-[2rem] relative group
-            h-full flex flex-col items-center justify-center gap-4
-        `}
+        <div
+            className="select-none touch-none p-4 pt-20 rounded-[2rem] relative group flex flex-col items-center justify-center gap-2"
             style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(10px)',
@@ -215,7 +205,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
             {/* Preview Pill - only rendered when selecting */}
             {currentWord && (
-                <div className="h-10 min-w-[160px] rounded-full flex items-center justify-center px-6 shadow-xl border-2 border-white/20 animate-in fade-in"
+                <div className="absolute top-6 z-50 h-10 min-w-[160px] rounded-full flex items-center justify-center px-6 shadow-xl border-2 border-white/20 animate-in fade-in zoom-in duration-200"
                     style={{
                         background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)'
                     }}
@@ -278,16 +268,16 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 data-col={c}
                                 onPointerDown={(e) => handlePointerDown(e, r, c)}
                                 className={`
-                                        w-6 h-6 md:w-8 md:h-8 lg:w-9 lg:h-9 flex items-center justify-center
-                                        text-sm md:text-base lg:text-lg font-black rounded md:rounded-md
-                                        transition-all duration-200 cursor-pointer
-                                        select-none relative z-20
-                                        ${!foundColor && !isSelected ? 'bg-white/90 text-gray-800' : ''} 
-                                        ${foundColor ? 'text-white scale-110' : ''}
-                                        ${isSelected ? 'text-white scale-110' : ''}
-                                        ${!foundColor && !isSelected ? 'shadow-[0_1px_0_0_rgba(0,0,0,0.1)] hover:translate-y-[-1px] hover:shadow-sm' : ''}
-                                        ${foundColor || isSelected ? 'bg-transparent shadow-none' : ''}
-                                    `}
+                                    w-8 h-8 flex items-center justify-center
+                                    text-lg font-black rounded-md
+                                    transition-all duration-200 cursor-pointer
+                                    select-none relative z-20
+                                    ${!foundColor && !isSelected ? 'bg-white/90 text-gray-800 hover:bg-white' : ''} 
+                                    ${foundColor ? 'text-white z-30' : ''}
+                                    ${isSelected ? 'text-white z-30' : ''}
+                                    ${!foundColor && !isSelected ? 'shadow-[0_1px_0_0_rgba(0,0,0,0.1)]' : ''}
+                                    ${foundColor || isSelected ? 'bg-transparent shadow-none' : ''}
+                                `}
                             >
                                 <span className="relative z-10 drop-shadow-sm pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                                     {cell.letter}

@@ -227,7 +227,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
 
                 {/* List View */}
                 <div className={`
-                    flex flex-col gap-2 flex-1 min-h-0 transition-opacity duration-300
+                    flex flex-col gap-2 flex-1 min-h-0 transition-opacity duration-300 overflow-y-auto pr-2
                     ${selectedWordIndex !== null ? 'opacity-0 pointer-events-none' : 'opacity-100'}
                 `}>
                     {words.map((word, index) => (
@@ -235,7 +235,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
                             key={index}
                             onClick={() => handleCardClick(index)}
                             className={`
-                                relative overflow-hidden rounded-xl px-3 py-2 border transition-all duration-300 group flex-1
+                                relative overflow-hidden rounded-xl px-3 py-2 border transition-all duration-300 group h-16 shrink-0
                                 flex items-center cursor-pointer hover:scale-[1.02] active:scale-95
                                 ${word.isFound
                                     ? 'bg-green-500/10 border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.1)]'
@@ -268,7 +268,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
 
                                 {/* Found Checkmark */}
                                 {word.isFound && (
-                                    <div className="text-green-400 animate-bounce flex-shrink-0">
+                                    <div className="text-green-400 flex-shrink-0">
                                         <FaCheckCircle size={14} />
                                     </div>
                                 )}
