@@ -96,17 +96,30 @@ export function QuestionCard({
                                 key={key}
                                 onClick={() => !disabled && onSelectOption(key)}
                                 disabled={disabled || showFeedback}
-                                className="group relative flex items-center p-4 rounded-xl text-left transition-all duration-300 hover:bg-white/10 active:scale-98 border-2"
+                                className="group relative flex items-start p-4 rounded-xl text-left transition-all duration-300 hover:bg-white/10 active:scale-98 border-2"
                                 style={style}
                             >
                                 <div
-                                    className={`w-10 h-10 rounded-lg flex items-center justify-center mr-4 text-xl font-bold transition-colors ${showFeedback && key === question.correctAnswer ? 'bg-white/20 text-white' :
+                                    className={`w-10 h-10 rounded-lg flex items-center justify-center mr-4 text-xl font-bold shrink-0 transition-colors ${showFeedback && key === question.correctAnswer ? 'bg-white/20 text-white' :
                                         selectedOption === key ? 'bg-amber-400 text-black' : 'bg-white/10 text-white/70 group-hover:bg-white/20 group-hover:text-white'
                                         }`}
                                 >
                                     {key}
                                 </div>
-                                <span className="text-lg font-medium text-white/90 group-hover:text-white">{value}</span>
+                                <div className="flex-1 min-w-0">
+                                    <span className="text-lg font-medium text-white/90 group-hover:text-white block break-words">{value}</span>
+                                    {showFeedback && question.explanations?.[key] && (
+                                        <div className={`mt-3 p-3 rounded-lg text-sm leading-relaxed animate-in fade-in slide-in-from-top-2 duration-500 ${key === question.correctAnswer
+                                                ? 'bg-green-500/20 text-green-100 border border-green-500/30'
+                                                : selectedOption === key
+                                                    ? 'bg-red-500/20 text-red-100 border border-red-500/30'
+                                                    : 'bg-white/5 text-white/60 border border-white/10'
+                                            }`}>
+                                            <span className="font-bold mr-1">{key === question.correctAnswer ? '✓ Why it’s correct:' : '✗ Why it’s incorrect:'}</span>
+                                            {question.explanations[key]}
+                                        </div>
+                                    )}
+                                </div>
                             </button>
                         );
                     })}

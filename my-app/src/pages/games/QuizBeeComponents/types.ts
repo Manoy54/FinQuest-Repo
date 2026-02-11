@@ -6,6 +6,7 @@ export interface Question {
     question: string;
     options: { [key: string]: string };
     correctAnswer: string;
+    explanations?: { [key: string]: string };
 }
 
 export interface GameState {
