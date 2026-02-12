@@ -1,12 +1,40 @@
 import type { TargetWord } from './data';
 
-// Only Horizontal (Right) and Vertical (Down) for clear 50/50 split
+// Simple seeded RNG (Mulberry32)
+class SeededRNG {
+    private state: number;
+
+    constructor(seed: number) {
+        this.state = seed;
+    }
+
+    // Returns a float between 0 and 1
+    next(): number {
+        let t = this.state += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+}
+
+export const createRNG = (seedStr: string) => {
+    // Simple hash to convert string to number seed
+    let hash = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+        const char = seedStr.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0; // Convert to 32bit integer
+    }
+    const rng = new SeededRNG(Math.abs(hash));
+    return () => rng.next();
+};
+
 const directions = [
     [0, 1],   // right
     [1, 0],   // down
 ];
 
-export function generateGrid(words: TargetWord[], rows = 12, cols = 16): { grid: string[][], placedWords: TargetWord[] } | null {
+export function generateGrid(words: TargetWord[], rows = 12, cols = 16, random: () => number = Math.random): { grid: string[][], placedWords: TargetWord[] } | null {
     let grid = Array(rows).fill(null).map(() => Array(cols).fill(''));
     let placedWords: TargetWord[] = [];
 
@@ -36,7 +64,7 @@ export function generateGrid(words: TargetWord[], rows = 12, cols = 16): { grid:
         } else {
             // Equal counts: Allow both, randomized preference
             // This allows fallback if the preferred one doesn't fit at the specific spot
-            if (Math.random() < 0.5) {
+            if (random() < 0.5) {
                 sortedDirections = [directions[1], directions[0]]; // V, H
             } else {
                 sortedDirections = [directions[0], directions[1]]; // H, V
@@ -44,8 +72,8 @@ export function generateGrid(words: TargetWord[], rows = 12, cols = 16): { grid:
         }
 
         while (!placed && attempts < 500) {
-            const r = Math.floor(Math.random() * rows);
-            const c = Math.floor(Math.random() * cols);
+            const r = Math.floor(random() * rows);
+            const c = Math.floor(random() * cols);
 
             // Try prioritized direction first
             for (const dir of sortedDirections) {
@@ -98,7 +126,7 @@ export function generateGrid(words: TargetWord[], rows = 12, cols = 16): { grid:
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             if (grid[r][c] === '') {
-                grid[r][c] = letters[Math.floor(Math.random() * letters.length)];
+                grid[r][c] = letters[Math.floor(random() * letters.length)];
             }
         }
     }
@@ -106,11 +134,11 @@ export function generateGrid(words: TargetWord[], rows = 12, cols = 16): { grid:
     return { grid, placedWords };
 }
 
-export function generateLevel(words: TargetWord[], rows = 12, cols = 16) {
+export function generateLevel(words: TargetWord[], rows = 12, cols = 16, random: () => number = Math.random) {
     let result = null;
     let attempts = 0;
     while (!result && attempts < 100) {
-        result = generateGrid(words, rows, cols);
+        result = generateGrid(words, rows, cols, random);
         attempts++;
     }
     if (!result) {

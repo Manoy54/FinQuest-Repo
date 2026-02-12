@@ -152,6 +152,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
     const [selectedWordIndex, setSelectedWordIndex] = React.useState<number | null>(null);
     const foundCount = words.filter(w => w.isFound).length;
     const progress = (foundCount / words.length) * 100;
+    const isCompact = words.length > 5; // Use smaller cards when many words
 
     const handleCardClick = (index: number) => {
         if (selectedWordIndex === index) {
@@ -162,7 +163,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
     };
 
     return (
-        <div className="rounded-[2rem] p-6 flex flex-col h-full overflow-hidden relative"
+        <div className="rounded-[2rem] p-4 flex flex-col max-h-full overflow-hidden relative"
             style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(10px)',
@@ -230,51 +231,61 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
                     flex flex-col gap-2 flex-1 min-h-0 transition-opacity duration-300 overflow-y-auto pr-2
                     ${selectedWordIndex !== null ? 'opacity-0 pointer-events-none' : 'opacity-100'}
                 `}>
-                    {words.map((word, index) => (
-                        <div
-                            key={index}
-                            onClick={() => handleCardClick(index)}
-                            className={`
-                                relative overflow-hidden rounded-xl px-3 py-2 border transition-all duration-300 group h-16 shrink-0
-                                flex items-center cursor-pointer hover:scale-[1.02] active:scale-95
-                                ${word.isFound
-                                    ? 'bg-green-500/10 border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.1)]'
-                                    : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20'
-                                }
-                            `}
-                        >
-                            <div className="flex items-center gap-3 w-full">
-                                <div className={`
-                                    p-2 rounded-lg flex items-center justify-center text-lg flex-shrink-0
-                                    ${word.isFound ? 'bg-green-500/20' : 'bg-gray-800/50'}
-                                `}>
-                                    {getIcon(word.word)}
-                                </div>
-
-                                <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                    <h3 className={`
-                                        text-sm font-bold truncate transition-colors
-                                        ${word.isFound ? 'text-green-400' : 'text-white'}
-                                    `}>
-                                        {word.word}
-                                    </h3>
-                                    <p className={`
-                                        text-[10px] leading-tight truncate
-                                        ${word.isFound ? 'text-green-200/70' : 'text-gray-400 group-hover:text-gray-300'}
-                                    `}>
-                                        {word.description}
-                                    </p>
-                                </div>
-
-                                {/* Found Checkmark */}
-                                {word.isFound && (
-                                    <div className="text-green-400 flex-shrink-0">
-                                        <FaCheckCircle size={14} />
+                    {/* Unfound Words */}
+                    {words.filter(w => !w.isFound).map((word) => {
+                        const originalIndex = words.indexOf(word);
+                        return (
+                            <div
+                                key={originalIndex}
+                                onClick={() => handleCardClick(originalIndex)}
+                                className={`relative overflow-hidden rounded-xl px-3 border transition-all duration-300 group shrink-0 flex items-center cursor-pointer hover:scale-[1.02] active:scale-95 bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20 ${isCompact ? 'h-11 py-1' : 'h-16 py-2'}`}
+                            >
+                                <div className="flex items-center gap-2 w-full">
+                                    <div className={`rounded-lg flex items-center justify-center flex-shrink-0 bg-gray-800/50 ${isCompact ? 'p-1.5 text-sm' : 'p-2 text-lg'}`}>
+                                        {getIcon(word.word)}
                                     </div>
-                                )}
+                                    <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                        <h3 className={`font-bold truncate text-white ${isCompact ? 'text-xs' : 'text-sm'}`}>{word.word}</h3>
+                                        <p className={`leading-tight truncate text-gray-400 group-hover:text-gray-300 ${isCompact ? 'text-[9px]' : 'text-[10px]'}`}>{word.description}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
+
+                    {/* Found Words Section */}
+                    {foundCount > 0 && (
+                        <>
+                            <div className="flex items-center gap-2 mt-3 mb-1 flex-shrink-0">
+                                <div className="h-px flex-1 bg-green-500/20" />
+                                <span className="text-xs font-bold text-green-400/80 tracking-wider uppercase">Found ({foundCount})</span>
+                                <div className="h-px flex-1 bg-green-500/20" />
+                            </div>
+                            {words.filter(w => w.isFound).map((word) => {
+                                const originalIndex = words.indexOf(word);
+                                return (
+                                    <div
+                                        key={originalIndex}
+                                        onClick={() => handleCardClick(originalIndex)}
+                                        className={`relative overflow-hidden rounded-xl px-3 border transition-all duration-300 group shrink-0 flex items-center cursor-pointer hover:scale-[1.02] active:scale-95 bg-green-500/10 border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.1)] ${isCompact ? 'h-10 py-1' : 'h-14 py-2'}`}
+                                    >
+                                        <div className="flex items-center gap-2 w-full">
+                                            <div className={`rounded-lg flex items-center justify-center flex-shrink-0 bg-green-500/20 ${isCompact ? 'p-1.5 text-sm' : 'p-2 text-lg'}`}>
+                                                {getIcon(word.word)}
+                                            </div>
+                                            <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                                <h3 className={`font-bold truncate text-green-400 ${isCompact ? 'text-xs' : 'text-sm'}`}>{word.word}</h3>
+                                                <p className={`leading-tight truncate text-green-200/70 ${isCompact ? 'text-[9px]' : 'text-[10px]'}`}>{word.description}</p>
+                                            </div>
+                                            <div className="text-green-400 flex-shrink-0">
+                                                <FaCheckCircle size={isCompact ? 12 : 14} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </>
+                    )}
                 </div>
             </div>
         </div>

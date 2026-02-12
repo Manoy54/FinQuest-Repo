@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 
 import { levels } from './WordHuntComponents/data';
 import type { TargetWord, GridCell, GameLevel } from './WordHuntComponents/data';
@@ -12,7 +12,7 @@ import {
     LevelProgress,
     GameRatingModal
 } from '../games/MoneytaryMasteryComponents';
-import { generateLevel } from './WordHuntComponents/gridGenerator';
+import { generateLevel, createRNG } from './WordHuntComponents/gridGenerator';
 
 // Level Thresholds
 const XP_THRESHOLDS = {
@@ -45,36 +45,46 @@ const getCellsBetween = (start: { r: number, c: number }, end: { r: number, c: n
 };
 
 // Helper to select a subset of words based on difficulty
-const selectWordsForLevel = (level: GameLevel) => {
+const selectWordsForLevel = (level: GameLevel, random: () => number) => {
     let count = level.words.length;
     if (level.id.includes('beginner')) {
-        count = Math.floor(Math.random() * 2) + 5; // 5 or 6
+        count = Math.floor(random() * 2) + 5; // 5 or 6
     } else if (level.id.includes('intermediate')) {
-        count = Math.floor(Math.random() * 2) + 6; // 6 or 7
+        count = Math.floor(random() * 2) + 6; // 6 or 7
     } else {
         count = 8; // Expert: 8 words
     }
 
-    // Shuffle and slice
-    return [...level.words]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, Math.min(count, level.words.length));
+    // Shuffle and slice — prefer shorter words to keep grid compact
+    const MAX_WORD_LENGTH = 9; // Max characters (spaces removed) to keep grid ≤ 10 cols
+    const shortWords = level.words.filter(w => w.word.replace(/ /g, '').length <= MAX_WORD_LENGTH);
+    const pool = shortWords.length >= count ? shortWords : [...level.words]; // fallback if not enough short words
+
+    return [...pool]
+        .sort(() => random() - 0.5)
+        .slice(0, Math.min(count, pool.length));
 };
 
 export function WordHunt() {
-    // Session-based State (No Persistence)
-    // Unlock all levels by default as per user request ("no backend yet")
+
+
+
     // Generate initial grid
     const initialGridData = useMemo(() => {
-        const selectedWords = selectWordsForLevel(levels[0]);
+        // Create a stable seed: Level ID + DateString (YYYY-MM-DD)
+        const dateStr = new Date().toISOString().split('T')[0];
+        const seedStr = `${levels[0].id}-${dateStr}`;
+        const rng = createRNG(seedStr);
+
+        const selectedWords = selectWordsForLevel(levels[0], rng);
         // Find longest word to determine minimum grid size needed for vertical placement
         const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
 
-        // Ensure grid is large enough to fit the longest word VERTICALLY
+        // Ensure grid is large enough to fit the longest word
         const size = Math.max(8, longestWord + 1);
 
         // For Beginner, we kept it square-ish or rectangular, but it MUST be tall enough.
-        return generateLevel(selectedWords, size, size); // Tight fit
+        return generateLevel(selectedWords, size, size, rng); // Tight fit
     }, []);
 
     const [unlockedLevels, setUnlockedLevels] = useState<string[]>([
@@ -82,13 +92,15 @@ export function WordHunt() {
         'intermediate', 'intermediate2', 'intermediate3',
         'expert', 'expert2', 'expert3'
     ]);
+    // Always reset XP and Coins on reload as per "do not save progress"
     const [xp, setXp] = useState<number>(0);
     const [coins, setCoins] = useState<number>(0);
+
     const [currentLevel, setCurrentLevel] = useState<GameLevel>(levels[0]);
 
-    const [gridValues, setGridValues] = useState<string[][]>(initialGridData?.grid || levels[0].grid);
-    const [words, setWords] = useState<TargetWord[]>(initialGridData?.placedWords || levels[0].words.map(w => ({ ...w, isFound: false })));
-    const [foundColors, setFoundColors] = useState<Map<string, string>>(new Map());
+    const [gridValues, setGridValues] = useState<string[][]>(() => initialGridData?.grid || levels[0].grid);
+    const [words, setWords] = useState<TargetWord[]>(() => initialGridData?.placedWords || levels[0].words.map(w => ({ ...w, isFound: false })));
+    const [foundColors, setFoundColors] = useState<Map<string, string>>(() => new Map());
     const [gameComplete, setGameComplete] = useState(false);
 
     // Rating Modal State
@@ -104,6 +116,10 @@ export function WordHunt() {
             return () => clearTimeout(timer);
         }
     }, [totalWordsFound, ratingTarget]);
+
+
+
+
 
     const { playSound } = useGameSounds();
 
@@ -127,27 +143,38 @@ export function WordHunt() {
     }, [xp, unlockedLevels]);
 
 
-    // Reset game when level changes
-    // Reset game when level changes
+    // Track last processed level ID to prevent unwanted regeneration on reload
+    // We initialize this with currentLevel.id so the first run (mount) matches and skips regeneration
+    // IF we loaded from storage. If it's a fresh game, it skips too, preserving initialGridData.
+    const lastLevelId = useRef(currentLevel.id);
+
+    // Reset game ONLY when level effectively changes
     useEffect(() => {
+        // If we have a saved grid that matches the current level, verify we shouldn't regenerate
+        if (currentLevel.id === lastLevelId.current && gridValues.length > 0) {
+            return;
+        }
+
+        lastLevelId.current = currentLevel.id;
+
+        // Create a stable seed: Level ID + DateString (YYYY-MM-DD)
+        const dateStr = new Date().toISOString().split('T')[0];
+        const seedStr = `${currentLevel.id}-${dateStr}`;
+        const rng = createRNG(seedStr);
+
         // Select subset of words based on difficulty
-        const selectedWords = selectWordsForLevel(currentLevel);
+        const selectedWords = selectWordsForLevel(currentLevel, rng);
 
         // Calculate dynamic size - tight fit
         const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
 
-        // Ensure grid is always tall/wide enough for the longest word to fit vertically/horizontally
-        // Add +1 buffer to make placement easier (reducing forced fallbacks)
-        const minSize = Math.max(8, longestWord + 1);
+        // Ensure grid is always tall/wide enough for the longest word to fit
+        const size = Math.max(8, longestWord + 1);
 
-        let rows = minSize;
-        let cols = minSize;
+        let rows = size;
+        let cols = size;
 
-        // Keep it tight for all levels
-        // Expert might naturally have longer words, so minSize handles it.
-        // We remove the artificial +2 padding.
-
-        const generated = generateLevel(selectedWords, rows, cols);
+        const generated = generateLevel(selectedWords, rows, cols, rng);
 
         if (generated) {
             setGridValues(generated.grid);
@@ -251,10 +278,21 @@ export function WordHunt() {
 
     const handleRetryLevel = () => {
         // Regenerate for a fresh attempt at the same level
-        const longestWord = Math.max(...currentLevel.words.map(w => w.word.replace(/ /g, '').length));
-        const size = Math.max(12, longestWord + 1, currentLevel.grid.length, currentLevel.grid[0].length);
+        // Use same seed to ensure it's still the "same" level configuration for fairness/consistency
+        const dateStr = new Date().toISOString().split('T')[0];
+        const seedStr = `${currentLevel.id}-${dateStr}`;
+        const rng = createRNG(seedStr);
 
-        const generated = generateLevel(currentLevel.words, size, size);
+        // We should re-select words too to match the seed
+        // Note: The previous logic might have just used currentLevel.words directly?
+        // Wait, currentLevel has ALL words, we need to select the subset again using the seed.
+        // Actually, if we use the same seed, selectWordsForLevel will return the SAME words.
+        const selectedWords = selectWordsForLevel(currentLevel, rng);
+
+        const longestWord = Math.max(...selectedWords.map(w => w.word.replace(/ /g, '').length));
+        const size = Math.max(8, longestWord + 1);
+
+        const generated = generateLevel(selectedWords, size, size, rng);
 
         if (generated) {
             setGridValues(generated.grid);
@@ -319,7 +357,7 @@ export function WordHunt() {
             // Choose the smaller scale to ensure it fits entirely
             const newScale = Math.min(scaleX, scaleY);
 
-            setScale(newScale * 0.95); // 95% to leave a small safe margin
+            setScale(newScale); // Exact fit, no margin needed if we center it properly
         };
 
         handleResize(); // Initial
@@ -367,7 +405,7 @@ export function WordHunt() {
                 }}
             >
                 {/* Header */}
-                <header className="w-full h-[80px] px-8 flex items-center justify-between shrink-0 relative z-20 hover:bg-white/5 transition-colors">
+                <header className="w-full h-[60px] px-8 flex items-center justify-between shrink-0 relative z-20 hover:bg-white/5 transition-colors">
                     {/* Left: Spacer to balance */}
                     <div className="w-[120px]">
                         {/* Optional: Add Back Button here later if needed */}
@@ -398,7 +436,7 @@ export function WordHunt() {
                 </header>
 
                 {/* Progress Bar Area */}
-                <div className="w-full px-12 py-2 shrink-0 z-20">
+                <div className="w-full px-12 py-1 shrink-0 z-20">
                     <LevelProgress
                         currentExp={xp}
                         level={playerLevel}
@@ -411,15 +449,11 @@ export function WordHunt() {
                 </div>
 
                 {/* Main Content Area - Fixed Grid Layout */}
-                <div className="flex-1 w-full px-12 pb-8 pt-4 flex gap-12 overflow-hidden z-10 justify-center items-center">
+                <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
 
-                    {/* Left Column: Grid Container (Square) - Dominant */}
-                    <div className="w-[600px] h-[600px] flex items-center justify-center relative shrink-0">
-                        {/* 
-                            We constrain the grid container to be fitted 
-                            within the available space. 
-                        */}
-                        <div className="max-h-full flex items-center justify-center">
+                    {/* Left Column: Grid Container - 60% Width */}
+                    <div className="w-[60%] h-full flex items-center justify-center">
+                        <div className="w-full max-h-full flex items-center justify-center">
                             <Grid
                                 grid={grid}
                                 onWordSelection={handleWordSelection}
@@ -429,9 +463,9 @@ export function WordHunt() {
                         </div>
                     </div>
 
-                    {/* Right Column: Mission List (Half Width) - Smaller */}
-                    <div className="w-[300px] h-[600px] shrink-0 flex flex-col justify-center">
-                        <div className="w-full h-full">
+                    {/* Right Column: Mission List - 38% Width */}
+                    <div className="w-[38%] max-h-full flex flex-col justify-center">
+                        <div className="w-full max-h-full">
                             <WordList words={words} />
                         </div>
                     </div>

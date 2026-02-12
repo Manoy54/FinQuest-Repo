@@ -158,8 +158,18 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
         handleStart(r, c);
     };
 
+    const handlePointerEnter = (r: number, c: number) => {
+        if (isSelecting) {
+            handleMove(r, c);
+        }
+    };
+
     const handlePointerMove = (e: React.PointerEvent) => {
         e.preventDefault();
+        // Optimization: Only use elementFromPoint for touch interactions
+        // Mouse/Pen can use onPointerEnter which is much faster
+        if (e.pointerType !== 'touch') return;
+
         // Use elementFromPoint to find target under pointer as it moves
         const target = document.elementFromPoint(e.clientX, e.clientY);
         if (target && target.hasAttribute('data-row')) {
@@ -189,7 +199,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
     return (
         <div
-            className="select-none touch-none p-4 pt-20 rounded-[2rem] relative group flex flex-col items-center justify-center gap-2"
+            className="select-none touch-none p-4 pt-16 rounded-[2rem] relative group flex flex-col items-center justify-center gap-2 w-full h-full"
             style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(10px)',
@@ -218,7 +228,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
             <div
                 ref={containerRef}
-                className="grid gap-1 relative z-10"
+                className="grid gap-1.5 relative z-10"
                 style={{
                     gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`
                 }}
@@ -267,12 +277,13 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 data-row={r}
                                 data-col={c}
                                 onPointerDown={(e) => handlePointerDown(e, r, c)}
+                                onPointerEnter={() => handlePointerEnter(r, c)}
                                 className={`
-                                    w-8 h-8 flex items-center justify-center
-                                    text-lg font-black rounded-md
+                                    w-full aspect-square flex items-center justify-center
+                                    ${grid.length > 9 ? 'text-lg md:text-2xl' : 'text-2xl md:text-4xl'} font-black rounded-md
                                     transition-all duration-200 cursor-pointer
                                     select-none relative z-20
-                                    ${!foundColor && !isSelected ? 'bg-white/90 text-gray-800 hover:bg-white' : ''} 
+                                    ${!foundColor ? 'bg-white/90 text-gray-800 hover:bg-white' : ''} 
                                     ${foundColor ? 'text-white z-30' : ''}
                                     ${isSelected ? 'text-white z-30' : ''}
                                     ${!foundColor && !isSelected ? 'shadow-[0_1px_0_0_rgba(0,0,0,0.1)]' : ''}
