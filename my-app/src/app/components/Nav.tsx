@@ -1,8 +1,12 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
+import Avatar, { genConfig } from 'react-nice-avatar';
+
+type AvatarConfig = ReturnType<typeof genConfig>;
 
 type CardNavLink = {
     label: string;
@@ -18,8 +22,6 @@ export type CardNavItem = {
 };
 
 export interface CardNavProps {
-    logo: string;
-    logoAlt?: string;
     items: CardNavItem[];
     className?: string;
     ease?: string;
@@ -30,8 +32,6 @@ export interface CardNavProps {
 }
 
 const CardNav: React.FC<CardNavProps> = ({
-    logo,
-    logoAlt = 'Logo',
     items,
     className = '',
     ease = 'power3.out',
@@ -45,6 +45,29 @@ const CardNav: React.FC<CardNavProps> = ({
     const navRef = useRef<HTMLDivElement | null>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
     const tlRef = useRef<gsap.core.Timeline | null>(null);
+
+    const [avatarConfig, setAvatarConfig] = useState<AvatarConfig | null>(null);
+
+    useEffect(() => {
+        const loadAvatar = () => {
+            const saved = localStorage.getItem('userAvatarConfig');
+            if (saved) {
+                setAvatarConfig(JSON.parse(saved));
+            } else {
+                // Generate a consistent default if not set
+                setAvatarConfig(genConfig("default-user"));
+            }
+        };
+
+        loadAvatar();
+
+        const handleAvatarChange = () => loadAvatar();
+        window.addEventListener('avatarChanged', handleAvatarChange);
+
+        return () => {
+            window.removeEventListener('avatarChanged', handleAvatarChange);
+        };
+    }, []);
 
     const calculateHeight = () => {
         const navEl = navRef.current;
@@ -136,6 +159,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isExpanded]);
 
     const toggleMenu = () => {
@@ -184,17 +208,25 @@ const CardNav: React.FC<CardNavProps> = ({
                         />
                     </div>
 
-                    <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none">
-                        <img src={logo} alt={logoAlt} className="logo h-[24px]" />
+                    <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none z-[10]">
+                        <span className="text-2xl font-black tracking-tighter" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                            FinQuest
+                        </span>
                     </div>
 
-                    <button
-                        type="button"
-                        className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 items-center h-full font-medium cursor-pointer transition-colors duration-300"
+                    <Link
+                        to="/profile"
+                        className="hidden md:flex items-center justify-center h-full aspect-square rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 shadow-sm no-underline overflow-hidden"
                         style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+                        role="button"
+                        aria-label="User Profile"
                     >
-                        Get Started
-                    </button>
+                        {avatarConfig && (
+                            <div className="w-full h-full p-1">
+                                <Avatar className="w-full h-full" {...avatarConfig} />
+                            </div>
+                        )}
+                    </Link>
                 </div>
 
                 <div

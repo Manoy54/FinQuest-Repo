@@ -60,11 +60,11 @@ function GameModeCard({ mode }: { mode: GameMode }) {
     return (
         <Link
             to={mode.path}
-            className="group relative block w-full max-w-sm"
+            className="group relative block w-full h-full"
             style={{ textDecoration: 'none' }}
         >
             <div
-                className="relative overflow-hidden rounded-3xl p-8 transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
+                className="relative overflow-hidden rounded-3xl p-6 h-full flex flex-col transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
                 style={{
                     background: mode.gradient,
                     boxShadow: `0 20px 40px ${mode.glowColor}, 0 0 0 1px rgba(255,255,255,0.1) inset`
@@ -79,26 +79,26 @@ function GameModeCard({ mode }: { mode: GameMode }) {
                 </div>
 
                 {/* Icon */}
-                <div className="relative z-10 mb-6">
-                    <span className="text-6xl filter drop-shadow-lg group-hover:scale-110 inline-block transition-transform duration-300">
+                <div className="relative z-10 mb-4 flex-none">
+                    <span className="text-5xl lg:text-6xl filter drop-shadow-lg group-hover:scale-110 inline-block transition-transform duration-300">
                         {mode.icon}
                     </span>
                 </div>
 
                 {/* Content */}
-                <div className="relative z-10">
-                    <p className="text-white/70 text-sm font-semibold uppercase tracking-widest mb-2">
+                <div className="relative z-10 flex-1 flex flex-col">
+                    <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">
                         {mode.subtitle}
                     </p>
-                    <h3 className="text-white text-2xl font-bold mb-3 tracking-tight">
+                    <h3 className="text-white text-xl lg:text-2xl font-bold mb-2 tracking-tight">
                         {mode.title}
                     </h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-6">
+                    <p className="text-white/80 text-xs lg:text-sm leading-relaxed mb-4 flex-1">
                         {mode.description}
                     </p>
 
                     {/* Play Button */}
-                    <div className="flex items-center gap-2 text-white font-bold text-sm uppercase tracking-wide group-hover:gap-4 transition-all duration-300">
+                    <div className="mt-auto flex items-center gap-2 text-white font-bold text-sm uppercase tracking-wide group-hover:gap-4 transition-all duration-300">
                         <span>Play Now</span>
                         <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">→</span>
                     </div>
@@ -111,51 +111,61 @@ function GameModeCard({ mode }: { mode: GameMode }) {
     );
 }
 
+import FQLogo from '../../assets/images/FQlogo.PNG';
+
 export function Home() {
     return (
         <div
-            className="min-h-screen w-full flex flex-col relative overflow-x-hidden"
+            className="h-screen w-full flex flex-col relative overflow-hidden"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
+            {/* Top Left Logo */}
+            <img
+                src={FQLogo}
+                alt="FinQuest Logo"
+                className="absolute top-6 left-8 w-14 h-14 md:w-16 md:h-16 z-[60] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+            />
             <AnimatedBackground />
 
             {/* Navigation */}
-            <div className="relative z-50">
+            <div className="relative z-50 flex-none">
                 <Header />
             </div>
 
-            {/* Hero Section */}
-            <header className="relative z-10 pt-32 pb-8 px-6 text-center">
-                <h1
-                    className="text-5xl md:text-7xl lg:text-8xl font-black mb-4 tracking-tighter"
-                    style={{
-                        fontFamily: "'Outfit', sans-serif",
-                        background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.3))'
-                    }}
-                >
-                    FINQUEST
-                </h1>
-                <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto font-light tracking-wide">
-                    Master financial literacy through interactive games and challenges
-                </p>
-            </header>
+            {/* Main Content Area */}
+            <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 lg:px-8 pt-24 pb-4 overflow-hidden">
 
-            {/* Game Modes Section */}
-            <main className="relative z-10 flex-1 px-6 py-12">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-12">
-                        <h2 className="text-white/40 text-sm font-bold uppercase tracking-[0.3em] mb-3">
+                {/* Hero Section */}
+                <div className="text-center mb-6 lg:mb-10 shrink-0">
+                    <h1
+                        className="text-5xl md:text-7xl lg:text-8xl font-black mb-2 lg:mb-4 tracking-tighter"
+                        style={{
+                            fontFamily: "'Outfit', sans-serif",
+                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.3))'
+                        }}
+                    >
+                        FINQUEST
+                    </h1>
+                    <p className="text-white/60 text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide">
+                        Master financial literacy through interactive games and challenges
+                    </p>
+                </div>
+
+                {/* Game Modes Grid */}
+                <div className="w-full max-w-7xl flex flex-col items-center flex-1 justify-center">
+                    <div className="text-center mb-6 lg:mb-8 shrink-0">
+                        <h2 className="text-white/40 text-xs font-bold uppercase tracking-[0.3em] mb-2">
                             Choose Your Adventure
                         </h2>
-                        <div className="w-24 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto rounded-full" />
+                        <div className="w-16 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto rounded-full" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 w-full auto-rows-fr">
                         {gameModes.map((mode) => (
                             <GameModeCard key={mode.id} mode={mode} />
                         ))}
@@ -164,8 +174,8 @@ export function Home() {
             </main>
 
             {/* Footer */}
-            <footer className="relative z-10 py-8 text-center">
-                <p className="text-white/30 text-sm">
+            <footer className="relative z-10 py-4 text-center shrink-0">
+                <p className="text-white/30 text-xs">
                     © 2026 FinQuest • Learn Finance, Level Up Your Future
                 </p>
             </footer>

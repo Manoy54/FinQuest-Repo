@@ -11,9 +11,9 @@ import {
     AnimatedBackground,
     useGameSounds,
     GameComplete,
-    LevelProgress,
     GameRatingModal
 } from './MoneytaryMasteryComponents';
+import { HUD } from '../../app/components/HUD';
 
 // Copying keyframes to ensure animations work
 const GameStyles = `
@@ -336,69 +336,40 @@ export function QuizBee() {
             <AnimatedBackground />
 
             {/* Header matches first image */}
-            <header className="relative z-10 w-full px-6 pt-8 pb-4 shrink-0">
-                <div className="flex items-center justify-end">
-
-
-                    {/* Centered Title - copied exactly from MM logic */}
-                    <div className="fixed left-0 w-full top-8 flex justify-center pointer-events-none z-10">
-                        <h1 className="text-2xl md:text-5xl font-bold"
-                            style={{
-                                fontFamily: "'Outfit', sans-serif",
-                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.2))'
-                            }}
-                        >
-                            Capital Cup
-                        </h1>
+            {/* Header matches first image */}
+            <HUD
+                title="CAPITAL CUP"
+                currentExp={xp}
+                level={playerLevel}
+                expToNextLevel={nextLevelXP}
+                progress={(xp / nextLevelXP) * 100}
+                coins={coins}
+                totalLevel={3}
+                customLevelLabel={playerRank}
+                showBadge={false}
+                onHowToPlay={() => setShowHowToPlay(true)}
+                className="pt-8 pb-4"
+            >
+                <div className="flex items-center gap-3 shrink-0 relative z-20">
+                    <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
+                        <span className="text-amber-400 uppercase tracking-tighter">Score: {score}</span>
                     </div>
-
-                    {/* Metrics to the right - matching MM style */}
-                    <div className="flex items-center gap-3 relative z-20">
-                        <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
-                            <span className="text-amber-400 uppercase tracking-tighter">Score: {score}</span>
-                        </div>
-                        <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl flex items-center gap-2">
-                            <span className="text-red-500">❤️</span>
-                            <span className="text-white">{lives}</span>
-                        </div>
-                        <div className={`px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl transition-all duration-300 ${timer <= 5
-                            ? 'bg-red-500/20 border border-red-500 text-red-100 scale-110 shadow-[0_0_15px_rgba(239,68,68,0.5)]'
-                            : 'bg-white/10 border border-white/5 text-blue-400 shadow-2xl'
-                            } flex items-center gap-2`}>
-                            <span>⏱️</span>
-                            <span>{timer}s</span>
-                        </div>
-                        <div className={`px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase ${currentTier === 'BEGINNER' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : currentTier === 'INTERMEDIATE' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}`}>
-                            {currentTier}
-                        </div>
-
-                        <button
-                            onClick={() => setShowHowToPlay(true)}
-                            className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm z-50 ml-2"
-                            title="How to Play"
-                        >
-                            <span className="text-xl md:text-2xl">❓</span>
-                        </button>
+                    <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl flex items-center gap-2">
+                        <span className="text-red-500">❤️</span>
+                        <span className="text-white">{lives}</span>
+                    </div>
+                    <div className={`px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl transition-all duration-300 ${timer <= 5
+                        ? 'bg-red-500/20 border border-red-500 text-red-100 scale-110 shadow-[0_0_15px_rgba(239,68,68,0.5)]'
+                        : 'bg-white/10 border border-white/5 text-blue-400 shadow-2xl'
+                        } flex items-center gap-2`}>
+                        <span>⏱️</span>
+                        <span>{timer}s</span>
+                    </div>
+                    <div className={`px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase ${currentTier === 'BEGINNER' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : currentTier === 'INTERMEDIATE' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-purple-500/20 text-purple-400 border border-purple-500/30'}`}>
+                        {currentTier}
                     </div>
                 </div>
-            </header>
-
-            {/* Level Progress Bar */}
-            <div className="relative z-10 w-full max-w-4xl px-4 mt-8">
-                <LevelProgress
-                    currentExp={xp}
-                    level={playerLevel}
-                    expToNextLevel={nextLevelXP}
-                    progress={(xp / nextLevelXP) * 100}
-                    coins={coins}
-                    totalLevel={3}
-                    customLevelLabel={playerRank}
-                    showBadge={false}
-                />
-            </div >
+            </HUD>
 
             {/* Progress Bar - Matches MM Header Progress */}
             < div className="w-full max-w-2xl px-4 mt-8 mb-6 z-10 text-center shrink-0" >

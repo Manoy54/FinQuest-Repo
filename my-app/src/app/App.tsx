@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HeroSection, GameModeSection, Home } from '../pages/landing';
 import { MonetaryMastery, QuizBee, Crossword } from '../pages/games';
 import { WordHunt } from '../pages/games/WordHunt';
+import { Profile } from '../pages/profile/Profile';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { SmoothScroll } from './components/SmoothScroll';
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/landing" element={<LandingPage />} />
       <Route path="/quiz-bee" element={<QuizBee />} />
       <Route path="/crossword" element={<Crossword />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }

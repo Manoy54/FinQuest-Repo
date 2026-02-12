@@ -1,5 +1,4 @@
 import CardNav, { type CardNavItem } from './Nav';
-import logo from '../../assets/react.svg'; // Using a default logo for now
 
 const navItems: CardNavItem[] = [
     {
@@ -36,7 +35,6 @@ const navItems: CardNavItem[] = [
 export function Header() {
     return (
         <CardNav
-            logo={logo}
             items={navItems}
             baseColor="#ffffff"
             menuColor="#000000"

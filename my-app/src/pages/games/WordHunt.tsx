@@ -9,9 +9,9 @@ import {
     AnimatedBackground,
     useGameSounds,
     GameComplete,
-    LevelProgress,
     GameRatingModal
 } from '../games/MoneytaryMasteryComponents';
+import { HUD } from '../../app/components/HUD';
 import { generateLevel, createRNG } from './WordHuntComponents/gridGenerator';
 
 // Level Thresholds
@@ -383,93 +383,71 @@ export function WordHunt() {
     }
 
     return (
-        <div className="h-screen w-screen bg-[#1a1a2e] overflow-hidden flex items-center justify-center relative font-sans"
+        <div className="h-screen w-screen bg-[#1a1a2e] overflow-hidden flex flex-col relative font-sans"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
             <AnimatedBackground />
 
-            {/* Scaled Container - The Rigid "Stage" */}
-            <div
-                className="relative flex flex-col items-center shadow-2xl overflow-hidden"
-                style={{
-                    width: '1280px',
-                    height: '800px',
-                    transform: `scale(${scale})`,
-                    // transformOrigin: 'center center', // Default
-                    border: '1px solid rgba(255,255,255,0.05)',
-                    borderRadius: '24px',
-                    background: 'rgba(0,0,0,0.2)',
-                    backdropFilter: 'blur(10px)'
-                }}
-            >
-                {/* Header */}
-                <header className="w-full h-[60px] px-8 flex items-center justify-between shrink-0 relative z-20 hover:bg-white/5 transition-colors">
-                    {/* Left: Spacer to balance */}
-                    <div className="w-[120px]">
-                        {/* Optional: Add Back Button here later if needed */}
-                    </div>
+            {/* Header - Moved outside scaled container for consistency */}
+            <HUD
+                title="DATA DIVER"
+                currentExp={xp}
+                level={playerLevel}
+                expToNextLevel={nextLevelXP}
+                progress={(xp / nextLevelXP) * 100}
+                coins={coins}
+                totalLevel={3}
+                customLevelLabel={playerRank}
+                onHowToPlay={() => setShowHowToPlay(true)}
+                className="pt-8 hover:bg-white/5 transition-colors z-30"
+            />
 
-                    <div className="flex flex-col items-center">
-                        <h1 className="text-5xl font-black tracking-tight font-['Outfit'] drop-shadow-sm select-none"
-                            style={{
-                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent'
-                            }}
-                        >
-                            DATA DIVER
-                        </h1>
-                    </div>
+            {/* Main Content Area - Centered Scaled Stage */}
+            <div className="flex-1 w-full flex items-center justify-center overflow-hidden relative z-10">
 
-                    {/* Right: Controls */}
-                    <div className="w-[120px] flex justify-end">
-                        <button
-                            onClick={() => setShowHowToPlay(true)}
-                            className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
-                            title="How to Play"
-                        >
-                            <span className="text-2xl">❓</span>
-                        </button>
-                    </div>
-                </header>
+                {/* Scaled Container - The Rigid "Stage" */}
+                <div
+                    className="relative flex flex-col items-center shadow-2xl overflow-hidden"
+                    style={{
+                        width: '1280px',
+                        height: '800px',
+                        transform: `scale(${scale})`,
+                        // transformOrigin: 'center center', // Default
+                        border: '1px solid rgba(255,255,255,0.05)',
+                        borderRadius: '24px',
+                        background: 'rgba(0,0,0,0.2)',
+                        backdropFilter: 'blur(10px)'
+                    }}
+                >
+                    {/* Header */}
+                    {/* Header */}
 
-                {/* Progress Bar Area */}
-                <div className="w-full px-12 py-1 shrink-0 z-20">
-                    <LevelProgress
-                        currentExp={xp}
-                        level={playerLevel}
-                        expToNextLevel={nextLevelXP}
-                        progress={(xp / nextLevelXP) * 100}
-                        coins={coins}
-                        totalLevel={3}
-                        customLevelLabel={playerRank}
-                    />
-                </div>
 
-                {/* Main Content Area - Fixed Grid Layout */}
-                <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
+                    {/* Main Content Area - Fixed Grid Layout */}
+                    <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
 
-                    {/* Left Column: Grid Container - 60% Width */}
-                    <div className="w-[60%] h-full flex items-center justify-center">
-                        <div className="w-full max-h-full flex items-center justify-center">
-                            <Grid
-                                grid={grid}
-                                onWordSelection={handleWordSelection}
-                                foundColors={foundColors}
-                                words={words}
-                            />
+                        {/* Left Column: Grid Container - 60% Width */}
+                        <div className="w-[60%] h-full flex items-center justify-center">
+                            <div className="w-full max-h-full flex items-center justify-center">
+                                <Grid
+                                    grid={grid}
+                                    onWordSelection={handleWordSelection}
+                                    foundColors={foundColors}
+                                    words={words}
+                                />
+                            </div>
                         </div>
-                    </div>
 
-                    {/* Right Column: Mission List - 38% Width */}
-                    <div className="w-[38%] max-h-full flex flex-col justify-center">
-                        <div className="w-full max-h-full">
-                            <WordList words={words} />
+                        {/* Right Column: Mission List - 38% Width */}
+                        <div className="w-[38%] max-h-full flex flex-col justify-center">
+                            <div className="w-full max-h-full">
+                                <WordList words={words} />
+                            </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </div>
 
@@ -483,6 +461,6 @@ export function WordHunt() {
                 isOpen={showHowToPlay}
                 onClose={() => setShowHowToPlay(false)}
             />
-        </div>
+        </div >
     );
 }

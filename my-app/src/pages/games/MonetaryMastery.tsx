@@ -9,10 +9,10 @@ import {
     GameComplete,
     GameStyles,
     useGameSounds,
-    LevelProgress,
     GameRatingModal,
     HowToPlayModal
 } from './MoneytaryMasteryComponents';
+import { HUD } from '../../app/components/HUD';
 
 
 export function MonetaryMastery() {
@@ -197,26 +197,18 @@ export function MonetaryMastery() {
         >
             <AnimatedBackground />
 
-            <header className="relative z-10 px-4 pt-8 shrink-0 flex items-center justify-between gap-4">
-                <div className="flex-1">
-                    <LevelProgress
-                        currentExp={exp}
-                        level={Math.floor((level - 1) / 10) + 1}
-                        expToNextLevel={XP_PER_LEVEL}
-                        progress={progressPercentage}
-                        coins={coins}
-                        totalLevel={MAX_LEVEL}
-                    />
-                </div>
-
-                <button
-                    onClick={() => setShowHowToPlay(true)}
-                    className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
-                    title="How to Play"
-                >
-                    <span className="text-xl md:text-2xl">❓</span>
-                </button>
-            </header>
+            {/* Header */}
+            <HUD
+                title="MONETARY MASTERY"
+                currentExp={exp}
+                // level calculation was Math.floor((level - 1) / 10) + 1
+                level={Math.floor((level - 1) / 10) + 1}
+                expToNextLevel={XP_PER_LEVEL}
+                progress={progressPercentage}
+                coins={coins}
+                onHowToPlay={() => setShowHowToPlay(true)}
+                className="pt-8 h-24"
+            />
 
 
 
