@@ -1,4 +1,3 @@
 // Re-export all home page sections
-export { HeroSection } from './hero';
-export { GameModeSection } from '../home/GameModeSection';
+export { LandingPage } from './LandingPage';
 export { Home } from '../home/Home';

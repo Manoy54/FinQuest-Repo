@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
-import { AboutSection } from './AboutSection';
+
 
 interface GameMode {
     id: string;
@@ -180,8 +180,7 @@ export function Home() {
                     </p>
                 </div>
 
-                {/* About Section */}
-                <AboutSection />
+
 
                 {/* Game Modes Grid */}
                 <div id="game-modes" className="w-full max-w-7xl flex flex-col items-center flex-1 justify-center">
