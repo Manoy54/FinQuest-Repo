@@ -16,8 +16,8 @@ import { generateLevel, createRNG } from './WordHuntComponents/gridGenerator';
 
 // Level Thresholds
 const XP_THRESHOLDS = {
-    INTERMEDIATE: 1250, // Completing all Beginners (approx 25 words * 50 = 1250)
-    EXPERT: 2300        // Completing all Intermediates (approx 21 words * 50 = 1050 + 1250 = 2300)
+    INTERMEDIATE: 850, // Completing all Beginners (approx 17-18 words * 50 = ~850-900)
+    EXPERT: 1750        // Completing all Intermediates (approx 18-20 words * 50 + prev = ~1750-1900)
 };
 
 const WORDS_XP = 50;
@@ -88,9 +88,7 @@ export function WordHunt() {
     }, []);
 
     const [unlockedLevels, setUnlockedLevels] = useState<string[]>([
-        'beginner', 'beginner2', 'beginner3',
-        'intermediate', 'intermediate2', 'intermediate3',
-        'expert', 'expert2', 'expert3'
+        'beginner', 'beginner2', 'beginner3'
     ]);
     // Always reset XP and Coins on reload as per "do not save progress"
     const [xp, setXp] = useState<number>(0);
@@ -129,11 +127,11 @@ export function WordHunt() {
         let changed = false;
 
         if (xp >= XP_THRESHOLDS.INTERMEDIATE && !unlockedLevels.includes('intermediate')) {
-            newUnlocked.push('intermediate');
+            newUnlocked.push('intermediate', 'intermediate2', 'intermediate3');
             changed = true;
         }
         if (xp >= XP_THRESHOLDS.EXPERT && !unlockedLevels.includes('expert')) {
-            newUnlocked.push('expert');
+            newUnlocked.push('expert', 'expert2', 'expert3');
             changed = true;
         }
 
@@ -311,7 +309,7 @@ export function WordHunt() {
         // Full Reset
         setXp(0);
         setCoins(0);
-        setUnlockedLevels(['beginner']);
+        setUnlockedLevels(['beginner', 'beginner2', 'beginner3']);
         setCurrentLevel(levels[0]);
 
         // Reset Board state for the new level (Beginner)

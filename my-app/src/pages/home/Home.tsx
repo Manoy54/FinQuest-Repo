@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
+import { AboutSection } from './AboutSection';
 
 interface GameMode {
     id: string;
@@ -116,7 +117,7 @@ import FQLogo from '../../assets/images/FQlogo.PNG';
 export function Home() {
     return (
         <div
-            className="h-screen w-full flex flex-col relative overflow-hidden"
+            className="min-h-screen w-full flex flex-col relative overflow-x-hidden"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
@@ -158,7 +159,7 @@ export function Home() {
             </div>
 
             {/* Main Content Area */}
-            <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 lg:px-8 pt-24 pb-4 overflow-hidden">
+            <main className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pt-24 pb-20">
 
                 {/* Hero Section */}
                 <div className="text-center mb-6 lg:mb-10 shrink-0">
@@ -179,8 +180,11 @@ export function Home() {
                     </p>
                 </div>
 
+                {/* About Section */}
+                <AboutSection />
+
                 {/* Game Modes Grid */}
-                <div className="w-full max-w-7xl flex flex-col items-center flex-1 justify-center">
+                <div id="game-modes" className="w-full max-w-7xl flex flex-col items-center flex-1 justify-center">
                     <div className="text-center mb-6 lg:mb-8 shrink-0">
                         <h2 className="text-white/40 text-xs font-bold uppercase tracking-[0.3em] mb-2">
                             Choose Your Adventure
