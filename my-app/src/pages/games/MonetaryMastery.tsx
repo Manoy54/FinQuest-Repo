@@ -213,9 +213,8 @@ export function MonetaryMastery() {
 
 
 
-            {/* Main Content Area - Maximized Space */}
             <div className="relative z-10 flex-1 w-full px-4 pt-4 pb-4 min-h-0 flex flex-col items-center justify-center">
-                <div className="relative w-full max-w-2xl h-full flex flex-col">
+                <div className="relative w-full max-w-2xl h-full flex flex-col ml-48">
                     <div className="text-center text-white/50 text-sm font-medium mb-2 tracking-wide">
                         Card {currentCardIndex + 1 + levelOffset} of {MAX_LEVEL} | {Math.round(progressPercentage)}% Complete
                     </div>
@@ -253,7 +252,7 @@ export function MonetaryMastery() {
 
             {/* Fixed Answer Buttons Footer - Always Visible */}
             <div className="relative z-20 px-4 pb-8 pt-2 w-full flex justify-center shrink-0">
-                <div className="w-full max-w-2xl flex justify-center gap-4">
+                <div className="w-full max-w-2xl flex justify-center gap-4 ml-48">
                     <button
                         onClick={handleDidntKnow}
                         disabled={!isFlipped}

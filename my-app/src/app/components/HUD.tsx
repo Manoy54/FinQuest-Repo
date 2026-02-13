@@ -75,7 +75,7 @@ export function HUD({
             </div>
 
             {/* Center: HUD Stats - ABSOLUTE POSITIONED FOR EXACT CENTER */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl px-4 flex justify-center pointer-events-none z-10">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl px-4 flex justify-center pointer-events-none z-10 ml-24">
                 <div className="w-full max-w-3xl mx-auto px-3 py-1.5 rounded-xl relative overflow-hidden flex items-center justify-between gap-3 shrink-0 transition-all pointer-events-auto"
                     style={{
                         background: 'linear-gradient(135deg, #6d28d9 0%, #4f46e5 100%)',
