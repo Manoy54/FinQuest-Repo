@@ -63,7 +63,7 @@ export function LoginPage() {
 
             // Login successful
             console.log('Login successful');
-            navigate('/');
+            navigate('/home');
         } catch (error) {
             console.error('Error parsing user data:', error);
             const authErrors = {

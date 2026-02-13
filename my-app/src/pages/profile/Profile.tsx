@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaTrophy, FaStar, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
+import { FaTrophy, FaStar, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
 
@@ -84,15 +83,7 @@ export function Profile() {
 
             <AnimatedBackground />
 
-            {/* Back Button */}
-            <div className="absolute top-6 left-6 z-20">
-                <Link to="/" className="flex items-center gap-2 text-white/70 hover:text-white transition-colors group">
-                    <span className="p-2 rounded-full bg-white/10 group-hover:bg-white/20 transition-all">
-                        <FaArrowLeft />
-                    </span>
-                    <span className="font-medium">Back to Home</span>
-                </Link>
-            </div>
+
 
             {/* Profile Content */}
             <div className="relative z-10 w-full max-w-4xl px-4 py-20 flex flex-col gap-8">

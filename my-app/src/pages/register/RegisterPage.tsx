@@ -217,7 +217,7 @@ export function RegisterPage() {
 
                 <p className="mt-8 text-center text-sm text-white tracking-wide font-medium">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors ml-1 text-base">
+                    <Link to="/" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors ml-1 text-base">
                         Sign In
                     </Link>
                 </p>
@@ -242,7 +242,7 @@ export function RegisterPage() {
                         </p>
 
                         <Link
-                            to="/login"
+                            to="/"
                             className="inline-block w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5 transition-all duration-200"
                         >
                             SIGN IN

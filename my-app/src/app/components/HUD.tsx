@@ -49,7 +49,7 @@ export function HUD({
             <div className="absolute left-8 top-1/2 -translate-y-1/2 flex items-center gap-4 z-20">
                 {(backPath || onBack) && (
                     <Link
-                        to={backPath || '#'}
+                        to={backPath || '/home'}
                         onClick={(e) => {
                             if (onBack) {
                                 e.preventDefault();

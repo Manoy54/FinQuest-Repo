@@ -26,14 +26,14 @@ function LandingPage() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/monetary-mastery" element={<MonetaryMastery />} />
       <Route path="/word-hunt" element={<WordHunt />} />
       <Route path="/landing" element={<LandingPage />} />
       <Route path="/quiz-bee" element={<QuizBee />} />
       <Route path="/crossword" element={<Crossword />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
     </Routes>
   );

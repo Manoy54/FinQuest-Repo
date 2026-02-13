@@ -272,9 +272,9 @@ export function MonetaryMastery() {
                         disabled={!isFlipped}
                         className={`flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
                         style={{
-                            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', // Bright Blue (Matches Question/Answer)
+                            background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', // Green
                             color: '#fff',
-                            boxShadow: !isFlipped ? 'none' : '0 4px 15px rgba(37, 99, 235, 0.4)',
+                            boxShadow: !isFlipped ? 'none' : '0 4px 15px rgba(34, 197, 94, 0.4)',
                             border: '1px solid rgba(255,255,255,0.1)',
                             pointerEvents: !isFlipped ? 'none' : 'auto'
                         }}
