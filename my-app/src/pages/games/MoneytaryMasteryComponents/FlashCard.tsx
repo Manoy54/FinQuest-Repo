@@ -51,17 +51,12 @@ export function FlashCard({ card, isFlipped, onFlip }: FlashCardProps) {
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
                         transform: 'rotateY(180deg) translateZ(1px)',
-                        background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', // Bright Green
+                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', // Bright Blue (Matches Question)
                         border: '2px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: '0 10px 30px -10px rgba(5, 150, 105, 0.5)'
+                        boxShadow: '0 10px 30px -10px rgba(37, 99, 235, 0.5)'
                     }}
                 >
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold"
-                        style={{
-                            background: 'rgba(74, 222, 128, 0.2)',
-                            color: '#4ade80'
-                        }}
-                    >
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white">
                         ANSWER
                     </div>
                     <div className="flex-1 flex items-center justify-center w-full px-8 py-4">
@@ -69,7 +64,7 @@ export function FlashCard({ card, isFlipped, onFlip }: FlashCardProps) {
                             {card.answer}
                         </p>
                     </div>
-                    <p className="absolute bottom-4 text-gray-500 text-sm">
+                    <p className="absolute bottom-4 text-white/60 text-sm">
                         Click to see question
                     </p>
                 </div>

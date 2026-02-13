@@ -122,11 +122,34 @@ export function Home() {
             }}
         >
             {/* Top Left Logo */}
-            <img
-                src={FQLogo}
-                alt="FinQuest Logo"
-                className="absolute top-6 left-8 w-14 h-14 md:w-16 md:h-16 z-[60] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-300"
-            />
+            <div className="absolute top-6 left-8 z-[60] group cursor-pointer">
+                <div className="relative w-14 h-14 md:w-16 md:h-16 transition-transform duration-500 group-hover:scale-105">
+                    {/* Soft Glow Behind */}
+                    <div className="absolute inset-4 bg-amber-500/40 blur-xl rounded-full" />
+
+                    {/* Logo Container */}
+                    <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl bg-[#1a1a2e]">
+                        {/* The Logo Image */}
+                        <img
+                            src={FQLogo}
+                            alt="FinQuest Logo"
+                            className="w-full h-full object-cover scale-110" // Slight scale to ensure fill
+                        />
+
+                        {/* Inner Vignette - Blends the logo edges into the dark background */}
+                        <div
+                            className="absolute inset-0 rounded-full pointer-events-none"
+                            style={{
+                                boxShadow: 'inset 0 0 12px 2px #1a1a2e', // Matches app background
+                                background: 'radial-gradient(circle at center, transparent 60%, rgba(26,26,46,0.5) 100%)'
+                            }}
+                        />
+
+                        {/* Glassy Shine */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                </div>
+            </div>
             <AnimatedBackground />
 
             {/* Navigation */}
