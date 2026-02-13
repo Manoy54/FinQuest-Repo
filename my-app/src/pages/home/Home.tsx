@@ -1,4 +1,7 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiLogOut } from 'react-icons/fi';
+import Avatar, { genConfig } from 'react-nice-avatar';
 import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
 
@@ -112,9 +115,32 @@ function GameModeCard({ mode }: { mode: GameMode }) {
     );
 }
 
-import FQLogo from '../../assets/images/FQlogo.PNG';
+
 
 export function Home() {
+    const navigate = useNavigate();
+    const [avatarConfig, setAvatarConfig] = useState<ReturnType<typeof genConfig> | null>(null);
+
+    useEffect(() => {
+        const loadAvatar = () => {
+            const saved = localStorage.getItem('userAvatarConfig');
+            if (saved) {
+                setAvatarConfig(JSON.parse(saved));
+            } else {
+                setAvatarConfig(genConfig("default-user"));
+            }
+        };
+
+        loadAvatar();
+
+        const handleAvatarChange = () => loadAvatar();
+        window.addEventListener('avatarChanged', handleAvatarChange);
+
+        return () => {
+            window.removeEventListener('avatarChanged', handleAvatarChange);
+        };
+    }, []);
+
     return (
         <div
             className="min-h-screen w-full flex flex-col relative overflow-x-hidden"
@@ -122,35 +148,37 @@ export function Home() {
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
-            {/* Top Left Logo */}
-            <div className="absolute top-6 left-8 z-[60] group cursor-pointer">
-                <div className="relative w-14 h-14 md:w-16 md:h-16 transition-transform duration-500 group-hover:scale-105">
+            {/* Top Left Avatar */}
+            <Link to="/profile" className="absolute top-6 left-8 z-[60] group cursor-pointer block">
+                <div className="relative w-24 h-24 md:w-28 md:h-28 transition-transform duration-500 group-hover:scale-105">
                     {/* Soft Glow Behind */}
                     <div className="absolute inset-4 bg-amber-500/40 blur-xl rounded-full" />
 
-                    {/* Logo Container */}
-                    <div className="relative w-full h-full rounded-full overflow-hidden border border-white/10 shadow-2xl bg-[#1a1a2e]">
-                        {/* The Logo Image */}
-                        <img
-                            src={FQLogo}
-                            alt="FinQuest Logo"
-                            className="w-full h-full object-cover scale-110" // Slight scale to ensure fill
-                        />
-
-                        {/* Inner Vignette - Blends the logo edges into the dark background */}
-                        <div
-                            className="absolute inset-0 rounded-full pointer-events-none"
-                            style={{
-                                boxShadow: 'inset 0 0 12px 2px #1a1a2e', // Matches app background
-                                background: 'radial-gradient(circle at center, transparent 60%, rgba(26,26,46,0.5) 100%)'
-                            }}
-                        />
-
-                        {/* Glassy Shine */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Avatar Container */}
+                    <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white/20 shadow-2xl bg-[#1a1a2e]">
+                        {avatarConfig ? (
+                            <Avatar className="w-full h-full" {...avatarConfig} />
+                        ) : (
+                            <div className="w-full h-full bg-gray-700 animate-pulse" />
+                        )}
                     </div>
                 </div>
-            </div>
+            </Link>
+
+            {/* Top Right Logout */}
+            <button
+                onClick={() => navigate('/')}
+                className="absolute top-6 right-8 z-[60] group cursor-pointer border-none bg-transparent outline-none p-0"
+                aria-label="Logout"
+            >
+                <div className="relative transition-transform duration-300 group-hover:scale-105">
+                    <div className="relative bg-blue-500/20 hover:bg-blue-500/40 border border-blue-400/50 shadow-[0_0_10px_rgba(59,130,246,0.3)] flex items-center justify-center transition-all duration-300 px-2.5 py-1 rounded-md group-hover:border-blue-400/80 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                        <span className="text-blue-100 font-bold text-[9px] md:text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
+                            <FiLogOut className="text-[10px] md:text-xs" /> LOGOUT
+                        </span>
+                    </div>
+                </div>
+            </button>
             <AnimatedBackground />
 
             {/* Navigation */}
@@ -162,19 +190,9 @@ export function Home() {
             <main className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pt-24 pb-20">
 
                 {/* Hero Section */}
-                <div className="text-center mb-6 lg:mb-10 shrink-0">
-                    <h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-black mb-2 lg:mb-4 tracking-tighter"
-                        style={{
-                            fontFamily: "'Outfit', sans-serif",
-                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.3))'
-                        }}
-                    >
-                        FINQUEST
-                    </h1>
+                <div className="text-center mb-6 lg:mb-10 shrink-0 mt-12">
+
+
                     <p className="text-white/60 text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide">
                         Master financial literacy through interactive games and challenges
                     </p>

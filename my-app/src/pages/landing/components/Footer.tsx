@@ -9,10 +9,10 @@ export function Footer() {
             <div className="max-w-4xl mx-auto text-center">
                 <div
                     ref={content.ref}
-                    className="bg-white/10 backdrop-blur-md rounded-3xl p-12 border border-white/20 shadow-xl max-w-lg mx-auto transform -translate-y-12 transition-all duration-700 ease-out"
+                    className="bg-white/10 backdrop-blur-md rounded-3xl p-12 border border-white/20 shadow-xl max-w-lg mx-auto transition-all duration-700 ease-out"
                     style={{
                         opacity: content.isVisible ? 1 : 0,
-                        transform: content.isVisible ? 'translateY(-3rem) scale(1)' : 'translateY(0) scale(0.9)',
+                        transform: content.isVisible ? 'translateY(0) scale(1)' : 'translateY(0) scale(0.9)',
                     }}
                 >
                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">

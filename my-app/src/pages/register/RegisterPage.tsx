@@ -217,7 +217,7 @@ export function RegisterPage() {
 
                 <p className="mt-8 text-center text-sm text-white tracking-wide font-medium">
                     Already have an account?{' '}
-                    <Link to="/" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors ml-1 text-base">
+                    <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors ml-1 text-base">
                         Sign In
                     </Link>
                 </p>
@@ -226,24 +226,24 @@ export function RegisterPage() {
             {/* Success Modal */}
             {showSuccess && (
                 <div className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-900/80 backdrop-blur-sm animate-fade-in">
-                    <div className="bg-zinc-800/90 border border-white/10 p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center relative overflow-hidden transform animate-bounce-in">
+                    <div className="bg-zinc-800/90 border border-white/10 p-10 rounded-2xl shadow-2xl max-w-md w-full text-center relative overflow-hidden transform animate-bounce-in">
                         {/* Glow effect */}
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
 
-                        <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+                        <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                         </div>
 
-                        <h3 className="text-xl font-bold text-white mb-2">Registration Successful!</h3>
-                        <p className="text-zinc-400 mb-6">
+                        <h3 className="text-2xl font-bold text-white mb-2">Registration Successful!</h3>
+                        <p className="text-zinc-400 text-lg mb-8">
                             Thank you for creating an account. Proceed to sign in.
                         </p>
 
                         <Link
-                            to="/"
-                            className="inline-block w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5 transition-all duration-200"
+                            to="/login"
+                            className="inline-block w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 !text-white font-black text-2xl tracking-widest py-4 px-6 rounded-xl shadow-lg hover:shadow-emerald-500/20 transform hover:-translate-y-0.5 transition-all duration-200 uppercase"
                         >
                             SIGN IN
                         </Link>

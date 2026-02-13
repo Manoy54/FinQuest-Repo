@@ -1,12 +1,10 @@
 
-import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
-import Avatar, { genConfig } from 'react-nice-avatar';
-
-type AvatarConfig = ReturnType<typeof genConfig>;
+import FQLogo from '../../assets/images/FQlogo.PNG';
 
 type CardNavLink = {
     label: string;
@@ -36,38 +34,13 @@ const CardNav: React.FC<CardNavProps> = ({
     className = '',
     ease = 'power3.out',
     baseColor = '#fff',
-    menuColor,
-    buttonBgColor,
-    buttonTextColor
+    menuColor
 }) => {
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
     const navRef = useRef<HTMLDivElement | null>(null);
     const cardsRef = useRef<HTMLDivElement[]>([]);
     const tlRef = useRef<gsap.core.Timeline | null>(null);
-
-    const [avatarConfig, setAvatarConfig] = useState<AvatarConfig | null>(null);
-
-    useEffect(() => {
-        const loadAvatar = () => {
-            const saved = localStorage.getItem('userAvatarConfig');
-            if (saved) {
-                setAvatarConfig(JSON.parse(saved));
-            } else {
-                // Generate a consistent default if not set
-                setAvatarConfig(genConfig("default-user"));
-            }
-        };
-
-        loadAvatar();
-
-        const handleAvatarChange = () => loadAvatar();
-        window.addEventListener('avatarChanged', handleAvatarChange);
-
-        return () => {
-            window.removeEventListener('avatarChanged', handleAvatarChange);
-        };
-    }, []);
 
     const calculateHeight = () => {
         const navEl = navRef.current;
@@ -209,23 +182,30 @@ const CardNav: React.FC<CardNavProps> = ({
                     </div>
 
                     <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none z-[10]">
-                        <span className="text-2xl font-black tracking-tighter" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                            FinQuest
+                        <span
+                            className="text-2xl md:text-3xl font-black tracking-tighter"
+                            style={{
+                                fontFamily: "'Outfit', sans-serif",
+                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
+                            }}
+                        >
+                            FINQUEST
                         </span>
                     </div>
 
+
+
                     <Link
-                        to="/profile"
+                        to="/home"
                         className="hidden md:flex items-center justify-center h-full aspect-square rounded-full cursor-pointer transition-transform duration-300 hover:scale-105 shadow-sm no-underline overflow-hidden"
-                        style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+                        style={{ backgroundColor: 'transparent' }}
                         role="button"
-                        aria-label="User Profile"
+                        aria-label="Home"
                     >
-                        {avatarConfig && (
-                            <div className="w-full h-full p-1">
-                                <Avatar className="w-full h-full" {...avatarConfig} />
-                            </div>
-                        )}
+                        <img src={FQLogo} alt="FinQuest Logo" className="w-full h-full object-cover" />
                     </Link>
                 </div>
 
@@ -237,19 +217,19 @@ const CardNav: React.FC<CardNavProps> = ({
                     {(items || []).slice(0, 3).map((item, idx) => (
                         <div
                             key={`${item.label}-${idx}`}
-                            className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[51px] md:h-full md:min-h-0 md:flex-[1_1_0%]"
+                            className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[51px] md:h-full md:min-h-0 md:flex-[1_1_0%] items-center"
                             ref={setCardRef(idx)}
                             style={{ backgroundColor: item.bgColor, color: item.textColor }}
                         >
-                            <div className="nav-card-label font-normal tracking-[-0.5px] text-[18px] md:text-[22px]">
+                            <div className="nav-card-label font-bold tracking-[-0.5px] text-base md:text-xl text-center">
                                 {item.label}
                             </div>
-                            <div className="nav-card-links mt-auto flex flex-col gap-[2px]">
+                            <div className="nav-card-links mt-auto flex flex-col gap-[4px] items-center w-full">
                                 {item.links?.map((lnk, i) => {
                                     const isInternal = lnk.href.startsWith('/');
                                     const commonProps = {
                                         key: `${lnk.label}-${i}`,
-                                        className: "nav-card-link inline-flex items-center gap-[6px] no-underline cursor-pointer transition-opacity duration-300 hover:opacity-75 text-[15px] md:text-[16px]",
+                                        className: "nav-card-link inline-flex items-center gap-[6px] no-underline cursor-pointer transition-opacity duration-300 hover:opacity-75 text-sm md:text-base font-medium",
                                         "aria-label": lnk.ariaLabel
                                     };
 

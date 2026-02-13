@@ -98,12 +98,12 @@ export function Hero() {
                         transitionDelay: '600ms'
                     }}
                 >
-                    <Link to="/login" className="bg-white text-[#0052cc] px-10 py-4 rounded-full font-bold text-xl hover:bg-gray-100 transition-transform hover:scale-105 flex items-center gap-3 shadow-lg">
-                        <FaPlay className="text-base" /> Play Now
+                    <Link to="/login" className="!bg-transparent !border-2 border-solid !border-white/50 !text-white w-64 py-4 rounded-lg font-bold text-xl hover:bg-white/10 transition-transform hover:scale-105 flex items-center justify-center gap-3 backdrop-blur-sm shadow-none">
+                        <FaPlay className="text-sm" /> Play Now
                     </Link>
                     <button
                         onClick={() => document.getElementById('gameplay-preview')?.scrollIntoView({ behavior: 'smooth' })}
-                        className="bg-transparent border-2 border-white/50 text-white px-10 py-4 rounded-full font-bold text-xl hover:bg-white/10 transition-transform hover:scale-105 flex items-center gap-3 backdrop-blur-sm"
+                        className="!bg-transparent !border-2 border-solid !border-white/50 !text-white w-64 py-4 rounded-lg font-bold text-xl hover:bg-white/10 transition-transform hover:scale-105 flex items-center justify-center gap-3 backdrop-blur-sm shadow-none"
                     >
                         <FaGamepad className="text-sm" /> How to Play
                     </button>

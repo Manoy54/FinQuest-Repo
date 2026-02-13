@@ -37,8 +37,8 @@ export function GameplayPreview() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(index)}
                                 className={`group flex items-center gap-4 p-6 rounded-2xl text-left transition-all duration-300 border ${activeTab === index
-                                        ? 'bg-white/10 border-white/20 shadow-xl scale-105'
-                                        : 'bg-transparent border-transparent hover:bg-white/5'
+                                    ? 'bg-white/10 border-white/20 shadow-xl scale-105'
+                                    : 'bg-transparent border-transparent hover:bg-white/5'
                                     }`}
                             >
                                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br ${tab.color} text-white shadow-lg`}>
@@ -71,9 +71,9 @@ export function GameplayPreview() {
                                 {tabs.map((tab, index) => (
                                     <div
                                         key={tab.id}
-                                        className={`absolute inset-0 flex items-center justify-center transition-all duration-700 p-8 ${activeTab === index
-                                                ? 'opacity-100 translate-x-0 scale-100'
-                                                : 'opacity-0 translate-x-8 scale-95 pointer-events-none'
+                                        className={`absolute inset-0 flex items-center justify-center transition-all duration-700 px-8 pb-8 pt-14 ${activeTab === index
+                                            ? 'opacity-100 translate-x-0 scale-100'
+                                            : 'opacity-0 translate-x-8 scale-95 pointer-events-none'
                                             }`}
                                     >
                                         <div className="w-full max-w-lg">

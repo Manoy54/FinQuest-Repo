@@ -2,32 +2,25 @@ import CardNav, { type CardNavItem } from './Nav';
 
 const navItems: CardNavItem[] = [
     {
-        label: 'Home',
-        bgColor: '#ffffff',
-        textColor: '#000000',
+        label: 'GAME MODES',
+        bgColor: '#0f3460',
+        textColor: '#ffffff',
         links: [
-            { label: 'Overview', href: '#', ariaLabel: 'Overview' },
-            { label: 'Updates', href: '#', ariaLabel: 'Updates' }
-        ]
-    },
-    {
-        label: 'Game Modes',
-        bgColor: '#f3f4f6',
-        textColor: '#000000',
-        links: [
-            { label: 'Monetary Mastery', href: '/monetary-mastery', ariaLabel: 'Play Monetary Mastery' },
             { label: 'Data Diver', href: '/word-hunt', ariaLabel: 'Play Data Diver' },
             { label: 'Capital Cup', href: '/quiz-bee', ariaLabel: 'Play Capital Cup' },
+            { label: 'Monetary Mastery', href: '/monetary-mastery', ariaLabel: 'Play Monetary Mastery' },
             { label: 'Capital Crossword', href: '/crossword', ariaLabel: 'Play Capital Crossword' }
         ]
     },
     {
-        label: 'Community',
-        bgColor: '#e5e7eb',
-        textColor: '#000000',
+        label: 'COMMUNITY',
+        bgColor: '#111827',
+        textColor: '#ffffff',
         links: [
-            { label: 'Discord', href: '#', ariaLabel: 'Joing Discord' },
-            { label: 'Forum', href: '#', ariaLabel: 'Visit Forum' }
+            { label: 'FORUM', href: '#', ariaLabel: 'Visit Forum' },
+            { label: 'DISCORD', href: '#', ariaLabel: 'Join Discord' },
+            { label: 'FACEBOOK', href: 'https://www.facebook.com/profile.php?id=61587675674831', ariaLabel: 'Visit Facebook' },
+            { label: 'INSTAGRAM', href: 'https://www.instagram.com/learnwithfinquest?igsh=Z3prbjczdGJsNXVv', ariaLabel: 'Visit Instagram' }
         ]
     }
 ];
@@ -36,10 +29,8 @@ export function Header() {
     return (
         <CardNav
             items={navItems}
-            baseColor="#ffffff"
-            menuColor="#000000"
-            buttonBgColor="#000000"
-            buttonTextColor="#ffffff"
+            baseColor="rgba(26, 26, 46, 0.95)"
+            menuColor="#ffffff"
         />
     );
 }

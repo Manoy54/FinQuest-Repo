@@ -41,7 +41,7 @@ export function FAQ() {
                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
                     }}
                 >
-                    FAQ
+                    FAQ`s
                 </h2>
 
                 <div className="space-y-4">
