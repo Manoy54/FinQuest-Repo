@@ -23,6 +23,8 @@ interface HUDProps {
     children?: React.ReactNode;
 
     className?: string;
+    showTitle?: boolean;
+    showStats?: boolean;
 }
 
 export function HUD({
@@ -39,6 +41,8 @@ export function HUD({
     totalLevel,
     onHowToPlay,
     children,
+    showTitle = true,
+    showStats = true,
     className = ''
 }: HUDProps) {
     const maxExp = totalLevel ? totalLevel * expToNextLevel : expToNextLevel;
@@ -62,20 +66,22 @@ export function HUD({
                         ←
                     </Link>
                 )}
-                <h1 className="text-sm md:text-base font-black tracking-tight font-['Outfit'] drop-shadow-sm select-none"
-                    style={{
-                        background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.2))'
-                    }}
-                >
-                    {title}
-                </h1>
+                {showTitle && (
+                    <h1 className="text-sm md:text-base font-black tracking-tight font-['Outfit'] drop-shadow-sm select-none"
+                        style={{
+                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.2))'
+                        }}
+                    >
+                        {title}
+                    </h1>
+                )}
             </div>
 
             {/* Center: HUD Stats - ABSOLUTE POSITIONED FOR EXACT CENTER */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl px-4 flex justify-center pointer-events-none z-10 ml-2">
+            <div className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl px-4 flex justify-center pointer-events-none z-10 ml-2 ${!showStats ? 'hidden' : ''}`}>
                 <div className="w-full max-w-3xl mx-auto px-3 py-1.5 rounded-xl relative overflow-hidden flex items-center justify-between gap-3 shrink-0 transition-all pointer-events-auto"
                     style={{
                         background: 'linear-gradient(135deg, #6d28d9 0%, #4f46e5 100%)',

@@ -77,26 +77,29 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
 
                     {/* Step 3: Rewards */}
                     <div className="bg-white/5 rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
-                        <div className="flex items-start gap-4">
+                        <div className="flex items-center gap-4 mb-4">
                             <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-2xl shrink-0">
                                 🏆
                             </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-white mb-2">Rewards</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                                    <div className="bg-black/20 rounded-xl p-3">
-                                        <div className="text-purple-400 font-bold mb-1">✨ Experience (XP)</div>
-                                        <p className="text-white/60 text-xs">
-                                            Earn XP for every word found. XP unlocks higher difficulty levels (Intermediate, Expert).
-                                        </p>
-                                    </div>
-                                    <div className="bg-black/20 rounded-xl p-3">
-                                        <div className="text-yellow-400 font-bold mb-1">💰 Coins</div>
-                                        <p className="text-white/60 text-xs">
-                                            Earn Coins for every word found. Collect them for your profile!
-                                        </p>
-                                    </div>
+                            <h3 className="text-xl font-bold text-white">Rewards</h3>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-4">
+                            <div className="bg-black/20 rounded-xl p-4 hover:bg-black/30 transition-colors">
+                                <div className="text-purple-400 font-bold mb-2 text-lg flex items-center gap-2">
+                                    <span>✨</span> Experience (XP)
                                 </div>
+                                <p className="text-white/70 text-sm leading-relaxed">
+                                    Earn XP for every word found. XP unlocks higher difficulty levels (Intermediate, Expert).
+                                </p>
+                            </div>
+                            <div className="bg-black/20 rounded-xl p-4 hover:bg-black/30 transition-colors">
+                                <div className="text-yellow-400 font-bold mb-2 text-lg flex items-center gap-2">
+                                    <span>💰</span> Coins
+                                </div>
+                                <p className="text-white/70 text-sm leading-relaxed">
+                                    Earn Coins for every word found. Collect them for your profile!
+                                </p>
                             </div>
                         </div>
                     </div>

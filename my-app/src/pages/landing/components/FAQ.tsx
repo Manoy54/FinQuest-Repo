@@ -5,10 +5,10 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation';
 export function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
     const heading = useScrollAnimation();
-    const faq0 = useScrollAnimation(0.1);
-    const faq1 = useScrollAnimation(0.1);
-    const faq2 = useScrollAnimation(0.1);
-    const faq3 = useScrollAnimation(0.1);
+    const faq0 = useScrollAnimation(0.2);
+    const faq1 = useScrollAnimation(0.2);
+    const faq2 = useScrollAnimation(0.2);
+    const faq3 = useScrollAnimation(0.2);
     const faqRefs = [faq0, faq1, faq2, faq3];
 
     const faqs = [
@@ -26,7 +26,7 @@ export function FAQ() {
         },
         {
             question: "Do I need an account?",
-            answer: "You can play as a guest, but creating an account allows you to save your progress, track your stats, and appear on leaderboards."
+            answer: "Yes, creating an account allows you to save your progress, track your stats, and appear on leaderboards."
         }
     ];
 
@@ -41,7 +41,7 @@ export function FAQ() {
                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
                     }}
                 >
-                    FAQ`s
+                    FAQ
                 </h2>
 
                 <div className="space-y-4">

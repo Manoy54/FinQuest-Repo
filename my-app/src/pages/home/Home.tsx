@@ -25,8 +25,8 @@ const gameModes: GameMode[] = [
         description: 'Master financial concepts through interactive flashcards. Test your knowledge and level up!',
         icon: '💳',
         path: '/monetary-mastery',
-        gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        glowColor: 'rgba(102, 126, 234, 0.4)'
+        gradient: 'linear-gradient(135deg, #2e3b55 0%, #4a5d85 100%)',
+        glowColor: 'rgba(74, 93, 133, 0.4)'
     },
     {
         id: 'data-diver',
@@ -35,8 +35,8 @@ const gameModes: GameMode[] = [
         description: 'Dive deep into financial terminology with exciting word search puzzles!',
         icon: '🔍',
         path: '/word-hunt',
-        gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
-        glowColor: 'rgba(17, 153, 142, 0.4)'
+        gradient: 'linear-gradient(135deg, #1e4620 0%, #2e6b36 100%)',
+        glowColor: 'rgba(46, 107, 54, 0.4)'
     },
     {
         id: 'capital-cup',
@@ -45,8 +45,8 @@ const gameModes: GameMode[] = [
         description: 'Compete in timed quizzes and climb the leaderboard. Test your financial IQ!',
         icon: '🏆',
         path: '/quiz-bee',
-        gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-        glowColor: 'rgba(240, 147, 251, 0.4)'
+        gradient: 'linear-gradient(135deg, #6c2e3e 0%, #9e3f55 100%)',
+        glowColor: 'rgba(158, 63, 85, 0.4)'
     },
     {
         id: 'crossword',
@@ -55,8 +55,8 @@ const gameModes: GameMode[] = [
         description: 'Test your financial vocabulary with this challenging crossword puzzle.',
         icon: '🧩',
         path: '/crossword',
-        gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%)',
-        glowColor: 'rgba(255, 107, 107, 0.4)'
+        gradient: 'linear-gradient(135deg, #6b4c30 0%, #966b45 100%)',
+        glowColor: 'rgba(150, 107, 69, 0.4)'
     }
 ];
 
@@ -168,11 +168,11 @@ export function Home() {
             {/* Top Right Logout */}
             <button
                 onClick={() => navigate('/')}
-                className="absolute top-6 right-8 z-[60] group cursor-pointer border-none bg-transparent outline-none p-0"
+                className="absolute top-6 right-8 z-[60] group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
                 aria-label="Logout"
             >
                 <div className="relative transition-transform duration-300 group-hover:scale-105">
-                    <div className="relative bg-blue-500/20 hover:bg-blue-500/40 border border-blue-400/50 shadow-[0_0_10px_rgba(59,130,246,0.3)] flex items-center justify-center transition-all duration-300 px-2.5 py-1 rounded-md group-hover:border-blue-400/80 group-hover:shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                    <div className="relative flex items-center justify-center transition-all duration-300 px-2.5 py-1 rounded-md hover:bg-black hover:shadow-[0_0_20px_black]">
                         <span className="text-blue-100 font-bold text-[9px] md:text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
                             <FiLogOut className="text-[10px] md:text-xs" /> LOGOUT
                         </span>

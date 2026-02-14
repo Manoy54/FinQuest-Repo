@@ -25,9 +25,10 @@ export function FlashCard({ card, isFlipped, onFlip }: FlashCardProps) {
                     style={{
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', // Bright Blue
-                        border: '2px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: '0 10px 30px -10px rgba(37, 99, 235, 0.5)',
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%)', // Standard Blue at 30%
+                        backdropFilter: 'blur(8px)',
+                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.5)',
                         transform: 'rotateY(0deg) translateZ(1px)'
                     }}
                 >
@@ -51,9 +52,10 @@ export function FlashCard({ card, isFlipped, onFlip }: FlashCardProps) {
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
                         transform: 'rotateY(180deg) translateZ(1px)',
-                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)', // Bright Blue (Matches Question)
-                        border: '2px solid rgba(255, 255, 255, 0.2)',
-                        boxShadow: '0 10px 30px -10px rgba(37, 99, 235, 0.5)'
+                        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(37, 99, 235, 0.3) 100%)', // Standard Blue at 30%
+                        backdropFilter: 'blur(8px)',
+                        border: '2px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.5)'
                     }}
                 >
                     <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white">

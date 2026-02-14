@@ -95,21 +95,28 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                                         </p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                                        <div className="bg-black/20 rounded-xl p-3">
-                                            <div className="text-purple-400 font-bold mb-1">✨ Experience (XP)</div>
-                                            <p className="text-white/60 text-xs">
-                                                Earn XP when you select <strong>"Knew It!"</strong>. XP helps you level up and unlock new card sets.
-                                            </p>
-                                        </div>
-                                        <div className="bg-black/20 rounded-xl p-3">
-                                            <div className="text-yellow-400 font-bold mb-1">💰 Coins</div>
-                                            <p className="text-white/60 text-xs">
-                                                Earn Coins for every correct answer. Save them up for future rewards and customizations!
-                                            </p>
-                                        </div>
-                                    </div>
+
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Rewards Grid - Full Width */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 pt-4 border-t border-white/5">
+                            <div className="bg-black/20 rounded-xl p-5 hover:bg-black/30 transition-colors">
+                                <div className="text-purple-400 font-bold mb-2 text-lg flex items-center gap-2">
+                                    <span>✨</span> Experience (XP)
+                                </div>
+                                <p className="text-white/70 text-sm leading-relaxed">
+                                    Earn XP when you select <strong className="text-white">"Knew It!"</strong>. XP helps you level up and unlock new card sets.
+                                </p>
+                            </div>
+                            <div className="bg-black/20 rounded-xl p-5 hover:bg-black/30 transition-colors">
+                                <div className="text-yellow-400 font-bold mb-2 text-lg flex items-center gap-2">
+                                    <span>💰</span> Coins
+                                </div>
+                                <p className="text-white/70 text-sm leading-relaxed">
+                                    Earn Coins for every correct answer. Save them up for future rewards and customizations!
+                                </p>
                             </div>
                         </div>
                     </div>
