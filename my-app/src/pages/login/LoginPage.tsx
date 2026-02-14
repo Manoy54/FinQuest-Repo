@@ -103,7 +103,16 @@ export function LoginPage() {
                         <span className="text-lg font-bold tracking-[0.3em] text-zinc-400 uppercase mb-[-5px]">
                             WELCOME TO
                         </span>
-                        <span className="text-6xl font-bold tracking-tight uppercase bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-cyan-400 to-indigo-500 drop-shadow-[0_0_15px_rgba(16,185,129,0.4)]">
+                        <span
+                            className="text-6xl font-bold tracking-tight uppercase"
+                            style={{
+                                fontFamily: "'Outfit', sans-serif",
+                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
+                            }}
+                        >
                             FINQUEST
                         </span>
                     </div>

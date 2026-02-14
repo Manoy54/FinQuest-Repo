@@ -18,7 +18,11 @@ export function RegisterPage() {
         if (!username.trim()) newErrors.username = 'Fill this area to create account';
         if (!email.trim()) newErrors.email = 'Fill this area to create account';
         if (!password.trim()) newErrors.password = 'Fill this area to create account';
-        if (!confirmPassword.trim()) newErrors.confirmPassword = 'Fill this area to create account';
+        if (!confirmPassword.trim()) {
+            newErrors.confirmPassword = 'Fill this area to create account';
+        } else if (password !== confirmPassword) {
+            newErrors.confirmPassword = 'Password does not match';
+        }
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);

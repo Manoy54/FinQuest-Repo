@@ -67,14 +67,24 @@ export function Hero() {
 
                 {/* Title */}
                 <h1
-                    className="text-7xl md:text-9xl font-black text-white mb-6 tracking-tight drop-shadow-lg transition-all duration-1000 ease-out"
+                    className="text-8xl md:text-[12rem] font-black mb-6 tracking-tight drop-shadow-lg transition-all duration-1000 ease-out"
                     style={{
                         opacity: animate ? 1 : 0,
                         transform: animate ? 'translateY(0)' : 'translateY(30px)',
                         transitionDelay: '200ms'
                     }}
                 >
-                    FinQuest<span className="inline-block animate-pulse text-[#ffd700] relative top-[-0.5rem] text-6xl">✨</span>
+                    <span
+                        style={{
+                            fontFamily: "'Outfit', sans-serif",
+                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
+                        }}
+                    >
+                        FINQUEST
+                    </span>
                 </h1>
 
                 {/* Subtitle */}
