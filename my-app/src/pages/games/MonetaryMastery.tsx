@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaCoins } from 'react-icons/fa6';
 import {
     beginnerCards,
@@ -14,6 +14,7 @@ import {
     HowToPlayModal
 } from './MoneytaryMasteryComponents';
 import { HUD } from '../../app/components/HUD';
+import { useUserContext } from '../../context/UserContext.tsx';
 
 
 export function MonetaryMastery() {
@@ -34,6 +35,10 @@ export function MonetaryMastery() {
     // Randomly select a question number between 10 and 40 to trigger the rating
     const [ratingTarget] = useState(() => Math.floor(Math.random() * (40 - 10 + 1)) + 10);
     const { playSound } = useGameSounds();
+    const { addXp, addCoins } = useUserContext();
+    const hasAwardedRef = useRef(false);
+    const lastAwardedExp = useRef(0);
+    const lastAwardedCoins = useRef(0);
 
     const currentCard = activeCards[currentCardIndex];
     // Progress for current level
@@ -54,6 +59,37 @@ export function MonetaryMastery() {
             return () => clearTimeout(timer);
         }
     }, [level, ratingTarget]);
+
+    useEffect(() => {
+        if (gameComplete && !hasAwardedRef.current) {
+            // XP and coins are cumulative in state, but we only want to add the *increment*?
+            // No, the user played the game. The state `exp` tracks TOTAL XP gained in this session.
+            // Since we persist on completion, we should add the TOTAL gained.
+            // But wait... if I play level 1, get 50 XP. Add 50.
+            // Then I play level 2 (Next Level). `exp` starts at 50 (from level 1). Gained 50 more. Total 100.
+            // If I add 100, I double counted the first 50.
+            // Fix: We need to track how much we added previously?
+            // OR, MonetaryMastery resets `exp` only on `restartGame`.
+            // `handleNextLevel` keeps `exp`.
+
+            // If I am at Level 1 end: exp=50. addXp(50).
+            // Proceed to Level 2. `hasAwardedRef` = false.
+            // Level 2 end: exp=100. addXp(100). -> Total Global XP = 150. Incorrect. Should be 100.
+
+            // I should only add the *difference* or track `lastAwardedExp`.
+            // Let's use `lastAwardedExp` ref.
+
+            const earnedXp = exp - lastAwardedExp.current;
+            const earnedCoins = coins - lastAwardedCoins.current;
+
+            if (earnedXp > 0) addXp(earnedXp);
+            if (earnedCoins > 0) addCoins(earnedCoins);
+
+            lastAwardedExp.current = exp;
+            lastAwardedCoins.current = coins;
+            hasAwardedRef.current = true;
+        }
+    }, [gameComplete, exp, coins, addXp, addCoins]);
 
     const handleFlip = () => {
         playSound('flip');
@@ -114,6 +150,9 @@ export function MonetaryMastery() {
         setLevelStartCoins(0);
         setAnsweredCards(new Set());
         setGameComplete(false);
+        hasAwardedRef.current = false;
+        lastAwardedExp.current = 0;
+        lastAwardedCoins.current = 0;
     };
 
     const handleReplayLevel = () => {
@@ -126,6 +165,9 @@ export function MonetaryMastery() {
         setCoins(levelStartCoins); // Reset Coins to start of level
         setAnsweredCards(new Set());
         setGameComplete(false);
+        hasAwardedRef.current = false;
+        lastAwardedExp.current = levelStartExp;
+        lastAwardedCoins.current = levelStartCoins;
     };
 
     const handleNextLevel = () => {
@@ -149,6 +191,8 @@ export function MonetaryMastery() {
         setIsFlipped(false);
         setAnsweredCards(new Set());
         setGameComplete(false);
+        hasAwardedRef.current = false;
+        // Proceeding to next level. exp is maintained. lastAwardedExp matches exp.
     };
 
     const hasNextLevel = levelOffset < 30; // 30 is start of Level 31 block, if it's the last one, we stop there? Or is it active?

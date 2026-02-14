@@ -12,6 +12,7 @@ import {
     GameRatingModal
 } from '../games/MoneytaryMasteryComponents';
 import { HUD } from '../../app/components/HUD';
+import { useUserContext } from '../../context/UserContext.tsx';
 import { generateLevel, createRNG } from './WordHuntComponents/gridGenerator';
 
 // Level Thresholds
@@ -66,6 +67,10 @@ const selectWordsForLevel = (level: GameLevel, random: () => number) => {
 };
 
 export function WordHunt() {
+    const { addXp, addCoins } = useUserContext();
+    const hasAwardedRef = useRef(false);
+    const lastAwardedExp = useRef(0);
+    const lastAwardedCoins = useRef(0);
 
 
 
@@ -114,6 +119,22 @@ export function WordHunt() {
             return () => clearTimeout(timer);
         }
     }, [totalWordsFound, ratingTarget]);
+
+    useEffect(() => {
+        if (gameComplete && !hasAwardedRef.current) {
+            const earnedXp = xp - lastAwardedExp.current;
+            const earnedCoins = coins - lastAwardedCoins.current;
+
+            if (earnedXp > 0) addXp(earnedXp);
+            if (earnedCoins > 0) addCoins(earnedCoins);
+
+            lastAwardedExp.current = xp;
+            lastAwardedCoins.current = coins;
+            hasAwardedRef.current = true;
+        } else if (!gameComplete) {
+            hasAwardedRef.current = false;
+        }
+    }, [gameComplete, xp, coins, addXp, addCoins]);
 
 
 
@@ -317,6 +338,8 @@ export function WordHunt() {
         // Actually, setting currentLevel will trigger the useEffect to reset grid/words.
         // But we also need to close the modal.
         setGameComplete(false);
+        lastAwardedExp.current = 0;
+        lastAwardedCoins.current = 0;
     };
 
     const handleNextLevel = () => {

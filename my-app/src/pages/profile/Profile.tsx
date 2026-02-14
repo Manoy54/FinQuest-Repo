@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { FaTrophy, FaStar, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
+import { useUserContext } from '../../context/UserContext.tsx';
 
 type AvatarConfig = ReturnType<typeof genConfig>;
 
@@ -19,6 +20,7 @@ const avatarConfigOptions = {
 };
 
 export function Profile() {
+    const { xp, coins } = useUserContext();
     const [config, setConfig] = useState<AvatarConfig>(() => {
         const saved = localStorage.getItem('userAvatarConfig');
         return saved ? JSON.parse(saved) : genConfig();
@@ -120,11 +122,11 @@ export function Profile() {
 
                     <div className="flex gap-4">
                         <div className="text-center p-4 bg-white/5 rounded-2xl min-w-[100px] border border-white/5">
-                            <div className="text-2xl font-black text-amber-400 mb-1">2,450</div>
+                            <div className="text-2xl font-black text-amber-400 mb-1">{Math.floor(xp / 2).toLocaleString()}</div>
                             <div className="text-xs text-white/50 uppercase tracking-wider font-bold">XP</div>
                         </div>
                         <div className="text-center p-4 bg-white/5 rounded-2xl min-w-[100px] border border-white/5">
-                            <div className="text-2xl font-black text-yellow-400 mb-1">150</div>
+                            <div className="text-2xl font-black text-yellow-400 mb-1">{coins.toLocaleString()}</div>
                             <div className="text-xs text-white/50 uppercase tracking-wider font-bold">Coins</div>
                         </div>
                     </div>

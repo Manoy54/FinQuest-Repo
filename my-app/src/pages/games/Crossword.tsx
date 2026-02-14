@@ -15,8 +15,12 @@ import {
     GameComplete
 } from '../games/MoneytaryMasteryComponents';
 import { HUD } from '../../app/components/HUD';
+import { useUserContext } from '../../context/UserContext.tsx';
 
 export function Crossword() {
+    const { addXp, addCoins } = useUserContext();
+    const hasAwardedRef = useRef(false);
+
     const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate'>('beginner');
     const [grid, setGrid] = useState(() => generateGrid('beginner'));
     const [userAnswers, setUserAnswers] = useState<Map<string, string>>(new Map());
@@ -34,6 +38,7 @@ export function Crossword() {
         setUserAnswers(new Map());
         setActiveCell(null);
         setGameComplete(false);
+        hasAwardedRef.current = false;
     }, [difficulty]);
 
     const currentClues = useMemo(() => clues[difficulty], [difficulty]);
@@ -113,6 +118,20 @@ export function Crossword() {
         });
         return correctCount * 10;
     }, [userAnswers, grid]);
+
+    useEffect(() => {
+        if (gameComplete && !hasAwardedRef.current) {
+            const exp = score * 2;
+            const coins = score; // Assuming 1:1 for coins based on inline template
+
+            if (exp > 0) addXp(exp);
+            if (coins > 0) addCoins(coins);
+
+            hasAwardedRef.current = true;
+        } else if (!gameComplete) {
+            hasAwardedRef.current = false;
+        }
+    }, [gameComplete, score, addXp, addCoins]);
 
     const totalCells = grid.size;
     const progress = (score / (totalCells * 10)) * 100;
@@ -367,6 +386,7 @@ export function Crossword() {
         setUserAnswers(new Map());
         setGameComplete(false);
         setActiveCell(null);
+        hasAwardedRef.current = false;
     };
 
     if (gameComplete) {

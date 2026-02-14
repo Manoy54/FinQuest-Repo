@@ -14,6 +14,7 @@ import {
     GameRatingModal
 } from './MoneytaryMasteryComponents';
 import { HUD } from '../../app/components/HUD';
+import { useUserContext } from '../../context/UserContext.tsx';
 
 // Copying keyframes to ensure animations work
 const GameStyles = `
@@ -56,6 +57,11 @@ const QUESTION_COINS = 20;
 
 export function QuizBee() {
     // Game State
+    const { addXp, addCoins } = useUserContext();
+    const hasAwardedRef = useRef(false);
+    const lastAwardedExp = useRef(0);
+    const lastAwardedCoins = useRef(0);
+
     const [gameState, setGameState] = useState<GameState['status']>('START');
     const [currentTier, setCurrentTier] = useState<Difficulty>('BEGINNER');
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -251,6 +257,9 @@ export function QuizBee() {
         setTimer(20);
         tierCorrectCountRef.current = 0;
         setTimeout(() => setGameState('PLAYING'), 100);
+        hasAwardedRef.current = false;
+        lastAwardedExp.current = 0;
+        lastAwardedCoins.current = 0;
     };
 
     const handleRetryTier = () => {
@@ -260,7 +269,28 @@ export function QuizBee() {
         tierCorrectCountRef.current = 0;
         setGameState('PLAYING');
         setTimer(currentTier === 'EXPERT' ? 60 : currentTier === 'INTERMEDIATE' ? 30 : 20);
+        hasAwardedRef.current = false;
+        lastAwardedExp.current = xp;
+        lastAwardedCoins.current = coins;
     };
+
+    // Sync XP and Coins to global context on game end
+    useEffect(() => {
+        if ((gameState === 'GAME_OVER' || gameState === 'VICTORY') && !hasAwardedRef.current) {
+            const earnedXp = xp - lastAwardedExp.current;
+            const earnedCoins = coins - lastAwardedCoins.current;
+
+            if (earnedXp > 0) addXp(earnedXp);
+            if (earnedCoins > 0) addCoins(earnedCoins);
+
+            lastAwardedExp.current = xp;
+            lastAwardedCoins.current = coins;
+
+            hasAwardedRef.current = true;
+        } else if (gameState === 'START' || gameState === 'PLAYING') {
+            hasAwardedRef.current = false;
+        }
+    }, [gameState, xp, coins, addXp, addCoins]);
 
     if (gameState === 'START') {
         return (
