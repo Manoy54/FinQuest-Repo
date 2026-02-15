@@ -42,7 +42,7 @@ export function RegisterPage() {
     };
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-zinc-900 to-black relative overflow-hidden font-['Rajdhani']">
+        <div className="min-h-screen w-full flex items-center justify-center py-8 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-zinc-900 to-black relative overflow-hidden font-['Rajdhani']">
             {/* Background Image using Logo - faint overlay */}
             <div
                 className="absolute inset-0 z-0 opacity-[0.03]"
@@ -62,14 +62,14 @@ export function RegisterPage() {
             </div>
 
             {/* Register Card */}
-            <div className="relative z-10 w-full max-w-md p-8 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-2xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] animate-fade-in-up">
+            <div className="relative z-10 w-full max-w-md p-6 bg-black/40 backdrop-blur-2xl border border-white/5 rounded-2xl shadow-[0_0_50px_-12px_rgba(0,0,0,0.5)] animate-fade-in-up">
 
                 {/* Header */}
-                <div className="text-center mb-8 flex flex-col items-center">
-                    <h2 className="text-4xl font-bold text-white mb-2 tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-emerald-200 drop-shadow-sm">
+                <div className="text-center mb-4 flex flex-col items-center">
+                    <h2 className="text-3xl font-bold text-white mb-1 tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-indigo-200 to-emerald-200 drop-shadow-sm">
                         Create Account
                     </h2>
-                    <div className="relative w-24 h-24 mb-4 group mt-6">
+                    <div className="relative w-16 h-16 mb-2 group mt-2">
                         <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-xl group-hover:bg-emerald-500/30 transition-all duration-500" />
                         <img
                             src={FQLogo}
@@ -77,14 +77,14 @@ export function RegisterPage() {
                             className="w-full h-full object-cover rounded-full relative z-10 ring-2 ring-white/10 group-hover:scale-105 transition-transform duration-500"
                         />
                     </div>
-                    <p className="text-white text-sm tracking-widest uppercase font-medium">Start your financial journey</p>
+                    <p className="text-white text-xs tracking-widest uppercase font-medium">Start your financial journey</p>
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-3">
 
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-white uppercase tracking-wider ml-1">Username</label>
+                        <label className="text-xs font-bold text-white uppercase tracking-wider ml-1">Username</label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                 <FaUser className={`w-5 h-5 transition-colors duration-300 ${errors.username ? 'text-red-400' : 'text-zinc-500 group-focus-within:text-indigo-400'}`} />
@@ -96,7 +96,7 @@ export function RegisterPage() {
                                     setUsername(e.target.value);
                                     if (errors.username) setErrors(prev => ({ ...prev, username: undefined }));
                                 }}
-                                className={`w-full bg-zinc-900/40 border rounded-xl py-3.5 pl-12 pr-4 text-white text-lg font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all duration-300 ${errors.username
+                                className={`w-full bg-zinc-900/40 border rounded-xl py-2.5 pl-12 pr-4 text-white text-base font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all duration-300 ${errors.username
                                     ? 'border-red-500/30 focus:border-red-500'
                                     : 'border-white/10 focus:border-indigo-500'
                                     }`}
@@ -116,7 +116,7 @@ export function RegisterPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-white uppercase tracking-wider ml-1">Email</label>
+                        <label className="text-xs font-bold text-white uppercase tracking-wider ml-1">Email</label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                 <FaEnvelope className={`w-5 h-5 transition-colors duration-300 ${errors.email ? 'text-red-400' : 'text-zinc-500 group-focus-within:text-indigo-400'}`} />
@@ -128,7 +128,7 @@ export function RegisterPage() {
                                     setEmail(e.target.value);
                                     if (errors.email) setErrors(prev => ({ ...prev, email: undefined }));
                                 }}
-                                className={`w-full bg-zinc-900/40 border rounded-xl py-3.5 pl-12 pr-4 text-white text-lg font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all duration-300 ${errors.email
+                                className={`w-full bg-zinc-900/40 border rounded-xl py-2.5 pl-12 pr-4 text-white text-base font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500/50 transition-all duration-300 ${errors.email
                                     ? 'border-red-500/30 focus:border-red-500'
                                     : 'border-white/10 focus:border-indigo-500'
                                     }`}
@@ -148,7 +148,7 @@ export function RegisterPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-white uppercase tracking-wider ml-1">Password</label>
+                        <label className="text-xs font-bold text-white uppercase tracking-wider ml-1">Password</label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                 <FaLock className={`w-5 h-5 transition-colors duration-300 ${errors.password ? 'text-red-400' : 'text-zinc-500 group-focus-within:text-emerald-400'}`} />
@@ -160,7 +160,7 @@ export function RegisterPage() {
                                     setPassword(e.target.value);
                                     if (errors.password) setErrors(prev => ({ ...prev, password: undefined }));
                                 }}
-                                className={`w-full bg-zinc-900/40 border rounded-xl py-3.5 pl-12 pr-4 text-white text-lg font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all duration-300 ${errors.password
+                                className={`w-full bg-zinc-900/40 border rounded-xl py-2.5 pl-12 pr-4 text-white text-base font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all duration-300 ${errors.password
                                     ? 'border-red-500/30 focus:border-red-500'
                                     : 'border-white/10 focus:border-emerald-500'
                                     }`}
@@ -180,7 +180,7 @@ export function RegisterPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-bold text-white uppercase tracking-wider ml-1">Confirm Password</label>
+                        <label className="text-xs font-bold text-white uppercase tracking-wider ml-1">Confirm Password</label>
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
                                 <FaLock className={`w-5 h-5 transition-colors duration-300 ${errors.confirmPassword ? 'text-red-400' : 'text-zinc-500 group-focus-within:text-emerald-400'}`} />
@@ -192,7 +192,7 @@ export function RegisterPage() {
                                     setConfirmPassword(e.target.value);
                                     if (errors.confirmPassword) setErrors(prev => ({ ...prev, confirmPassword: undefined }));
                                 }}
-                                className={`w-full bg-zinc-900/40 border rounded-xl py-3.5 pl-12 pr-4 text-white text-lg font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all duration-300 ${errors.confirmPassword
+                                className={`w-full bg-zinc-900/40 border rounded-xl py-2.5 pl-12 pr-4 text-white text-base font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-all duration-300 ${errors.confirmPassword
                                     ? 'border-red-500/30 focus:border-red-500'
                                     : 'border-white/10 focus:border-emerald-500'
                                     }`}
@@ -213,13 +213,13 @@ export function RegisterPage() {
 
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-xl py-4 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-6 tracking-wider uppercase"
+                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-lg py-3 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-4 tracking-wider uppercase"
                     >
                         Create Account
                     </button>
                 </form>
 
-                <p className="mt-8 text-center text-sm text-white tracking-wide font-medium">
+                <p className="mt-4 text-center text-xs text-white tracking-wide font-medium">
                     Already have an account?{' '}
                     <Link to="/login" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors ml-1 text-base">
                         Sign In

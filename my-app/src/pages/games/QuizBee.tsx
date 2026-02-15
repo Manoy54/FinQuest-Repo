@@ -378,7 +378,7 @@ export function QuizBee() {
                 customLevelLabel={playerRank}
                 showBadge={false}
                 onHowToPlay={() => setShowHowToPlay(true)}
-                className="pt-8 pb-4"
+                className=""
             >
                 <div className="flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">

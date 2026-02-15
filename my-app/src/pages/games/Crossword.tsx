@@ -410,14 +410,14 @@ export function Crossword() {
             {/* Header */}
             {/* Header */}
             <HUD
-                title="CAPITAL CROSSWORD"
+                title="CORPORATE CLIMB"
                 currentExp={score}
                 expToNextLevel={grid.size * 10}
                 progress={progress}
                 coins={0}
                 showBadge={true}
                 onHowToPlay={() => setShowHowToPlay(true)}
-                className="pt-8 bg-black/20 backdrop-blur-md border-b border-white/5"
+                className="bg-black/20 backdrop-blur-md border-b border-white/5"
             >
                 <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10 mr-4">
                     {(['beginner', 'intermediate'] as const).map((level) => (

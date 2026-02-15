@@ -422,7 +422,7 @@ export function WordHunt() {
                 totalLevel={3}
                 customLevelLabel={playerRank}
                 onHowToPlay={() => setShowHowToPlay(true)}
-                className="pt-8 hover:bg-white/5 transition-colors z-30"
+                className="hover:bg-white/5 transition-colors"
             />
 
             {/* Main Content Area - Centered Scaled Stage */}

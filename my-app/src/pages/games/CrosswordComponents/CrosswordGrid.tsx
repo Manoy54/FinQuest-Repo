@@ -52,7 +52,7 @@ export function CrosswordGrid({
                 cells.push(
                     <div key={key} className="relative w-full h-full aspect-square">
                         {cellData.clueNumber && (
-                            <span className="absolute top-[2px] left-[2px] text-[0.55rem] md:text-[0.7rem] font-bold text-black select-none z-10 leading-none">
+                            <span className="absolute top-1 left-1.5 text-[0.6rem] md:text-[0.75rem] font-bold text-gray-400 select-none z-10 leading-none pointer-events-none">
                                 {cellData.clueNumber}
                             </span>
                         )}
@@ -71,15 +71,22 @@ export function CrosswordGrid({
                             onChange={(e) => onInputChange(r, c, e.target.value)}
                             onKeyDown={(e) => onKeyDown(e, r, c)}
                             className={`
-                                w-full h-full text-center text-sm md:text-xl font-bold uppercase
-                                border border-black rounded-none
-                                focus:outline-none focus:bg-yellow-100
+                                w-full h-full text-center text-xl md:text-3xl font-black uppercase
+                                rounded-sm outline-none
                                 transition-all duration-200
-                                bg-white text-black
-                                ${isActive ? '!bg-yellow-200' : ''}
-                                ${isCorrect ? '!bg-green-100' : ''}
-                                ${isWrong ? '!bg-red-100' : ''}
+                                shadow-[0_1px_0_0_rgba(0,0,0,0.1)]
+                                border-none ring-0
+                                ${isActive
+                                    ? 'bg-blue-500 text-white shadow-lg scale-105 z-20 ring-2 ring-blue-500/20'
+                                    : 'bg-white/90 text-gray-800 hover:bg-white hover:scale-105 hover:z-10'
+                                }
+                                ${isCorrect ? '!bg-green-500 !text-white !shadow-green-500/40' : ''}
+                                ${isWrong ? '!bg-red-500 !text-white !shadow-red-500/40' : ''}
+                                cursor-pointer caret-transparent
                             `}
+                            style={{
+                                textShadow: isActive || isCorrect || isWrong ? '0 1px 2px rgba(0,0,0,0.2)' : 'none'
+                            }}
                         />
                     </div>
                 );
@@ -90,7 +97,7 @@ export function CrosswordGrid({
 
     return (
         <div
-            className="grid gap-0 p-2 bg-transparent rounded-none"
+            className="grid gap-0.5 p-4 bg-transparent rounded-none"
             style={{
                 gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))`,
                 width: '100%',

@@ -2,13 +2,59 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Parallax, ParallaxLayer, type IParallax } from '@react-spring/parallax';
 
-// We'll use inline styles or standard class names since we added the CSS to index.css
-// If you prefer modules, we can refactor, but for simplicity with the provided CSS:
+interface GameMode {
+    title: string;
+    description: string;
+    route: string;
+    gradient: string;
+    textColor: string;
+    buttonColor: string;
+    emoji: string;
+}
+
+const gameModes: GameMode[] = [
+    {
+        title: 'Capital Cup',
+        description: 'Test your financial knowledge in our exciting timed quiz mode!',
+        route: '/quiz-bee',
+        gradient: 'teal',
+        textColor: 'text-teal-600',
+        buttonColor: 'bg-gradient-to-r from-sky-400 to-blue-500',
+        emoji: '🏆',
+    },
+    {
+        title: 'Monetary Mastery',
+        description: 'Master the art of finance with flashcards and challenges!',
+        route: '/monetary-mastery',
+        gradient: 'pink',
+        textColor: 'text-rose-600',
+        buttonColor: 'bg-gradient-to-r from-pink-500 to-rose-500',
+        emoji: '💎',
+    },
+    {
+        title: 'Data Diver',
+        description: 'Find hidden financial terms and expand your vocabulary!',
+        route: '/word-hunt',
+        gradient: 'purple',
+        textColor: 'text-purple-600',
+        buttonColor: 'bg-gradient-to-r from-purple-500 to-violet-500',
+        emoji: '🔍',
+    },
+    {
+        title: 'Corporate Climb',
+        description: 'Solve crossword puzzles with financial terminology!',
+        route: '/crossword',
+        gradient: 'tomato',
+        textColor: 'text-orange-600',
+        buttonColor: 'bg-gradient-to-r from-orange-400 to-red-500',
+        emoji: '🧩',
+    },
+];
 
 interface PageProps {
-    offset: number
-    gradient: string
-    onClick: () => void
+    offset: number;
+    gradient: string;
+    onClick: () => void;
 }
 
 const Page = ({ offset, gradient, onClick }: PageProps) => (
@@ -25,66 +71,59 @@ const Page = ({ offset, gradient, onClick }: PageProps) => (
             <span>0{offset + 1}</span>
         </ParallaxLayer>
     </>
-)
+);
 
 export function ParallaxDemo() {
-    const parallax = useRef<IParallax>(null)
+    const parallax = useRef<IParallax>(null);
 
     const scroll = (to: number) => {
         if (parallax.current) {
-            parallax.current.scrollTo(to)
+            parallax.current.scrollTo(to);
         }
-    }
+    };
+
+    const totalPages = gameModes.length;
 
     return (
-        <div style={{ background: '#dfdfdf', height: '100vh', width: '100%' }}>
-            <Parallax className="parallax-container" ref={parallax} pages={5} horizontal>
-                <Page offset={0} gradient="pink" onClick={() => scroll(1)} />
-                <Page offset={1} gradient="teal" onClick={() => scroll(2)} />
-                <Page offset={2} gradient="tomato" onClick={() => scroll(3)} />
-                <Page offset={3} gradient="purple" onClick={() => scroll(4)} />
-                <Page offset={4} gradient="orange" onClick={() => scroll(0)} />
+        <div style={{ background: '#20232f', height: '100vh', width: '100%' }}>
+            <Parallax className="parallax-container" ref={parallax} pages={totalPages} horizontal>
+                {gameModes.map((mode, i) => (
+                    <Page
+                        key={mode.route}
+                        offset={i}
+                        gradient={mode.gradient}
+                        onClick={() => scroll((i + 1) % totalPages)}
+                    />
+                ))}
 
-                <ParallaxLayer offset={1} speed={0.5} className="flex flex-col items-center justify-center pointer-events-none text-white">
-                    <div className="pointer-events-auto text-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl">
-                        <h2 className="text-5xl font-bold mb-4 drop-shadow-md">Quiz Bee</h2>
-                        <p className="text-xl mb-8 max-w-md">Test your financial knowledge in our exciting timed quiz mode!</p>
-                        <Link to="/quiz-bee" className="px-8 py-3 bg-white text-teal-600 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-lg inline-block">
-                            Play Now
-                        </Link>
-                    </div>
-                </ParallaxLayer>
-
-                <ParallaxLayer offset={2} speed={0.5} className="flex flex-col items-center justify-center pointer-events-none text-white">
-                    <div className="pointer-events-auto text-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl">
-                        <h2 className="text-5xl font-bold mb-4 drop-shadow-md">Monetary Mastery</h2>
-                        <p className="text-xl mb-8 max-w-md">Master the art of finance with flashcards and challenges!</p>
-                        <Link to="/" className="px-8 py-3 bg-white text-rose-600 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-lg inline-block">
-                            Play Now
-                        </Link>
-                    </div>
-                </ParallaxLayer>
-
-                <ParallaxLayer offset={3} speed={0.5} className="flex flex-col items-center justify-center pointer-events-none text-white">
-                    <div className="pointer-events-auto text-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl">
-                        <h2 className="text-5xl font-bold mb-4 drop-shadow-md">Word Hunt</h2>
-                        <p className="text-xl mb-8 max-w-md">Find hidden financial terms and expand your vocabulary!</p>
-                        <Link to="/word-hunt" className="px-8 py-3 bg-white text-purple-600 rounded-full font-bold text-xl hover:scale-105 transition-transform shadow-lg inline-block">
-                            Play Now
-                        </Link>
-                    </div>
-                </ParallaxLayer>
-
-                <ParallaxLayer offset={4} speed={0.5} className="flex flex-col items-center justify-center pointer-events-none text-white">
-                    <div className="pointer-events-auto text-center p-8 bg-black/20 backdrop-blur-sm rounded-3xl">
-                        <h2 className="text-5xl font-bold mb-4 drop-shadow-md">Coming Soon</h2>
-                        <p className="text-xl mb-8 max-w-md">More exciting financial games are on the way!</p>
-                        <button disabled className="px-8 py-3 bg-white/50 text-gray-600 rounded-full font-bold text-xl cursor-not-allowed">
-                            Stay Tuned
-                        </button>
-                    </div>
-                </ParallaxLayer>
+                {gameModes.map((mode, i) => (
+                    <ParallaxLayer
+                        key={`content-${mode.route}`}
+                        offset={i}
+                        speed={0.5}
+                        className="flex flex-col items-center justify-center pointer-events-none text-white"
+                    >
+                        <div className="pointer-events-auto text-center p-10 bg-black/30 backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl max-w-lg mx-4">
+                            <span className="text-6xl mb-4 block">{mode.emoji}</span>
+                            <h2
+                                className="text-4xl md:text-5xl font-black mb-3 drop-shadow-lg tracking-tight"
+                                style={{ fontFamily: "'Outfit', sans-serif" }}
+                            >
+                                {mode.title}
+                            </h2>
+                            <p className="text-lg md:text-xl mb-8 text-white/80 max-w-md font-light">
+                                {mode.description}
+                            </p>
+                            <Link
+                                to={mode.route}
+                                className={`px-10 py-3.5 ${mode.buttonColor} text-white rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-lg inline-block`}
+                            >
+                                Play Now
+                            </Link>
+                        </div>
+                    </ParallaxLayer>
+                ))}
             </Parallax>
         </div>
-    )
+    );
 }
