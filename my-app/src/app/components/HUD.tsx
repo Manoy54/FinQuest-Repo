@@ -50,7 +50,7 @@ export function HUD({
     const maxExp = totalLevel ? totalLevel * expToNextLevel : expToNextLevel;
 
     return (
-        <header className={`w-full relative shrink-0 z-10 bg-transparent pt-2 ${className}`} style={{ paddingTop: '0.5rem', marginBottom: gap, maxWidth: '100%' }}>
+        <header className={`w-full relative shrink-0 z-10 bg-transparent ${className}`} style={{ paddingTop: '2.5rem', marginBottom: gap, maxWidth: '100%' }}>
             {/* Left: Back Button - Absolute */}
             {(backPath || onBack) && (
                 <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20">
@@ -71,7 +71,7 @@ export function HUD({
             )}
 
             {/* Center: Title + Stats Stacked */}
-            <div className="flex flex-col items-center gap-1.5 w-full px-20">
+            <div className="flex flex-col items-center gap-4 w-full px-20">
                 {/* Game Title */}
                 {showTitle && (
                     <h1 className="text-sm md:text-base font-black tracking-tight drop-shadow-sm select-none text-center"

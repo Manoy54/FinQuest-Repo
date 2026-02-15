@@ -402,7 +402,7 @@ export function QuizBee() {
             </HUD>
 
             {/* Progress Bar - Matches MM Header Progress */}
-            < div className="w-full max-w-2xl px-4 mt-8 mb-6 z-10 text-center shrink-0" >
+            < div className="w-full max-w-2xl px-4 mt-16 mb-6 z-10 text-center shrink-0" >
                 <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-3">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
