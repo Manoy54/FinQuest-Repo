@@ -9,7 +9,7 @@ const navItems: CardNavItem[] = [
             { label: 'Data Diver', href: '/word-hunt', ariaLabel: 'Play Data Diver' },
             { label: 'Capital Cup', href: '/quiz-bee', ariaLabel: 'Play Capital Cup' },
             { label: 'Monetary Mastery', href: '/monetary-mastery', ariaLabel: 'Play Monetary Mastery' },
-            { label: 'Capital Crossword', href: '/crossword', ariaLabel: 'Play Capital Crossword' }
+            { label: 'Corporate Climb', href: '/crossword', ariaLabel: 'Play Corporate Climb' }
         ]
     },
     {

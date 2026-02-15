@@ -284,7 +284,7 @@ export function Profile() {
                         <div className="space-y-4">
                             {[
                                 { game: 'Monetary Mastery', action: 'Completed Level 3', time: '2 mins ago', xp: '+150 XP' },
-                                { game: 'Capital Crossword', action: 'Solved Daily Puzzle', time: '1 hour ago', xp: '+300 XP' },
+                                { game: 'Corporate Climb', action: 'Solved Daily Puzzle', time: '1 hour ago', xp: '+300 XP' },
                                 { game: 'Data Diver', action: 'New High Score', time: 'Yesterday', xp: '+500 XP' },
                             ].map((item, i) => (
                                 <div key={i} className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">

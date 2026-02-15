@@ -32,7 +32,7 @@ export function Features() {
             icon: <FaPuzzlePiece className="text-2xl" />,
             color: "text-purple-400",
             bg: "bg-purple-400/20",
-            title: "Capital Crossword",
+            title: "Corporate Climb",
             subtitle: "Vocabulary Puzzle",
             desc: "Challenge your understanding by solving crossword clues related to finance. A perfect blend of logic and learning."
         },

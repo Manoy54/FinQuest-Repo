@@ -7,7 +7,7 @@ export function GameplayPreview() {
     const tabs = [
         { id: 'mm', label: 'Monetary Mastery', icon: <FaGamepad />, color: 'from-emerald-400 to-teal-500' },
         { id: 'dd', label: 'Data Diver', icon: <FaSearch />, color: 'from-blue-400 to-indigo-500' },
-        { id: 'cc', label: 'Capital Crossword', icon: <FaPuzzlePiece />, color: 'from-purple-400 to-pink-500' },
+        { id: 'cc', label: 'Corporate Climb', icon: <FaPuzzlePiece />, color: 'from-purple-400 to-pink-500' },
         { id: 'qc', label: 'Capital Cup', icon: <FaTrophy />, color: 'from-amber-400 to-orange-500' }
     ];
 
