@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
 import FQLogo from '../../assets/images/FQlogo.PNG';
+import ShinyText from './ShinyText';
 
 type CardNavLink = {
     label: string;
@@ -181,19 +182,26 @@ const CardNav: React.FC<CardNavProps> = ({
                         />
                     </div>
 
-                    <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none z-[10]">
-                        <span
+                    <div
+                        className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none z-[10]"
+                        style={{
+                            fontFamily: "'Literata', serif",
+                            fontWeight: 700,
+                            filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
+                        }}
+                    >
+                        <ShinyText
+                            text="FINQUEST"
+                            disabled={false}
+                            speed={3}
                             className="text-2xl md:text-3xl font-black tracking-tighter"
-                            style={{
-                                fontFamily: "'Outfit', sans-serif",
-                                background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
-                                WebkitBackgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
-                            }}
-                        >
-                            FINQUEST
-                        </span>
+                            color="#ffd700"
+                            shineColor="#ff6b35"
+                            spread={120}
+                            direction="right"
+                            pauseOnHover={false}
+                            delay={0}
+                        />
                     </div>
 
 
@@ -217,34 +225,40 @@ const CardNav: React.FC<CardNavProps> = ({
                     {(items || []).slice(0, 3).map((item, idx) => (
                         <div
                             key={`${item.label}-${idx}`}
-                            className="nav-card select-none relative flex flex-col gap-2 p-[12px_16px] rounded-[calc(0.75rem-0.2rem)] min-w-0 flex-[1_1_auto] h-auto min-h-[51px] md:h-full md:min-h-0 md:flex-[1_1_0%] items-center"
+                            className="nav-card select-none relative flex flex-col gap-4 p-6 rounded-2xl min-w-0 flex-[1_1_auto] h-auto min-h-[51px] md:h-full md:min-h-0 md:flex-[1_1_0%] items-start border border-white/5 shadow-inner"
                             ref={setCardRef(idx)}
                             style={{ backgroundColor: item.bgColor, color: '#ffffff' }}
                         >
-                            <div className="nav-card-label font-bold tracking-[-0.5px] text-base md:text-xl text-center">
+                            <div className="nav-card-label font-black tracking-wider text-sm md:text-base text-left uppercase text-gray-300 w-full border-b border-white/10 pb-2 mb-1">
                                 {item.label}
                             </div>
-                            <div className="nav-card-links mt-auto flex flex-col gap-[4px] items-center w-full">
+                            <div className="nav-card-links flex flex-col gap-3 items-start w-full">
                                 {item.links?.map((lnk, i) => {
                                     const isInternal = lnk.href.startsWith('/');
                                     const commonProps = {
                                         key: `${lnk.label}-${i}`,
-                                        className: "nav-card-link inline-flex items-center gap-[6px] no-underline cursor-pointer transition-opacity duration-300 hover:opacity-75 text-sm md:text-base font-medium",
+                                        className: "nav-card-link inline-flex items-center gap-3 no-underline cursor-pointer transition-all duration-300 text-white/80 hover:text-white hover:translate-x-1 text-sm md:text-lg font-medium group",
                                         "aria-label": lnk.ariaLabel
                                     };
+
+                                    const icon = (
+                                        <span className="w-6 h-6 flex items-center justify-center rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                                            <GoArrowUpRight className="text-xs opacity-50 group-hover:opacity-100" aria-hidden="true" />
+                                        </span>
+                                    );
 
                                     if (isInternal) {
                                         return (
                                             <Link {...commonProps} to={lnk.href}>
-                                                <GoArrowUpRight className="nav-card-link-icon shrink-0" aria-hidden="true" />
+                                                {icon}
                                                 {lnk.label}
                                             </Link>
                                         );
                                     }
 
                                     return (
-                                        <a {...commonProps} href={lnk.href}>
-                                            <GoArrowUpRight className="nav-card-link-icon shrink-0" aria-hidden="true" />
+                                        <a {...commonProps} href={lnk.href} target="_blank" rel="noopener noreferrer">
+                                            {icon}
                                             {lnk.label}
                                         </a>
                                     );

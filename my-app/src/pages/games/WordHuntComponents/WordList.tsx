@@ -172,7 +172,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
             }}
         >
             <div className="mb-4 flex-shrink-0">
-                <h2 className="text-2xl font-black mb-2 text-white font-['Outfit'] tracking-wide border-b border-white/10 pb-2">
+                <h2 className="text-2xl font-black mb-2 text-white tracking-wide border-b border-white/10 pb-2">
                     MISSIONS
                 </h2>
                 <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden mt-2">

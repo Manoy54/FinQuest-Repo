@@ -5,6 +5,7 @@ import Avatar, { genConfig } from 'react-nice-avatar';
 import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
 import { ParallaxDemo } from '../../app/components/ParallaxDemo';
+import { useAuth } from '../../context/AuthContext';
 
 
 
@@ -13,6 +14,7 @@ import { ParallaxDemo } from '../../app/components/ParallaxDemo';
 
 export function Home() {
     const navigate = useNavigate();
+    const { logout } = useAuth();
     const [avatarConfig, setAvatarConfig] = useState<ReturnType<typeof genConfig> | null>(null);
 
     useEffect(() => {
@@ -61,13 +63,16 @@ export function Home() {
 
             {/* Top Right Logout */}
             <button
-                onClick={() => navigate('/')}
+                onClick={() => {
+                    logout();
+                    navigate('/');
+                }}
                 className="absolute top-6 right-8 z-[60] group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
                 aria-label="Logout"
             >
                 <div className="relative transition-transform duration-300 group-hover:scale-105">
                     <div className="relative flex items-center justify-center transition-all duration-300 px-2.5 py-1 rounded-md hover:bg-black hover:shadow-[0_0_20px_black]">
-                        <span className="text-blue-100 font-bold text-[9px] md:text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
+                        <span className="text-blue-100 group-hover:text-red-400 transition-colors duration-300 font-bold text-[9px] md:text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
                             <FiLogOut className="text-[10px] md:text-xs" /> LOGOUT
                         </span>
                     </div>

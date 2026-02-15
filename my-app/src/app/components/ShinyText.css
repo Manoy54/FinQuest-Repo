@@ -1,0 +1,11 @@
+/* ShinyText.css */
+.shiny-text {
+    /* Base styles, though inline styles handle most of the gradient effect */
+    display: inline-block;
+    background-clip: text;
+    /* Fallback */
+    -webkit-background-clip: text;
+    /* Fallback */
+    color: transparent;
+    /* Fallback */
+}

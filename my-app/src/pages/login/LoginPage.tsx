@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock } from 'react-icons/fa';
 import FQLogo from '../../assets/images/FQlogo.PNG';
+import { useAuth } from '../../context/AuthContext';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,9 +63,11 @@ export function LoginPage() {
                 return;
             }
 
-            // Login successful
-            console.log('Login successful');
-            navigate('/home');
+            // Login successful — check avatar setup status
+            const username = userData.username || userData.email;
+            const { needsAvatarSetup } = login(username);
+            console.log('Login successful, needsAvatarSetup:', needsAvatarSetup);
+            navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
         } catch (error) {
             console.error('Error parsing user data:', error);
             const authErrors = {
@@ -106,7 +110,8 @@ export function LoginPage() {
                         <span
                             className="text-6xl font-bold tracking-tight uppercase"
                             style={{
-                                fontFamily: "'Outfit', sans-serif",
+                                fontFamily: "'Literata', serif",
+                                fontWeight: 700,
                                 background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
                                 WebkitBackgroundClip: 'text',
                                 WebkitTextFillColor: 'transparent',

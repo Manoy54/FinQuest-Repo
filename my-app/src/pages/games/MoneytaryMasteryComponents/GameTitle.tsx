@@ -11,7 +11,7 @@ export function GameTitle({
         <div className="relative z-10 text-center pt-0 pb-2 shrink-0">
             <h1 className="text-4xl md:text-5xl font-bold mb-2"
                 style={{
-                    fontFamily: "'Outfit', sans-serif",
+                    fontWeight: 800,
                     background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',

@@ -1,0 +1,1 @@
+export { AvatarSetupPage } from './AvatarSetupPage';

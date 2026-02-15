@@ -303,7 +303,7 @@ export function QuizBee() {
                 <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full transform transition-all duration-700 hover:scale-[1.02]">
                     <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
                         style={{
-                            fontFamily: "'Outfit', sans-serif",
+                            fontWeight: 800,
                             background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #fbbf24 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',

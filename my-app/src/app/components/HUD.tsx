@@ -72,7 +72,7 @@ export function HUD({
             <div className="flex flex-col items-center gap-1.5 w-full px-20">
                 {/* Game Title */}
                 {showTitle && (
-                    <h1 className="text-sm md:text-base font-black tracking-tight font-['Outfit'] drop-shadow-sm select-none text-center"
+                    <h1 className="text-sm md:text-base font-black tracking-tight drop-shadow-sm select-none text-center"
                         style={{
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
                             WebkitBackgroundClip: 'text',

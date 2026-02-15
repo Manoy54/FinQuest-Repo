@@ -1,7 +1,21 @@
+/* ─── Font Imports (locally hosted via @fontsource) ─────────────── */
+@import "@fontsource/literata/600.css";
+@import "@fontsource/literata/700.css";
+@import "@fontsource/nunito/400.css";
+@import "@fontsource/nunito/500.css";
+@import "@fontsource/nunito/600.css";
+@import "@fontsource/nunito/700.css";
+
 @import "tailwindcss";
 
+/* ─── Tailwind v4 Theme Tokens ──────────────────────────────────── */
+@theme {
+  --font-nunito: "Nunito", sans-serif;
+  --font-literata: "Literata", serif;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Nunito", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 

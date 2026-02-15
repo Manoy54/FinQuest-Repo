@@ -17,37 +17,37 @@ const gameModes: GameMode[] = [
         title: 'Capital Cup',
         description: 'Test your financial knowledge in our exciting timed quiz mode!',
         route: '/quiz-bee',
-        gradient: 'teal',
-        buttonGradient: 'from-sky-400 to-blue-500',
+        gradient: 'red',
+        buttonGradient: 'from-red-600 to-red-800',
         emoji: '🏆',
-        stripeColor: 'linear-gradient(135deg, SlateBlue 0%, DeepSkyBlue 100%)',
+        stripeColor: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)',
     },
     {
         title: 'Monetary Mastery',
         description: 'Master the art of finance with flashcards and challenges!',
         route: '/monetary-mastery',
-        gradient: 'pink',
-        buttonGradient: 'from-pink-500 to-rose-500',
+        gradient: 'slate',
+        buttonGradient: 'from-slate-500 to-slate-700',
         emoji: '💎',
-        stripeColor: 'linear-gradient(135deg, deeppink 0%, coral 100%)',
+        stripeColor: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
     },
     {
         title: 'Data Diver',
         description: 'Find hidden financial terms and expand your vocabulary!',
         route: '/word-hunt',
-        gradient: 'purple',
-        buttonGradient: 'from-purple-500 to-violet-500',
+        gradient: 'green',
+        buttonGradient: 'from-green-600 to-green-800',
         emoji: '🔍',
-        stripeColor: 'linear-gradient(135deg, rebeccapurple 0%, violet 100%)',
+        stripeColor: 'linear-gradient(135deg, #16a34a 0%, #14532d 100%)',
     },
     {
         title: 'Corporate Climb',
         description: 'Solve crossword puzzles with financial terminology!',
         route: '/crossword',
-        gradient: 'tomato',
-        buttonGradient: 'from-orange-400 to-red-500',
+        gradient: 'amber',
+        buttonGradient: 'from-yellow-700 to-yellow-900',
         emoji: '🧩',
-        stripeColor: 'linear-gradient(135deg, tomato 0%, gold 100%)',
+        stripeColor: 'linear-gradient(135deg, #a16207 0%, #451a03 100%)',
     },
 ];
 
@@ -58,91 +58,84 @@ interface SlideProps {
 }
 
 const Slide = ({ offset, mode, onClick }: SlideProps) => (
-    <ParallaxLayer offset={offset} speed={0.2}>
+    <ParallaxLayer
+        offset={offset}
+        speed={0.2}
+        onClick={onClick}
+        style={{ cursor: 'pointer' }}
+    >
+        {/* Diagonal colored stripe — no container clipping, clipPath handles the shape */}
         <div
-            onClick={onClick}
+            style={{
+                position: 'absolute',
+                top: 0,
+                right: '-10%',
+                width: '140%',
+                height: '100%',
+                background: mode.stripeColor,
+                clipPath: 'polygon(70% 0, 100% 0, 80% 100%, 50% 100%)',
+                pointerEvents: 'none',
+            }}
+        />
+
+        {/* Game Mode Content */}
+        <div
             style={{
                 position: 'relative',
-                width: '100%',
+                zIndex: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
                 height: '100%',
-                backgroundColor: '#20232f',
-                overflow: 'hidden',
+                paddingLeft: 'clamp(4rem, 12vw, 10rem)',
+                paddingRight: '50%',
                 boxSizing: 'border-box',
-                cursor: 'pointer',
+                maxWidth: '100%',
             }}
         >
-            <div
+            <span
                 style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: '-10%',
-                    width: '45%',
-                    height: '100%',
-                    background: mode.stripeColor,
-                    clipPath: 'polygon(30% 0, 100% 0, 70% 100%, 0% 100%)',
-                    pointerEvents: 'none',
-                }}
-            />
-
-            <div
-                style={{
-                    position: 'relative',
-                    zIndex: 10,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    height: '100%',
-                    paddingLeft: 'clamp(4rem, 12vw, 10rem)',
-                    paddingRight: '50%',
-                    boxSizing: 'border-box',
-                    maxWidth: '100%',
+                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+                    display: 'block',
+                    marginBottom: '0.75rem',
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                 }}
             >
-                <span
-                    style={{
-                        fontSize: 'clamp(2.5rem, 4vw, 4rem)',
-                        display: 'block',
-                        marginBottom: '0.75rem',
-                        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                    }}
-                >
-                    {mode.emoji}
-                </span>
-                <h2
-                    style={{
-                        fontFamily: "'Outfit', sans-serif",
-                        fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
-                        fontWeight: 900,
-                        color: '#ffffff',
-                        margin: '0 0 0.5rem 0',
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.02em',
-                        textShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                        maxWidth: '100%',
-                        overflowWrap: 'break-word',
-                    }}
-                >
-                    {mode.title}
-                </h2>
-                <p
-                    style={{
-                        fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
-                        color: 'rgba(255,255,255,0.65)',
-                        margin: '0 0 1.5rem 0',
-                        lineHeight: 1.6,
-                        fontWeight: 300,
-                        maxWidth: '90%',
-                    }}
-                >
-                    {mode.description}
-                </p>
-                <GameButton
-                    to={mode.route}
-                    gradient={mode.buttonGradient}
-                    text="Play Now"
-                />
-            </div>
+                {mode.emoji}
+            </span>
+            <h2
+                style={{
+                    fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                    fontWeight: 900,
+                    color: '#ffffff',
+                    margin: '0 0 0.5rem 0',
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.02em',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    maxWidth: '100%',
+                    overflowWrap: 'break-word',
+                }}
+            >
+                {mode.title}
+            </h2>
+            <p
+                style={{
+                    fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
+                    color: 'rgba(255,255,255,0.65)',
+                    margin: '0 0 1.5rem 0',
+                    lineHeight: 1.6,
+                    fontWeight: 300,
+                    maxWidth: '90%',
+                }}
+            >
+                {mode.description}
+            </p>
+            <GameButton
+                to={mode.route}
+                gradient={mode.buttonGradient}
+                text="Play Now"
+            />
         </div>
     </ParallaxLayer>
 );
@@ -247,16 +240,28 @@ function CustomScrollbar({ parallaxRef }: { parallaxRef: React.RefObject<IParall
             onClick={handleTrackClick}
             style={{
                 position: 'absolute',
-                bottom: 6,
-                left: '10%',
-                right: '10%',
+                bottom: 8,
+                left: '15%',
+                right: '15%',
                 height: 4,
-                background: 'rgba(255, 255, 255, 0.08)',
                 borderRadius: 2,
                 cursor: 'pointer',
                 zIndex: 30,
             }}
         >
+            {/* Track background (invisible/transparent wrapper) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    borderRadius: 2,
+                    background: 'rgba(255, 255, 255, 0.05)' // Very subtle track
+                }}
+            />
+
             <div
                 onMouseDown={handleThumbMouseDown}
                 style={{
@@ -268,6 +273,7 @@ function CustomScrollbar({ parallaxRef }: { parallaxRef: React.RefObject<IParall
                     background: '#ffffff',
                     borderRadius: 2,
                     cursor: draggingRef.current ? 'grabbing' : 'grab',
+                    boxShadow: '0 0 4px rgba(0,0,0,0.3)'
                 }}
             />
         </div>
@@ -286,7 +292,13 @@ export function ParallaxDemo() {
 
     return (
         <div style={{ background: '#20232f', height: '100%', width: '100%', position: 'relative' }}>
-            <Parallax className="parallax-container" ref={parallax} pages={4} horizontal>
+            <Parallax
+                className="parallax-container"
+                ref={parallax}
+                pages={4}
+                horizontal
+                style={{ height: 'calc(100% - 24px)', top: 0 }} /* Leave space for scrollbar */
+            >
                 {gameModes.map((mode, i) => (
                     <Slide
                         key={mode.route}

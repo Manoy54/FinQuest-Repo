@@ -41,7 +41,7 @@ export function GameRatingModal({ isOpen, onClose, gameId }: GameRatingModalProp
 
                 {!submitted ? (
                     <>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>Enjoying the Game?</h3>
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">Enjoying the Game?</h3>
                         <p className="text-white/60 text-sm mb-10">Rate your experience so far!</p>
 
                         <div className="flex justify-center gap-2 md:gap-3 mb-10">
@@ -87,7 +87,7 @@ export function GameRatingModal({ isOpen, onClose, gameId }: GameRatingModalProp
                 ) : (
                     <div className="py-8 animate-fadeIn">
                         <div className="text-6xl mb-6">❤️</div>
-                        <h3 className="text-3xl font-bold text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>Thank You!</h3>
+                        <h3 className="text-3xl font-bold text-white mb-2">Thank You!</h3>
                         <p className="text-white/60 text-lg">Your feedback helps us improve the game experience.</p>
                     </div>
                 )}

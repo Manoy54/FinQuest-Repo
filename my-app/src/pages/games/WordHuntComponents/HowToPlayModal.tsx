@@ -26,7 +26,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
 
                 {/* Header */}
                 <div className="text-center mb-8">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                         How to Play 🎮
                     </h2>
                     <p className="text-white/60 text-lg">Hunt for financial terms!</p>

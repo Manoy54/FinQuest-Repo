@@ -107,7 +107,7 @@ export function Profile() {
                     </div>
 
                     <div className="flex-1 text-center md:text-left">
-                        <h1 className="text-4xl font-black text-white mb-2 font-['Outfit'] tracking-tight">Player One</h1>
+                        <h1 className="text-4xl font-black text-white mb-2 tracking-tight">Player One</h1>
                         <p className="text-white/60 text-lg mb-4">Financial Explorer • Level 5</p>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-3">

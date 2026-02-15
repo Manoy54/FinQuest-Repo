@@ -76,7 +76,8 @@ export function Hero() {
                 >
                     <span
                         style={{
-                            fontFamily: "'Outfit', sans-serif",
+                            fontFamily: "'Literata', serif",
+                            fontWeight: 700,
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
