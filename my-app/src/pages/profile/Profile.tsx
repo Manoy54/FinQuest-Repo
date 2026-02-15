@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { FaTrophy, FaStar, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
+import { FaTrophy, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
 import { useUserContext } from '../../context/UserContext';
@@ -127,9 +127,6 @@ export function Profile() {
                         <p className="text-white/60 text-lg mb-4">{rank} • Level {level}</p>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                            <span className="px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-sm font-bold flex items-center gap-2">
-                                <FaStar /> Pro Member
-                            </span>
                             <span className="px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-sm font-bold">
                                 📅 Joined Jan 2026
                             </span>
@@ -137,13 +134,13 @@ export function Profile() {
                     </div>
 
                     <div className="flex gap-4">
-                        <div className="text-center p-4 bg-white/5 rounded-2xl min-w-[100px] border border-white/5">
-                            <div className="text-2xl font-black text-amber-400 mb-1">{Math.floor(xp / 2).toLocaleString()}</div>
-                            <div className="text-xs text-white/50 uppercase tracking-wider font-bold">XP</div>
+                        <div className="text-center py-6 px-8 bg-white/5 rounded-2xl min-w-[160px] border border-white/5">
+                            <div className="text-4xl font-black text-amber-400 mb-2">{Math.floor(xp / 2).toLocaleString()}</div>
+                            <div className="text-sm text-white/50 uppercase tracking-wider font-bold">XP</div>
                         </div>
-                        <div className="text-center p-4 bg-white/5 rounded-2xl min-w-[100px] border border-white/5">
-                            <div className="text-2xl font-black text-yellow-400 mb-1">{coins.toLocaleString()}</div>
-                            <div className="text-xs text-white/50 uppercase tracking-wider font-bold">Coins</div>
+                        <div className="text-center py-6 px-8 bg-white/5 rounded-2xl min-w-[160px] border border-white/5">
+                            <div className="text-4xl font-black text-yellow-400 mb-2">{coins.toLocaleString()}</div>
+                            <div className="text-sm text-white/50 uppercase tracking-wider font-bold">Coins</div>
                         </div>
                     </div>
                 </div>
