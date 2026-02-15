@@ -21,8 +21,9 @@ const avatarConfigOptions = {
 
 export function AvatarSetupPage() {
     const navigate = useNavigate();
-    const { completeAvatarSetup } = useAuth();
+    const { completeAvatarSetup, username } = useAuth();
     const [config, setConfig] = useState<ReactNiceAvatarConfig>(() => genConfig());
+    const [name, setName] = useState(username?.split('@')[0] || 'Player');
     const [activeTab, setActiveTab] = useState<'base' | 'face' | 'hair' | 'eyes' | 'mouth' | 'clothes' | 'bg'>('base');
     const [saving, setSaving] = useState(false);
 
@@ -33,10 +34,12 @@ export function AvatarSetupPage() {
     };
 
     const handleSave = () => {
+        if (!name.trim()) return; // Prevent saving with empty name
+
         setSaving(true);
         // Small delay for visual feedback
         setTimeout(() => {
-            completeAvatarSetup(config as unknown as AvatarConfig);
+            completeAvatarSetup(config as unknown as AvatarConfig, name);
             // Allow state to update across context
             setTimeout(() => {
                 navigate('/home');
@@ -128,6 +131,19 @@ export function AvatarSetupPage() {
                                 <div className="relative bg-gray-900 rounded-full p-2 w-48 h-48 ring-2 ring-white/10">
                                     <Avatar className="w-full h-full" {...config} />
                                 </div>
+                            </div>
+
+                            {/* Name Input */}
+                            <div className="w-full">
+                                <label className="text-xs uppercase font-bold text-white/50 tracking-wider mb-2 block text-center">Display Name</label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    maxLength={12}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-center text-white text-lg font-bold tracking-wide focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all placeholder:text-white/20"
+                                    placeholder="Enter Name"
+                                />
                             </div>
 
                             {/* Randomize Button */}

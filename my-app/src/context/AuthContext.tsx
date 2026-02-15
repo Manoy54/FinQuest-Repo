@@ -25,12 +25,16 @@ interface AuthState {
     hasCompletedAvatarSetup: boolean;
     avatarConfig: AvatarConfig | null;
     username: string | null;
+    displayName: string | null;
+    level: number;
+    rank: string;
 }
 
 interface AuthContextType extends AuthState {
     login: (username: string) => { needsAvatarSetup: boolean };
     logout: () => void;
-    completeAvatarSetup: (config: AvatarConfig) => void;
+    completeAvatarSetup: (config: AvatarConfig, displayName?: string) => void;
+    updateProfile: (updates: Partial<AuthState>) => void;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -48,6 +52,9 @@ function loadAuth(): AuthState {
         hasCompletedAvatarSetup: false,
         avatarConfig: null,
         username: null,
+        displayName: null,
+        level: 1,
+        rank: 'Student',
     };
 }
 
@@ -70,6 +77,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const login = useCallback((username: string) => {
         // Check if user already has a saved avatar (legacy / returning user)
         const existingAvatar = localStorage.getItem('userAvatarConfig');
+        const existingDisplayName = localStorage.getItem('userDisplayName');
+
+        // Check if we have auth state for this user to restore level/rank
+        // For now, simpler to just start fresh or rely on what's in state if we were persisting properly per-user
+        // But since we are doing simple local storage auth:
+
         const alreadySetup = !!existingAvatar;
 
         const newState: AuthState = {
@@ -77,7 +90,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             hasCompletedAvatarSetup: alreadySetup,
             avatarConfig: existingAvatar ? JSON.parse(existingAvatar) : null,
             username,
+            displayName: existingDisplayName || username.split('@')[0], // Default to part of username if no display name
+            level: 1, // Default level
+            rank: 'Student', // Default rank
         };
+
+        // If we had stored state, we could restore level/rank here, but for now defaults are fine for "new" login simulation
+        // If we want to persist level/rank across logins, we should store them like userAvatarConfig
+
+        // Let's try to restore if available from a previous session in this browser
+        const storedLevel = localStorage.getItem('userLevel');
+        if (storedLevel) newState.level = parseInt(storedLevel);
+
+        const storedRank = localStorage.getItem('userRank');
+        if (storedRank) newState.rank = storedRank;
 
         setState(newState);
         return { needsAvatarSetup: !alreadySetup };
@@ -89,24 +115,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             hasCompletedAvatarSetup: false,
             avatarConfig: null,
             username: null,
+            displayName: null,
+            level: 1,
+            rank: 'Student',
         });
         localStorage.removeItem(AUTH_STORAGE_KEY);
     }, []);
 
-    const completeAvatarSetup = useCallback((config: AvatarConfig) => {
+    const completeAvatarSetup = useCallback((config: AvatarConfig, displayName?: string) => {
         // Persist avatar config to the same key the Profile page uses
         localStorage.setItem('userAvatarConfig', JSON.stringify(config));
+        if (displayName) localStorage.setItem('userDisplayName', displayName);
+
         window.dispatchEvent(new Event('avatarChanged'));
 
         setState(prev => ({
             ...prev,
             hasCompletedAvatarSetup: true,
             avatarConfig: config,
+            displayName: displayName || prev.displayName,
         }));
     }, []);
 
+    const updateProfile = useCallback((updates: Partial<AuthState>) => {
+        setState(prev => {
+            const newState = { ...prev, ...updates };
+
+            // Persist specifics to localStorage for recovery on relogin
+            if (updates.displayName) localStorage.setItem('userDisplayName', updates.displayName);
+            if (updates.level) localStorage.setItem('userLevel', updates.level.toString());
+            if (updates.rank) localStorage.setItem('userRank', updates.rank);
+
+            return newState;
+        });
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ ...state, login, logout, completeAvatarSetup }}>
+        <AuthContext.Provider value={{ ...state, login, logout, completeAvatarSetup, updateProfile }}>
             {children}
         </AuthContext.Provider>
     );

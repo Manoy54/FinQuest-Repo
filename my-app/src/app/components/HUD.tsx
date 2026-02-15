@@ -25,6 +25,7 @@ interface HUDProps {
     className?: string;
     showTitle?: boolean;
     showStats?: boolean;
+    gap?: string | number;
 }
 
 export function HUD({
@@ -43,12 +44,13 @@ export function HUD({
     children,
     showTitle = true,
     showStats = true,
-    className = ''
+    className = '',
+    gap = '12px'
 }: HUDProps) {
     const maxExp = totalLevel ? totalLevel * expToNextLevel : expToNextLevel;
 
     return (
-        <header className={`w-full relative shrink-0 z-10 bg-transparent pt-4 ${className}`} style={{ paddingTop: '1.5rem', maxWidth: '100%' }}>
+        <header className={`w-full relative shrink-0 z-10 bg-transparent pt-2 ${className}`} style={{ paddingTop: '0.5rem', marginBottom: gap, maxWidth: '100%' }}>
             {/* Left: Back Button - Absolute */}
             {(backPath || onBack) && (
                 <div className="absolute left-8 top-1/2 -translate-y-1/2 z-20">

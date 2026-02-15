@@ -372,8 +372,10 @@ export function WordHunt() {
 
             // Calculate scale to fit strictly within the viewport
             // Use 'contain' logic: fit completely visible
+            // Subtract HUD height (approx 100px) from available height
+            const HUD_OFFSET = 100;
             const scaleX = window.innerWidth / TARGET_WIDTH;
-            const scaleY = window.innerHeight / TARGET_HEIGHT;
+            const scaleY = (window.innerHeight - HUD_OFFSET) / TARGET_HEIGHT;
 
             // Choose the smaller scale to ensure it fits entirely
             const newScale = Math.min(scaleX, scaleY);

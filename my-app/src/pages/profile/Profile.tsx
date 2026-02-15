@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { FaTrophy, FaStar, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
-import { useUserContext } from '../../context/UserContext.tsx';
+import { useUserContext } from '../../context/UserContext';
+import { useAuth } from '../../context/AuthContext';
 
-type AvatarConfig = ReturnType<typeof genConfig>;
+type ReactNiceAvatarConfig = ReturnType<typeof genConfig>;
 
 const avatarConfigOptions = {
     sex: ['man', 'woman'],
@@ -21,24 +22,39 @@ const avatarConfigOptions = {
 
 export function Profile() {
     const { xp, coins } = useUserContext();
-    const [config, setConfig] = useState<AvatarConfig>(() => {
-        const saved = localStorage.getItem('userAvatarConfig');
-        return saved ? JSON.parse(saved) : genConfig();
+    const { displayName, level, rank, avatarConfig: contextAvatarConfig, completeAvatarSetup } = useAuth();
+
+    const [config, setConfig] = useState<ReactNiceAvatarConfig>(() => {
+        return (contextAvatarConfig as unknown as ReactNiceAvatarConfig) || genConfig();
     });
+
+    // Local state for editing name
+    const [editName, setEditName] = useState(displayName || 'Player');
 
     const [isEditing, setIsEditing] = useState(false);
     const [activeTab, setActiveTab] = useState<'base' | 'face' | 'hair' | 'eyes' | 'mouth' | 'clothes' | 'bg'>('base');
 
+    // Sync context changes to local state when not editing
     useEffect(() => {
-        localStorage.setItem('userAvatarConfig', JSON.stringify(config));
-        window.dispatchEvent(new Event('avatarChanged'));
-    }, [config]);
+        if (!isEditing && contextAvatarConfig) {
+            setConfig(contextAvatarConfig as unknown as ReactNiceAvatarConfig);
+        }
+        if (!isEditing && displayName) {
+            setEditName(displayName);
+        }
+    }, [contextAvatarConfig, displayName, isEditing]);
 
     const handleRandomize = () => {
         setConfig(genConfig());
     };
 
-    const updateConfig = (key: keyof AvatarConfig, value: string | boolean) => {
+    const handleSave = () => {
+        // Save both avatar and name
+        completeAvatarSetup(config as any, editName);
+        setIsEditing(false);
+    };
+
+    const updateConfig = (key: keyof ReactNiceAvatarConfig, value: string | boolean) => {
         setConfig(prev => ({ ...prev, [key]: value }));
     };
 
@@ -107,8 +123,8 @@ export function Profile() {
                     </div>
 
                     <div className="flex-1 text-center md:text-left">
-                        <h1 className="text-4xl font-black text-white mb-2 tracking-tight">Player One</h1>
-                        <p className="text-white/60 text-lg mb-4">Financial Explorer • Level 5</p>
+                        <h1 className="text-4xl font-black text-white mb-2 tracking-tight">{displayName || 'Player'}</h1>
+                        <p className="text-white/60 text-lg mb-4">{rank} • Level {level}</p>
 
                         <div className="flex flex-wrap justify-center md:justify-start gap-3">
                             <span className="px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-sm font-bold flex items-center gap-2">
@@ -135,23 +151,38 @@ export function Profile() {
                 {/* Avatar Editor (Collapsible) */}
                 {isEditing && (
                     <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 animate-fade-in text-white overflow-hidden">
-                        <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
-                            <h2 className="text-xl font-bold flex items-center gap-2">
-                                <span>🎨</span> Customize Avatar
-                            </h2>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={handleRandomize}
-                                    className="px-4 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 font-bold text-sm flex items-center gap-2 transition-colors"
-                                >
-                                    <FaDice /> Randomize
-                                </button>
-                                <button
-                                    onClick={() => setIsEditing(false)}
-                                    className="px-4 py-2 rounded-xl bg-green-500/20 text-green-300 border border-green-500/30 hover:bg-green-500/30 font-bold text-sm flex items-center gap-2 transition-colors"
-                                >
-                                    <FaSave /> Save
-                                </button>
+                        <div className="flex flex-col gap-6 mb-6 border-b border-white/10 pb-6">
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-xl font-bold flex items-center gap-2">
+                                    <span>🎨</span> Customize Profile
+                                </h2>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={handleRandomize}
+                                        className="px-4 py-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 font-bold text-sm flex items-center gap-2 transition-colors"
+                                    >
+                                        <FaDice /> Randomize
+                                    </button>
+                                    <button
+                                        onClick={handleSave}
+                                        className="px-4 py-2 rounded-xl bg-green-500/20 text-green-300 border border-green-500/30 hover:bg-green-500/30 font-bold text-sm flex items-center gap-2 transition-colors"
+                                    >
+                                        <FaSave /> Save Changes
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Name Edit Input */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-xs uppercase font-bold text-white/50 tracking-wider">Display Name</label>
+                                <input
+                                    type="text"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    maxLength={15}
+                                    className="w-full max-w-md bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white font-bold focus:outline-none focus:border-blue-500 transition-all placeholder:text-white/20"
+                                    placeholder="Enter your name"
+                                />
                             </div>
                         </div>
 

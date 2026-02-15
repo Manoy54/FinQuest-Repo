@@ -38,6 +38,10 @@ export function RegisterPage() {
         const userData = { username, email, password };
         localStorage.setItem('user_credentials', JSON.stringify(userData));
 
+        // Clear any existing avatar config and auth state to ensure new user goes through setup
+        localStorage.removeItem('userAvatarConfig');
+        localStorage.removeItem('auth_state');
+
         setShowSuccess(true);
     };
 
