@@ -66,8 +66,11 @@ export function LoginPage() {
             // Login successful — check avatar setup status
             const username = userData.username || userData.email;
             const { needsAvatarSetup } = login(username);
-            console.log('Login successful, needsAvatarSetup:', needsAvatarSetup);
-            navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
+            // Allow state to update before navigation
+            setTimeout(() => {
+                console.log('Login successful, needsAvatarSetup:', needsAvatarSetup);
+                navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
+            }, 0);
         } catch (error) {
             console.error('Error parsing user data:', error);
             const authErrors = {

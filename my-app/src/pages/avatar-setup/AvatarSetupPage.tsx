@@ -37,7 +37,10 @@ export function AvatarSetupPage() {
         // Small delay for visual feedback
         setTimeout(() => {
             completeAvatarSetup(config as unknown as AvatarConfig);
-            navigate('/home');
+            // Allow state to update across context
+            setTimeout(() => {
+                navigate('/home');
+            }, 50);
         }, 600);
     };
 
