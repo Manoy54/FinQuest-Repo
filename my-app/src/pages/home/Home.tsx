@@ -4,116 +4,10 @@ import { FiLogOut } from 'react-icons/fi';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
+import { ParallaxDemo } from '../../app/components/ParallaxDemo';
 
 
-interface GameMode {
-    id: string;
-    title: string;
-    subtitle: string;
-    description: string;
-    icon: string;
-    path: string;
-    gradient: string;
-    glowColor: string;
-}
 
-const gameModes: GameMode[] = [
-    {
-        id: 'monetary-mastery',
-        title: 'Monetary Mastery',
-        subtitle: 'Flashcard Learning',
-        description: 'Master financial concepts through interactive flashcards. Test your knowledge and level up!',
-        icon: '💳',
-        path: '/monetary-mastery',
-        gradient: 'linear-gradient(135deg, #2e3b55 0%, #4a5d85 100%)',
-        glowColor: 'rgba(74, 93, 133, 0.4)'
-    },
-    {
-        id: 'data-diver',
-        title: 'Data Diver',
-        subtitle: 'Word Hunt Challenge',
-        description: 'Dive deep into financial terminology with exciting word search puzzles!',
-        icon: '🔍',
-        path: '/word-hunt',
-        gradient: 'linear-gradient(135deg, #1e4620 0%, #2e6b36 100%)',
-        glowColor: 'rgba(46, 107, 54, 0.4)'
-    },
-    {
-        id: 'capital-cup',
-        title: 'Capital Cup',
-        subtitle: 'Quiz Bee Challenge',
-        description: 'Compete in timed quizzes and climb the leaderboard. Test your financial IQ!',
-        icon: '🏆',
-        path: '/quiz-bee',
-        gradient: 'linear-gradient(135deg, #6c2e3e 0%, #9e3f55 100%)',
-        glowColor: 'rgba(158, 63, 85, 0.4)'
-    },
-    {
-        id: 'crossword',
-        title: 'Capital Crossword',
-        subtitle: 'Profit Puzzle',
-        description: 'Test your financial vocabulary with this challenging crossword puzzle.',
-        icon: '🧩',
-        path: '/crossword',
-        gradient: 'linear-gradient(135deg, #6b4c30 0%, #966b45 100%)',
-        glowColor: 'rgba(150, 107, 69, 0.4)'
-    }
-];
-
-function GameModeCard({ mode }: { mode: GameMode }) {
-    return (
-        <Link
-            to={mode.path}
-            className="group relative block w-full h-full"
-            style={{ textDecoration: 'none' }}
-        >
-            <div
-                className="relative overflow-hidden rounded-3xl p-6 h-full flex flex-col transition-all duration-500 transform hover:scale-105 hover:-translate-y-2"
-                style={{
-                    background: mode.gradient,
-                    boxShadow: `0 20px 40px ${mode.glowColor}, 0 0 0 1px rgba(255,255,255,0.1) inset`
-                }}
-            >
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 opacity-20">
-                    <div className="absolute inset-0 rounded-full bg-white/30 blur-2xl transform translate-x-8 -translate-y-8" />
-                </div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 opacity-20">
-                    <div className="absolute inset-0 rounded-full bg-white/20 blur-xl transform -translate-x-4 translate-y-4" />
-                </div>
-
-                {/* Icon */}
-                <div className="relative z-10 mb-4 flex-none">
-                    <span className="text-5xl lg:text-6xl filter drop-shadow-lg group-hover:scale-110 inline-block transition-transform duration-300">
-                        {mode.icon}
-                    </span>
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 flex-1 flex flex-col">
-                    <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-1">
-                        {mode.subtitle}
-                    </p>
-                    <h3 className="text-white text-xl lg:text-2xl font-bold mb-2 tracking-tight">
-                        {mode.title}
-                    </h3>
-                    <p className="text-white/80 text-xs lg:text-sm leading-relaxed mb-4 flex-1">
-                        {mode.description}
-                    </p>
-
-                    {/* Play Button */}
-                    <div className="mt-auto flex items-center gap-2 text-white font-bold text-sm uppercase tracking-wide group-hover:gap-4 transition-all duration-300">
-                        <span>Play Now</span>
-                        <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">→</span>
-                    </div>
-                </div>
-
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300 rounded-3xl" />
-            </div>
-        </Link>
-    );
-}
 
 
 
@@ -200,8 +94,8 @@ export function Home() {
 
 
 
-                {/* Game Modes Grid */}
-                <div id="game-modes" className="w-full max-w-7xl flex flex-col items-center flex-1 justify-center">
+                {/* Game Modes - Parallax Horizontal */}
+                <div id="game-modes" className="w-full flex flex-col items-center">
                     <div className="text-center mb-6 lg:mb-8 shrink-0">
                         <h2 className="text-white/40 text-xs font-bold uppercase tracking-[0.3em] mb-2">
                             Choose Your Adventure
@@ -209,10 +103,17 @@ export function Home() {
                         <div className="w-16 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto rounded-full" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 w-full auto-rows-fr">
-                        {gameModes.map((mode) => (
-                            <GameModeCard key={mode.id} mode={mode} />
-                        ))}
+                    {/* Parallax Container with Seamless Fading Edges */}
+                    <div className="relative mx-auto" style={{ height: '45vh', width: '70%' }}>
+                        <div
+                            className="w-full h-full overflow-hidden rounded-2xl"
+                            style={{
+                                WebkitMaskImage: 'linear-gradient(to right, rgba(0,0,0,0.6) 0%, black 5%, black 80%, rgba(0,0,0,0.8) 85%, rgba(0,0,0,0.4) 90%, rgba(0,0,0,0.1) 95%, transparent 100%)',
+                                maskImage: 'linear-gradient(to right, rgba(0,0,0,0.6) 0%, black 5%, black 80%, rgba(0,0,0,0.8) 85%, rgba(0,0,0,0.4) 90%, rgba(0,0,0,0.1) 95%, transparent 100%)',
+                            }}
+                        >
+                            <ParallaxDemo />
+                        </div>
                     </div>
                 </div>
             </main>
