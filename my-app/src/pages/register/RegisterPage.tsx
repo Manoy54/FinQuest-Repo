@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 import FQLogo from '../../assets/images/FQlogo.PNG';
 
 export function RegisterPage() {
@@ -47,6 +47,14 @@ export function RegisterPage() {
 
     return (
         <div className="min-h-screen w-full flex items-center justify-center py-8 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-zinc-900 to-black relative overflow-hidden font-['Rajdhani']">
+            {/* Back to Home Button */}
+            <Link
+                to="/"
+                className="absolute top-6 left-6 z-50 flex items-center gap-2 px-5 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-xl"
+            >
+                <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-300" />
+                <span className="text-sm font-bold uppercase tracking-widest">Back to Home</span>
+            </Link>
             {/* Background Image using Logo - faint overlay */}
             <div
                 className="absolute inset-0 z-0 opacity-[0.03]"
