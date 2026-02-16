@@ -295,6 +295,55 @@ export function WordHunt() {
         }
     };
 
+    // Helper to get time based on level ID
+    const getTimeForLevel = (levelId: string) => {
+        if (levelId.includes('intermediate')) return 180; // 3 minutes
+        if (levelId.includes('expert')) return 120; // 2 minutes
+        return null;
+    };
+
+    // Timer State
+    const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+
+    // Initialize Timer on Level Change
+    useEffect(() => {
+        setTimeRemaining(getTimeForLevel(currentLevel.id));
+    }, [currentLevel]);
+
+    // Timer Countdown Logic
+    useEffect(() => {
+        if (timeRemaining === null || gameComplete) return;
+
+        const timer = setInterval(() => {
+            setTimeRemaining(prev => {
+                if (prev === null) return null;
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [timeRemaining, gameComplete]);
+
+    // Handle Time Up
+    useEffect(() => {
+        if (timeRemaining === 0 && !gameComplete) {
+            setGameComplete(true);
+            playSound('wrong'); // Or a specific 'time up' sound if available
+        }
+    }, [timeRemaining, gameComplete, playSound]);
+
+    // Format Time for Display
+    const formattedTime = useMemo(() => {
+        if (timeRemaining === null) return null;
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }, [timeRemaining]);
+
     const handleRetryLevel = () => {
         // Regenerate for a fresh attempt at the same level
         // Use same seed to ensure it's still the "same" level configuration for fairness/consistency
@@ -324,6 +373,7 @@ export function WordHunt() {
 
         setFoundColors(new Map());
         setGameComplete(false);
+        setTimeRemaining(getTimeForLevel(currentLevel.id)); // Reset Timer
     };
 
     const handleRestartGame = () => {
@@ -405,6 +455,8 @@ export function WordHunt() {
         );
     }
 
+
+
     return (
         <div className="h-screen w-screen bg-[#1a1a2e] overflow-hidden flex flex-col relative font-sans"
             style={{
@@ -425,7 +477,18 @@ export function WordHunt() {
                 customLevelLabel={playerRank}
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="hover:bg-white/5 transition-colors"
-            />
+            >
+                {/* Timer Display in HUD */}
+                {formattedTime && (
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/40 border border-white/10 backdrop-blur-md shadow-lg ml-4">
+                        <span className="text-xl">⏱️</span>
+                        <span className={`text-xl font-bold font-mono ${(timeRemaining || 0) < 30 ? 'text-red-400 animate-pulse' : 'text-white'
+                            }`}>
+                            {formattedTime}
+                        </span>
+                    </div>
+                )}
+            </HUD>
 
             {/* Main Content Area - Centered Scaled Stage */}
             <div className="flex-1 w-full flex items-center justify-center overflow-hidden relative z-10">
