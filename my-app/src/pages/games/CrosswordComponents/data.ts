@@ -18,7 +18,7 @@ export interface Clue {
     col: number;
 }
 
-export const GRID_SIZE = 24;
+export const GRID_SIZE = 25;
 
 // Clues with EXACT coordinates matching reference image
 const beginnerClues: Clue[] = [
@@ -39,20 +39,20 @@ const beginnerClues: Clue[] = [
 
 const intermediateClues: Clue[] = [
     // ACROSS
-    { number: 1, direction: 'across', text: "The difference between the seller's cost and the selling price.", answer: 'MARGIN', row: 4, col: 17 },
-    { number: 3, direction: 'across', text: 'A sum of money paid regularly by a company to its shareholders.', answer: 'DIVIDEND', row: 6, col: 9 },
-    { number: 5, direction: 'across', text: 'To gradually write off the initial cost of an asset over time.', answer: 'AMORTIZE', row: 9, col: 14 },
-    { number: 7, direction: 'across', text: 'A range of investments held by a person or organization.', answer: 'PORTFOLIO', row: 12, col: 6 },
+    { number: 1, direction: 'across', text: "The difference between the seller's cost and the selling price.", answer: 'MARGIN', row: 5, col: 17 },
+    { number: 3, direction: 'across', text: 'A sum of money paid regularly by a company to its shareholders.', answer: 'DIVIDEND', row: 6, col: 7 },
+    { number: 5, direction: 'across', text: 'To gradually write off the initial cost of an asset over time.', answer: 'AMORTIZE', row: 9, col: 13 },
+    { number: 7, direction: 'across', text: 'A range of investments held by a person or organization.', answer: 'PORTFOLIO', row: 12, col: 4 },
     { number: 8, direction: 'across', text: 'How much the quantity demanded changes when price changes.', answer: 'ELASTICITY', row: 15, col: 6 },
-    { number: 9, direction: 'across', text: 'A market state where a small number of firms dominate.', answer: 'OLIGOPOLY', row: 17, col: 11 },
-    { number: 11, direction: 'across', text: 'The total satisfaction received from consuming a good or service.', answer: 'UTILITY', row: 19, col: 7 },
+    { number: 9, direction: 'across', text: 'A market state where a small number of firms dominate.', answer: 'OLIGOPOLY', row: 17, col: 9 },
+    { number: 11, direction: 'across', text: 'The total satisfaction received from consuming a good or service.', answer: 'UTILITY', row: 19, col: 5 },
 
     // DOWN
-    { number: 2, direction: 'down', text: 'A fixed sum of money paid to someone each year, typically for life.', answer: 'ANNUITY', row: 4, col: 18 },
-    { number: 3, direction: 'down', text: 'Failure to fulfill an obligation, especially to repay a loan.', answer: 'DEFAULT', row: 6, col: 9 },
-    { number: 4, direction: 'down', text: 'The ability of a company to meet its long-term fixed expenses.', answer: 'SOLVENCY', row: 8, col: 16 },
-    { number: 6, direction: 'down', text: 'How quickly an asset can be converted into cash without losing value.', answer: 'LIQUIDITY', row: 11, col: 13 },
-    { number: 10, direction: 'down', text: 'An amount of something left over when requirements have been met.', answer: 'SURPLUS', row: 18, col: 7 },
+    { number: 2, direction: 'down', text: 'A fixed sum of money paid to someone each year, typically for life.', answer: 'ANNUITY', row: 5, col: 18 },
+    { number: 3, direction: 'down', text: 'Failure to fulfill an obligation, especially to repay a loan.', answer: 'DEFAULT', row: 6, col: 7 },
+    { number: 4, direction: 'down', text: 'The ability of a company to meet its long-term fixed expenses.', answer: 'SOLVENCY', row: 8, col: 15 },
+    { number: 6, direction: 'down', text: 'How quickly an asset can be converted into cash without losing value.', answer: 'LIQUIDITY', row: 11, col: 11 },
+    { number: 10, direction: 'down', text: 'An amount of something left over when requirements have been met.', answer: 'SURPLUS', row: 18, col: 5 },
 ];
 
 export const clues = {
@@ -90,3 +90,4 @@ export const generateGrid = (difficulty: 'beginner' | 'intermediate' = 'beginner
 
     return grid;
 };
+
