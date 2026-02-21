@@ -45,7 +45,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
     const calculateHeight = () => {
         const navEl = navRef.current;
-        if (!navEl) return 260;
+        if (!navEl) return 360;
 
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
         if (isMobile) {
@@ -75,7 +75,7 @@ const CardNav: React.FC<CardNavProps> = ({
                 return topBar + contentHeight + padding;
             }
         }
-        return 260;
+        return 360;
     };
 
     const createTimeline = () => {
