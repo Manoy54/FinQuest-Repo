@@ -6,7 +6,9 @@ import {
     GRID_SIZE,
     type Clue
 } from './CrosswordComponents/data';
-import { CrosswordGrid } from './CrosswordComponents/CrosswordGrid';
+import { EasyCrosswordGrid } from './CrosswordComponents/grids/EasyCrosswordGrid';
+import { MediumCrosswordGrid } from './CrosswordComponents/grids/MediumCrosswordGrid';
+import { HardCrosswordGrid } from './CrosswordComponents/grids/HardCrosswordGrid';
 import { ClueList } from './CrosswordComponents/ClueList';
 import { HowToPlayModal } from './CrosswordComponents/HowToPlayModal';
 import {
@@ -21,7 +23,7 @@ export function Crossword() {
     const { addXp, addCoins } = useUserContext();
     const hasAwardedRef = useRef(false);
 
-    const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate'>('beginner');
+    const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'hard'>('beginner');
     const [grid, setGrid] = useState(() => generateGrid('beginner'));
     const [userAnswers, setUserAnswers] = useState<Map<string, string>>(new Map());
     const [activeCell, setActiveCell] = useState<{ row: number, col: number } | null>(null);
@@ -108,16 +110,41 @@ export function Crossword() {
         };
     }, [handleWheel, handleMouseDown, handleMouseMove, handleMouseUp]);
 
+    // Calculate max score
+    const maxScore = useMemo(() => {
+        return (currentClues.length * 50) + 500; // 50 pts per word + 500 pts completion bonus
+    }, [currentClues]);
+
     // Calculate score
     const score = useMemo(() => {
-        let correctCount = 0;
-        grid.forEach((cell, key) => {
-            if (userAnswers.get(key)?.toUpperCase() === cell.letter) {
-                correctCount++;
+        let currentScore = 0;
+        let allWordsCorrect = true;
+
+        currentClues.forEach(clue => {
+            let isWordCorrect = true;
+            for (let i = 0; i < clue.answer.length; i++) {
+                const r = clue.direction === 'down' ? clue.row + i : clue.row;
+                const c = clue.direction === 'across' ? clue.col + i : clue.col;
+                const key = `${r},${c}`;
+                if (userAnswers.get(key)?.toUpperCase() !== clue.answer[i]) {
+                    isWordCorrect = false;
+                    allWordsCorrect = false;
+                    break;
+                }
+            }
+            if (isWordCorrect) {
+                // Award 50 points per correctly filled word
+                currentScore += 50;
             }
         });
-        return correctCount * 10;
-    }, [userAnswers, grid]);
+
+        if (allWordsCorrect && currentClues.length > 0) {
+            // 500 bonus points for finishing the whole grid
+            currentScore += 500;
+        }
+
+        return currentScore;
+    }, [userAnswers, currentClues]);
 
     useEffect(() => {
         if (gameComplete && !hasAwardedRef.current) {
@@ -133,8 +160,7 @@ export function Crossword() {
         }
     }, [gameComplete, score, addXp, addCoins]);
 
-    const totalCells = grid.size;
-    const progress = (score / (totalCells * 10)) * 100;
+    const progress = currentClues.length > 0 ? (score / maxScore) * 100 : 0;
 
     // Determine active clue based on active cell and direction
     const activeClue = useMemo(() => {
@@ -393,10 +419,10 @@ export function Crossword() {
         return (
             <GameComplete
                 score={score}
-                totalCards={grid.size} // treating cells as cards for score template
+                totalCards={currentClues.length}
                 exp={score * 2}
                 coins={score}
-                requiredScore={grid.size * 10}
+                requiredScore={maxScore}
                 onRestart={handleRestart}
                 nextLevelLabel="Play Again"
             />
@@ -412,7 +438,7 @@ export function Crossword() {
             <HUD
                 title="CORPORATE CLIMB"
                 currentExp={score}
-                expToNextLevel={grid.size * 10}
+                expToNextLevel={maxScore}
                 progress={progress}
                 coins={0}
                 showBadge={true}
@@ -420,7 +446,7 @@ export function Crossword() {
                 className="bg-black/20 backdrop-blur-md border-b border-white/5"
             >
                 <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10 mr-4">
-                    {(['beginner', 'intermediate'] as const).map((level) => (
+                    {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
                         <button
                             key={level}
                             onClick={() => setDifficulty(level)}
@@ -429,7 +455,7 @@ export function Crossword() {
                                 : 'text-white/50 hover:text-white hover:bg-white/10'
                                 }`}
                         >
-                            {level === 'beginner' ? 'Easy' : 'Med'}
+                            {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
                         </button>
                     ))}
                 </div>
@@ -459,15 +485,37 @@ export function Crossword() {
                                     transformOrigin: 'center center',
                                 }}
                             >
-                                <CrosswordGrid
-                                    grid={grid}
-                                    userAnswers={userAnswers}
-                                    activeCell={activeCell}
-                                    onCellClick={handleCellClick}
-                                    onInputChange={handleInputChange}
-                                    onKeyDown={handleKeyDown}
-                                    validated={showValidation}
-                                />
+                                {/* Each difficulty has its own self-contained grid component */}
+                                {difficulty === 'beginner' && (
+                                    <EasyCrosswordGrid
+                                        userAnswers={userAnswers}
+                                        activeCell={activeCell}
+                                        onCellClick={handleCellClick}
+                                        onInputChange={handleInputChange}
+                                        onKeyDown={handleKeyDown}
+                                        validated={showValidation}
+                                    />
+                                )}
+                                {difficulty === 'intermediate' && (
+                                    <MediumCrosswordGrid
+                                        userAnswers={userAnswers}
+                                        activeCell={activeCell}
+                                        onCellClick={handleCellClick}
+                                        onInputChange={handleInputChange}
+                                        onKeyDown={handleKeyDown}
+                                        validated={showValidation}
+                                    />
+                                )}
+                                {difficulty === 'hard' && (
+                                    <HardCrosswordGrid
+                                        userAnswers={userAnswers}
+                                        activeCell={activeCell}
+                                        onCellClick={handleCellClick}
+                                        onInputChange={handleInputChange}
+                                        onKeyDown={handleKeyDown}
+                                        validated={showValidation}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>

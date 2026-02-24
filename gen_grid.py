@@ -1,0 +1,101 @@
+import sys
+
+placements = {}
+across = {3: 'RESERVE', 8: 'SUBSTITUTION', 10: 'FACTORING', 13: 'COLLECTIBILITY', 14: 'FIDUCIARY', 15: 'PERPETUITY'}
+down = {1: 'TRANSFERS', 2: 'DEBTOR', 4: 'VELOCITY', 5: 'DUPOINT', 6: 'WORKINGCAPITAL', 7: 'QUICK', 9: 'MONOPOLISTIC', 11: 'COMPLEMENTS', 12: 'INFERIOR'}
+
+R_6D, C_6D = 0, 0
+placements[6] = ('D', 6, R_6D, C_6D, down[6])
+
+R_10A = R_6D + 3
+C_10A = C_6D + 2
+placements[10] = ('A', 10, R_10A, C_10A, across[10])
+
+R_7D = R_10A - 3
+C_7D = C_10A + 2
+placements[7] = ('D', 7, R_7D, C_7D, down[7])
+
+R_9D = R_10A - 3
+C_9D = C_10A + 4
+placements[9] = ('D', 9, R_9D, C_9D, down[9])
+
+R_4D = R_10A - 5
+C_4D = C_10A + 6
+placements[4] = ('D', 4, R_4D, C_4D, down[4])
+
+# 3A 'RESERVE' crosses 'VELOCITY' at 'E'. 'RESERVE' index 1 or 3 or 6. 'VELOCITY' at 1. Wait!
+# If 3A crosses 4D at E(1) -> 3A has E at 1. C_3A = C_4D - 1. But FIRST image has RESERVE way up right. RESERVE is index 6 for E.
+R_3A = R_4D + 1
+C_3A = C_4D - 6
+placements[3] = ('A', 3, R_3A, C_3A, across[3])
+
+# 13A COLLECTIBILITY
+C_13A = C_6D - 5
+R_13A = R_9D + 7
+placements[13] = ('A', 13, R_13A, C_13A, across[13])
+
+R_11D = R_13A - 5
+C_11D = C_13A + 4
+placements[11] = ('D', 11, R_11D, C_11D, down[11])
+
+R_14A = R_9D + 10
+C_14A = C_9D - 1
+placements[14] = ('A', 14, R_14A, C_14A, across[14])
+
+# 12D crosses 14A at R (index 7). 12D is INFERIOR. It has R at index 4 and 7. Let's try 4.
+R_12D = R_14A - 4
+C_12D = C_14A + 7
+placements[12] = ('D', 12, R_12D, C_12D, down[12])
+
+R_15A = R_11D + 9
+C_15A = C_11D - 5  # PERPETUITY T at index 5
+placements[15] = ('A', 15, R_15A, C_15A, across[15])
+
+# substituted top-left
+R_8A = R_6D + 1
+C_8A = C_6D - 10
+placements[8] = ('A', 8, R_8A, C_8A, across[8])
+
+R_1D = R_8A - 4
+C_1D = C_8A + 3  # S at index 4 (TRANSFERS), substitution S at index 3
+placements[1] = ('D', 1, R_1D, C_1D, down[1])
+
+R_2D = R_8A - 3
+C_2D = C_8A + 6 # DEBTOR T at index 3. SUBST T at index 6. 
+placements[2] = ('D', 2, R_2D, C_2D, down[2])
+
+R_5D = R_8A - 1
+C_5D = C_8A + 1 # DUPOINT U at index 1. SUBST U at index 1.
+placements[5] = ('D', 5, R_5D, C_5D, down[5])
+
+min_r = min([v[2] for v in placements.values()])
+min_c = min([v[3] for v in placements.values()])
+
+final_placements = []
+for k, (d, num, r, c, w) in placements.items():
+    nr = r - min_r
+    nc = c - min_c
+    final_placements.append(f"{{ number: {num}, direction: '{'across' if d=='A' else 'down'}', answer: '{w}', row: {nr}, col: {nc} }},")
+
+print("Copy these into Data.ts:\n")
+for line in final_placements:
+    print(line)
+
+print("\nGrid validation:")
+grid = {}
+conflicts = []
+for k, (d, num, r, c, w) in placements.items():
+    for i, ch in enumerate(w):
+        rr = r if d=='A' else r+i
+        cc = c+i if d=='A' else c
+        if (rr,cc) in grid and grid[(rr,cc)] != ch: conflicts.append(f"Conflict at {rr},{cc}: {grid[(rr,cc)]} vs {ch}")
+        grid[(rr,cc)] = ch
+
+if conflicts:
+    for c in conflicts: print(c)
+
+max_r = max(r for r,c in grid)
+max_c = max(c for r,c in grid)
+for r in range(min([r for r,c in grid]), max_r + 1):
+    row_str = "".join(grid.get((r,c), '.') for c in range(min([c for r,c in grid]), max_c + 1))
+    print(f"{r:2d}: {row_str}")

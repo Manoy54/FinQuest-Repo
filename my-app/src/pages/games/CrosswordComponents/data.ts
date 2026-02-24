@@ -18,7 +18,7 @@ export interface Clue {
     col: number;
 }
 
-export const GRID_SIZE = 25;
+export const GRID_SIZE = 27;
 
 // Clues with EXACT coordinates matching reference image
 const beginnerClues: Clue[] = [
@@ -55,12 +55,37 @@ const intermediateClues: Clue[] = [
     { number: 10, direction: 'down', text: 'An amount of something left over when requirements have been met.', answer: 'SURPLUS', row: 18, col: 5 },
 ];
 
+const hardClues: Clue[] = [
+    // ─────────────────────────────────────────────────────────────────────────────
+    //  VERIFIED LAYOUT (100% IMAGE MATCH)
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    // DOWN CLUES
+    { number: 1, direction: 'down', text: 'Payments made by the government to individuals without any exchange of goods/services.', answer: 'TRANSFERS', row: 3, col: 3 },
+    { number: 2, direction: 'down', text: 'A party that owes money to another entity.', answer: 'DEBTOR', row: 4, col: 6 },
+    { number: 4, direction: 'down', text: 'The rate at which money exchanges hands within an economy.', answer: 'VELOCITY', row: 4, col: 18 },
+    { number: 5, direction: 'down', text: 'An identity that breaks down ROE into profit margin, asset turnover, and leverage.', answer: 'DUPOINT', row: 6, col: 1 },
+    { number: 6, direction: 'down', text: 'Current assets minus current liabilities; measures short-term operating liquidity.', answer: 'WORKINGCAPITAL', row: 6, col: 10 },
+    { number: 7, direction: 'down', text: 'A ratio that excludes inventory from current assets to measure immediate liquidity.', answer: 'QUICK', row: 6, col: 14 },
+    { number: 9, direction: 'down', text: 'Competition involving many firms selling products that are similar but not identical.', answer: 'MONOPOLISTIC', row: 8, col: 16 },
+    { number: 11, direction: 'down', text: 'Two goods for which an increase in the price of one leads to a decrease in demand for the other.', answer: 'COMPLEMENTS', row: 12, col: 8 },
+
+    // ACROSS CLUES
+    { number: 3, direction: 'across', text: 'The specific percentage of deposits a bank must keep on hand or at the Central Bank.', answer: 'RESERVE', row: 4, col: 13 },
+    { number: 8, direction: 'across', text: 'The effect where consumers react to a price rise by consuming less of that good and more of a rival.', answer: 'SUBSTITUTION', row: 7, col: 0 },
+    { number: 10, direction: 'across', text: 'A financial transaction where a business sells its accounts receivable to a third party.', answer: 'FACTORING', row: 9, col: 12 },
+    { number: 13, direction: 'across', text: 'The likelihood that an account receivable will actually be converted into cash.', answer: 'COLLECTIBILITY', row: 17, col: 4 },
+    { number: 14, direction: 'across', text: 'A legal or ethical relationship of trust between a manager and a shareholder.', answer: 'FIDUCIARY', row: 19, col: 12 },
+    { number: 15, direction: 'across', text: 'An annuity that has no end date (a constant stream of identical cash flows).', answer: 'PERPETUITY', row: 21, col: 3 },
+];
+
 export const clues = {
     beginner: beginnerClues,
-    intermediate: intermediateClues
+    intermediate: intermediateClues,
+    hard: hardClues
 };
 
-export const generateGrid = (difficulty: 'beginner' | 'intermediate' = 'beginner'): Map<string, CellData> => {
+export const generateGrid = (difficulty: 'beginner' | 'intermediate' | 'hard' = 'beginner'): Map<string, CellData> => {
     const grid = new Map<string, CellData>();
     const selectedClues = clues[difficulty];
 
