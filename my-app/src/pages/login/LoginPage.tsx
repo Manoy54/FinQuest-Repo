@@ -2,16 +2,17 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowLeft } from 'react-icons/fa';
 import FQLogo from '../../assets/images/FQlogo.PNG';
-import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../supabaseClient';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [authError, setAuthError] = useState<string | null>(null);
     const navigate = useNavigate();
-    const { login } = useAuth();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: { email?: string; password?: string } = {};
@@ -20,65 +21,30 @@ export function LoginPage() {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            // Clear errors after 3 seconds
             setTimeout(() => setErrors({}), 3000);
             return;
         }
 
-        // Simulate authentication
-        const storedUser = localStorage.getItem('user_credentials');
+        setIsLoading(true);
+        setAuthError(null);
 
-        if (!storedUser) {
-            // No user registered
-            const authErrors = {
-                email: "Incorrect username or email"
-            };
-            setErrors(authErrors);
-            setTimeout(() => setErrors({}), 3000);
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        });
+
+        setIsLoading(false);
+
+        if (error) {
+            console.error('Login error:', error);
+            setAuthError(error.message);
+            setTimeout(() => setAuthError(null), 3000);
             return;
         }
 
-        try {
-            const userData = JSON.parse(storedUser);
-
-            // Check if email matches (allow login with email or username)
-            const isEmailMatch = userData.email === email || userData.username === email;
-
-            if (!isEmailMatch) {
-                const authErrors = {
-                    email: "Incorrect username or email"
-                };
-                setErrors(authErrors);
-                setTimeout(() => setErrors({}), 3000);
-                return;
-            }
-
-            // Check password
-            if (userData.password !== password) {
-                const authErrors = {
-                    password: "Incorrect password"
-                };
-                setErrors(authErrors);
-                setTimeout(() => setErrors({}), 3000);
-                return;
-            }
-
-            // Login successful — check avatar setup status
-            const username = userData.username || userData.email;
-            const { needsAvatarSetup } = login(username);
-            // Allow state to update before navigation
-            setTimeout(() => {
-                console.log('Login successful, needsAvatarSetup:', needsAvatarSetup);
-                navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
-            }, 0);
-        } catch (error) {
-            console.error('Error parsing user data:', error);
-            const authErrors = {
-                email: "An error occurred. Please try again."
-            };
-            setErrors(authErrors);
-            setTimeout(() => setErrors({}), 3000);
-        }
+        // AuthContext handles the onAuthStateChange so we just redirect.
+        // It's safer to redirect to home; AuthContext guards will send user to avatar-setup if needed.
+        navigate('/home');
     };
 
     return (
@@ -210,11 +176,18 @@ export function LoginPage() {
                         </div>
                     </div>
 
+                    {authError && (
+                        <div className="text-red-400 text-sm font-bold text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">
+                            {authError}
+                        </div>
+                    )}
+
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-xl py-4 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-6 tracking-wider uppercase"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-xl py-4 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-6 tracking-wider uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Sign In
+                        {isLoading ? 'Signing In...' : 'Sign In'}
                     </button>
                 </form>
 

@@ -1,4 +1,4 @@
-import { clues } from './src/pages/games/CrosswordComponents/data.ts';
+import { clues } from './data.ts';
 
 const grid = new Map();
 let conflict = false;

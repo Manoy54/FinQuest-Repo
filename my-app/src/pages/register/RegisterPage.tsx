@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 import FQLogo from '../../assets/images/FQlogo.PNG';
+import { supabase } from '../../supabaseClient';
 
 export function RegisterPage() {
     const [username, setUsername] = useState('');
@@ -10,8 +11,10 @@ export function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string; confirmPassword?: string }>({});
     const [showSuccess, setShowSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [authError, setAuthError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: { username?: string; email?: string; password?: string; confirmPassword?: string } = {};
@@ -26,22 +29,36 @@ export function RegisterPage() {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            // Clear errors after 3 seconds
             setTimeout(() => setErrors({}), 3000);
             return;
         }
 
-        // Handle registration logic here
-        console.log('Registration attempt:', { username, email, password, confirmPassword });
+        setIsLoading(true);
+        setAuthError(null);
 
-        // Save user credentials to localStorage
-        const userData = { username, email, password };
-        localStorage.setItem('user_credentials', JSON.stringify(userData));
+        // Supabase Registration
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username: username,
+                    display_name: username,
+                }
+            }
+        });
 
-        // Clear any existing avatar config and auth state to ensure new user goes through setup
-        localStorage.removeItem('userAvatarConfig');
-        localStorage.removeItem('auth_state');
+        setIsLoading(false);
 
+        if (error) {
+            console.error('Registration error:', error);
+            setAuthError(error.message);
+            // Clear error auth after 3 seconds
+            setTimeout(() => setAuthError(null), 3000);
+            return;
+        }
+
+        // Registration successful
         setShowSuccess(true);
     };
 
@@ -223,11 +240,18 @@ export function RegisterPage() {
                         </div>
                     </div>
 
+                    {authError && (
+                        <div className="text-red-400 text-sm font-bold text-center bg-red-500/10 py-2 rounded-lg border border-red-500/20">
+                            {authError}
+                        </div>
+                    )}
+
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-lg py-3 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-4 tracking-wider uppercase"
+                        disabled={isLoading}
+                        className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white font-bold text-lg py-3 px-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 mt-4 tracking-wider uppercase disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        Create Account
+                        {isLoading ? 'Creating Account...' : 'Create Account'}
                     </button>
                 </form>
 

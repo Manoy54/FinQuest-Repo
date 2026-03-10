@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { supabase } from '../supabaseClient';
+import type { Session } from '@supabase/supabase-js';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -28,38 +30,15 @@ interface AuthState {
     displayName: string | null;
     level: number;
     rank: string;
+    userId: string | null;
+    isLoading: boolean;
 }
 
 interface AuthContextType extends AuthState {
-    login: (username: string) => { needsAvatarSetup: boolean };
-    logout: () => void;
-    completeAvatarSetup: (config: AvatarConfig, displayName?: string) => void;
+    logout: () => Promise<void>;
+    completeAvatarSetup: (config: AvatarConfig, displayName?: string) => Promise<void>;
     updateProfile: (updates: Partial<AuthState>) => void;
-}
-
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
-const AUTH_STORAGE_KEY = 'auth_state';
-
-function loadAuth(): AuthState {
-    try {
-        const raw = localStorage.getItem(AUTH_STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-    } catch { /* ignore corrupt data */ }
-
-    return {
-        isAuthenticated: false,
-        hasCompletedAvatarSetup: false,
-        avatarConfig: null,
-        username: null,
-        displayName: null,
-        level: 1,
-        rank: 'Student',
-    };
-}
-
-function saveAuth(state: AuthState) {
-    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(state));
+    refreshProfile: () => Promise<void>;
 }
 
 // ─── Context ─────────────────────────────────────────────────────────────────
@@ -67,66 +46,113 @@ function saveAuth(state: AuthState) {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [state, setState] = useState<AuthState>(loadAuth);
+    const [state, setState] = useState<AuthState>({
+        isAuthenticated: false,
+        hasCompletedAvatarSetup: false,
+        avatarConfig: null,
+        username: null,
+        displayName: null,
+        level: 1,
+        rank: 'Student',
+        userId: null,
+        isLoading: true,
+    });
 
-    // Persist whenever state changes
+    const fetchUserProfile = async (userId: string) => {
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', userId)
+                .single();
+
+            if (error) {
+                console.error("Error fetching profile:", error);
+                return;
+            }
+
+            if (data) {
+                setState(prev => ({
+                    ...prev,
+                    isAuthenticated: true,
+                    hasCompletedAvatarSetup: data.has_completed_avatar_setup || false,
+                    avatarConfig: data.avatar_config || null,
+                    username: data.username || null,
+                    displayName: data.display_name || null,
+                    level: data.level || 1,
+                    rank: data.rank || 'Student',
+                    userId: data.id,
+                    isLoading: false,
+                }));
+            }
+        } catch (err) {
+            console.error("Profile fetch error:", err);
+            setState(prev => ({ ...prev, isLoading: false }));
+        }
+    };
+
+    const handleSession = (session: Session | null) => {
+        if (session?.user) {
+            fetchUserProfile(session.user.id);
+        } else {
+            setState({
+                isAuthenticated: false,
+                hasCompletedAvatarSetup: false,
+                avatarConfig: null,
+                username: null,
+                displayName: null,
+                level: 1,
+                rank: 'Student',
+                userId: null,
+                isLoading: false,
+            });
+        }
+    };
+
     useEffect(() => {
-        saveAuth(state);
-    }, [state]);
+        // Initial session check
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            handleSession(session);
+        });
 
-    const login = useCallback((username: string) => {
-        // Check if user already has a saved avatar (legacy / returning user)
-        const existingAvatar = localStorage.getItem('userAvatarConfig');
-        const existingDisplayName = localStorage.getItem('userDisplayName');
+        // Listen for auth changes (login, logout, etc)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                handleSession(session);
+            }
+        );
 
-        // Check if we have auth state for this user to restore level/rank
-        // For now, simpler to just start fresh or rely on what's in state if we were persisting properly per-user
-        // But since we are doing simple local storage auth:
+        return () => subscription.unsubscribe();
+    }, []);
 
-        const alreadySetup = !!existingAvatar;
+    const logout = useCallback(async () => {
+        await supabase.auth.signOut();
+    }, []);
 
-        const newState: AuthState = {
-            isAuthenticated: true,
-            hasCompletedAvatarSetup: alreadySetup,
-            avatarConfig: existingAvatar ? JSON.parse(existingAvatar) : null,
-            username,
-            displayName: existingDisplayName || username.split('@')[0], // Default to part of username if no display name
-            level: 1, // Default level
-            rank: 'Student', // Default rank
+    const completeAvatarSetup = useCallback(async (config: AvatarConfig, displayName?: string) => {
+        if (!state.userId) return;
+
+        const updates: any = {
+            avatar_config: config,
+            has_completed_avatar_setup: true,
+            updated_at: new Date().toISOString(),
         };
 
-        // If we had stored state, we could restore level/rank here, but for now defaults are fine for "new" login simulation
-        // If we want to persist level/rank across logins, we should store them like userAvatarConfig
+        if (displayName) {
+            updates.display_name = displayName;
+        }
 
-        // Let's try to restore if available from a previous session in this browser
-        const storedLevel = localStorage.getItem('userLevel');
-        if (storedLevel) newState.level = parseInt(storedLevel);
+        const { error } = await supabase
+            .from('profiles')
+            .update(updates)
+            .eq('id', state.userId);
 
-        const storedRank = localStorage.getItem('userRank');
-        if (storedRank) newState.rank = storedRank;
+        if (error) {
+            console.error("Failed to save avatar setup:", error);
+            return;
+        }
 
-        setState(newState);
-        return { needsAvatarSetup: !alreadySetup };
-    }, []);
-
-    const logout = useCallback(() => {
-        setState({
-            isAuthenticated: false,
-            hasCompletedAvatarSetup: false,
-            avatarConfig: null,
-            username: null,
-            displayName: null,
-            level: 1,
-            rank: 'Student',
-        });
-        localStorage.removeItem(AUTH_STORAGE_KEY);
-    }, []);
-
-    const completeAvatarSetup = useCallback((config: AvatarConfig, displayName?: string) => {
-        // Persist avatar config to the same key the Profile page uses
-        localStorage.setItem('userAvatarConfig', JSON.stringify(config));
-        if (displayName) localStorage.setItem('userDisplayName', displayName);
-
+        // Dispatch an event just in case components are still listening
         window.dispatchEvent(new Event('avatarChanged'));
 
         setState(prev => ({
@@ -135,23 +161,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             avatarConfig: config,
             displayName: displayName || prev.displayName,
         }));
-    }, []);
+    }, [state.userId]);
 
     const updateProfile = useCallback((updates: Partial<AuthState>) => {
-        setState(prev => {
-            const newState = { ...prev, ...updates };
-
-            // Persist specifics to localStorage for recovery on relogin
-            if (updates.displayName) localStorage.setItem('userDisplayName', updates.displayName);
-            if (updates.level) localStorage.setItem('userLevel', updates.level.toString());
-            if (updates.rank) localStorage.setItem('userRank', updates.rank);
-
-            return newState;
-        });
+        setState(prev => ({ ...prev, ...updates }));
     }, []);
 
+    const refreshProfile = useCallback(async () => {
+        if (state.userId) await fetchUserProfile(state.userId);
+    }, [state.userId]);
+
     return (
-        <AuthContext.Provider value={{ ...state, login, logout, completeAvatarSetup, updateProfile }}>
+        <AuthContext.Provider value={{ ...state, logout, completeAvatarSetup, updateProfile, refreshProfile }}>
             {children}
         </AuthContext.Provider>
     );

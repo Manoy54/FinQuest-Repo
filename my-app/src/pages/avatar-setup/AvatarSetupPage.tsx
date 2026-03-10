@@ -33,18 +33,18 @@ export function AvatarSetupPage() {
         setConfig(prev => ({ ...prev, [key]: value }));
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!name.trim()) return; // Prevent saving with empty name
 
         setSaving(true);
-        // Small delay for visual feedback
+        // Small delay for visual feedback, then await the real async call
+        await new Promise(resolve => setTimeout(resolve, 600));
+        await completeAvatarSetup(config as unknown as AvatarConfig, name);
+
+        // Allow state to update across context
         setTimeout(() => {
-            completeAvatarSetup(config as unknown as AvatarConfig, name);
-            // Allow state to update across context
-            setTimeout(() => {
-                navigate('/home');
-            }, 50);
-        }, 600);
+            navigate('/home');
+        }, 50);
     };
 
     const renderColorPicker = (label: string, value: string, onChange: (val: string) => void) => (

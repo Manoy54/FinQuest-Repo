@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { supabase } from '../supabaseClient';
+import { useAuth } from './AuthContext';
 
 interface UserContextType {
     xp: number;
@@ -10,30 +12,57 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [xp, setXp] = useState(() => {
-        const saved = localStorage.getItem('userXP');
-        return saved ? parseInt(saved) : 0;
-    });
-    const [coins, setCoins] = useState(() => {
-        const saved = localStorage.getItem('userCoins');
-        return saved ? parseInt(saved) : 0;
-    });
+    const { userId, refreshProfile } = useAuth();
+    const [xp, setXp] = useState(0);
+    const [coins, setCoins] = useState(0);
 
+    // Initial load when user auth is ready
     useEffect(() => {
-        localStorage.setItem('userXP', xp.toString());
-    }, [xp]);
+        const loadStats = async () => {
+            if (!userId) {
+                setXp(0);
+                setCoins(0);
+                return;
+            }
 
-    useEffect(() => {
-        localStorage.setItem('userCoins', coins.toString());
-    }, [coins]);
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('xp, coins')
+                .eq('id', userId)
+                .single();
 
-    const addXp = (amount: number) => {
-        setXp(prev => prev + amount);
-    };
+            if (!error && data) {
+                setXp(data.xp || 0);
+                setCoins(data.coins || 0);
+            }
+        };
 
-    const addCoins = (amount: number) => {
-        setCoins(prev => prev + amount);
-    };
+        loadStats();
+    }, [userId]);
+
+    const addXp = useCallback(async (amount: number) => {
+        setXp(prev => prev + amount); // Optimistic UI update
+        if (userId) {
+            await supabase.rpc('add_user_rewards', {
+                p_user_id: userId,
+                p_xp: amount,
+                p_coins: 0
+            });
+            refreshProfile(); // So AuthContext updates level/rank
+        }
+    }, [userId, refreshProfile]);
+
+    const addCoins = useCallback(async (amount: number) => {
+        setCoins(prev => prev + amount); // Optimistic UI update
+        if (userId) {
+            await supabase.rpc('add_user_rewards', {
+                p_user_id: userId,
+                p_xp: 0,
+                p_coins: amount
+            });
+            refreshProfile(); // So AuthContext updates level/rank
+        }
+    }, [userId, refreshProfile]);
 
     return (
         <UserContext.Provider value={{ xp, coins, addXp, addCoins }}>

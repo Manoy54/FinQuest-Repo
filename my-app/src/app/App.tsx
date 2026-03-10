@@ -12,8 +12,9 @@ import { useAuth } from '../context/AuthContext';
 
 /** Requires login + completed avatar setup to render children */
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
-  const { isAuthenticated, hasCompletedAvatarSetup } = useAuth();
+  const { isAuthenticated, hasCompletedAvatarSetup, isLoading } = useAuth();
 
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center text-white bg-slate-900">Loading profile...</div>;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (!hasCompletedAvatarSetup) return <Navigate to="/avatar-setup" replace />;
 
@@ -22,8 +23,9 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 
 /** Only accessible when logged in BUT avatar setup is NOT yet complete */
 function AvatarSetupGuard({ children }: { children: React.ReactElement }) {
-  const { isAuthenticated, hasCompletedAvatarSetup } = useAuth();
+  const { isAuthenticated, hasCompletedAvatarSetup, isLoading } = useAuth();
 
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center text-white bg-slate-900">Loading profile...</div>;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
   if (hasCompletedAvatarSetup) return <Navigate to="/home" replace />;
 

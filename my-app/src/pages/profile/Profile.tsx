@@ -48,9 +48,9 @@ export function Profile() {
         setConfig(genConfig());
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         // Save both avatar and name
-        completeAvatarSetup(config as any, editName);
+        await completeAvatarSetup(config as any, editName);
         setIsEditing(false);
     };
 
