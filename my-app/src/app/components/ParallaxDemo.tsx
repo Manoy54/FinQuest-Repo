@@ -49,6 +49,33 @@ const gameModes: GameMode[] = [
         emoji: '🧩',
         stripeColor: 'linear-gradient(135deg, #a16207 0%, #451a03 100%)',
     },
+    {
+        title: 'Speed Round',
+        description: 'Answer as many financial questions as you can in 60 seconds!',
+        route: '/speed-round',
+        gradient: 'pink',
+        buttonGradient: 'from-pink-500 to-pink-700',
+        emoji: '⚡',
+        stripeColor: 'linear-gradient(135deg, #ec4899 0%, #9d174d 100%)',
+    },
+    {
+        title: 'Match Up',
+        description: 'Match financial terms with their correct definitions!',
+        route: '/matching-game',
+        gradient: 'emerald',
+        buttonGradient: 'from-emerald-500 to-emerald-700',
+        emoji: '🧩',
+        stripeColor: 'linear-gradient(135deg, #10b981 0%, #064e3b 100%)',
+    },
+    {
+        title: 'Spot the Difference',
+        description: 'Compare financial documents and find the discrepancies!',
+        route: '/spot-difference',
+        gradient: 'purple',
+        buttonGradient: 'from-purple-500 to-purple-700',
+        emoji: '🔎',
+        stripeColor: 'linear-gradient(135deg, #a855f7 0%, #581c87 100%)',
+    },
 ];
 
 interface SlideProps {
@@ -295,7 +322,7 @@ export function ParallaxDemo() {
             <Parallax
                 className="parallax-container"
                 ref={parallax}
-                pages={4}
+                pages={gameModes.length}
                 horizontal
                 style={{ height: 'calc(100% - 24px)', top: 0 }} /* Leave space for scrollbar */
             >
@@ -304,7 +331,7 @@ export function ParallaxDemo() {
                         key={mode.route}
                         offset={i}
                         mode={mode}
-                        onClick={() => scroll((i + 1) % 4)}
+                        onClick={() => scroll((i + 1) % gameModes.length)}
                     />
                 ))}
             </Parallax>

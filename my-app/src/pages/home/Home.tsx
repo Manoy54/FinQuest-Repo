@@ -6,15 +6,12 @@ import { Header } from '../../app/components/Header';
 import { AnimatedBackground } from '../games/MoneytaryMasteryComponents';
 import { ParallaxDemo } from '../../app/components/ParallaxDemo';
 import { useAuth } from '../../context/AuthContext';
-
-
-
-
-
+import { StreakTracker } from './StreakTracker';
+import { DailyTrivia } from './DailyTrivia';
 
 export function Home() {
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { logout, displayName } = useAuth();
     const [avatarConfig, setAvatarConfig] = useState<ReturnType<typeof genConfig> | null>(null);
 
     useEffect(() => {
@@ -88,16 +85,32 @@ export function Home() {
             {/* Main Content Area */}
             <main className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pt-24 pb-20">
 
-                {/* Hero Section */}
-                <div className="text-center mb-6 lg:mb-10 shrink-0 mt-12">
-
-
+                {/* Welcome Hero Section */}
+                <div className="text-center mb-8 lg:mb-12 shrink-0 mt-12">
+                    <h1
+                        className="text-5xl md:text-6xl font-black tracking-tight mb-3"
+                        style={{
+                            fontFamily: "'Literata', serif",
+                            background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.3))'
+                        }}
+                    >
+                        Welcome{displayName ? `, ${displayName}` : ''}!
+                    </h1>
                     <p className="text-white/60 text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide">
                         Master financial literacy through interactive games and challenges
                     </p>
                 </div>
 
-
+                {/* Streak + Daily Trivia Section */}
+                <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-10 lg:mb-14">
+                    <div className="md:w-[340px] shrink-0">
+                        <StreakTracker />
+                    </div>
+                    <DailyTrivia />
+                </div>
 
                 {/* Game Modes - Parallax Horizontal */}
                 <div id="game-modes" className="w-full flex flex-col items-center">

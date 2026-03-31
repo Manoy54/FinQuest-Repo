@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { getRankForLevel } from '../utils/levelSystem';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -54,7 +55,7 @@ function loadAuth(): AuthState {
         username: null,
         displayName: null,
         level: 1,
-        rank: 'Student',
+        rank: 'Apprentice',
     };
 }
 
@@ -90,9 +91,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             hasCompletedAvatarSetup: alreadySetup,
             avatarConfig: existingAvatar ? JSON.parse(existingAvatar) : null,
             username,
-            displayName: existingDisplayName || username.split('@')[0], // Default to part of username if no display name
-            level: 1, // Default level
-            rank: 'Student', // Default rank
+            displayName: existingDisplayName || username.split('@')[0],
+            level: 1,
+            rank: getRankForLevel(1),
         };
 
         // If we had stored state, we could restore level/rank here, but for now defaults are fine for "new" login simulation
@@ -100,10 +101,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Let's try to restore if available from a previous session in this browser
         const storedLevel = localStorage.getItem('userLevel');
-        if (storedLevel) newState.level = parseInt(storedLevel);
-
-        const storedRank = localStorage.getItem('userRank');
-        if (storedRank) newState.rank = storedRank;
+        if (storedLevel) {
+            newState.level = parseInt(storedLevel);
+            newState.rank = getRankForLevel(newState.level);
+        }
 
         setState(newState);
         return { needsAvatarSetup: !alreadySetup };
@@ -117,7 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             username: null,
             displayName: null,
             level: 1,
-            rank: 'Student',
+            rank: 'Apprentice',
         });
         localStorage.removeItem(AUTH_STORAGE_KEY);
     }, []);
@@ -141,10 +142,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setState(prev => {
             const newState = { ...prev, ...updates };
 
+            // Auto-compute rank when level changes
+            if (updates.level) {
+                newState.rank = getRankForLevel(updates.level);
+            }
+
             // Persist specifics to localStorage for recovery on relogin
             if (updates.displayName) localStorage.setItem('userDisplayName', updates.displayName);
-            if (updates.level) localStorage.setItem('userLevel', updates.level.toString());
-            if (updates.rank) localStorage.setItem('userRank', updates.rank);
+            if (newState.level) localStorage.setItem('userLevel', newState.level.toString());
+            if (newState.rank) localStorage.setItem('userRank', newState.rank);
 
             return newState;
         });
