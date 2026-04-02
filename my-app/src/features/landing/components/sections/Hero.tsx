@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { FaPlay, FaGamepad } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import logo from '../../../../assets/images/FQlogo.PNG';
+const logo = '/logo.png';
 
 export function Hero() {
     const [animate, setAnimate] = useState(false);

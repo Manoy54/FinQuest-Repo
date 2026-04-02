@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
-import FQLogo from '../../../assets/images/FQlogo.PNG';
+const FQLogo = '/logo.png';
 
 export function RegisterPage() {
     const [username, setUsername] = useState('');

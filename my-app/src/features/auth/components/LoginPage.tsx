@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowLeft } from 'react-icons/fa';
-import FQLogo from '../../../assets/images/FQlogo.PNG';
+const FQLogo = '/logo.png';
 import { useAuth } from '../../../context/AuthContext';
 
 export function LoginPage() {

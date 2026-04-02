@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
-import FQLogo from '../../assets/images/FQlogo.PNG';
+const FQLogo = '/logo.png';
 import ShinyText from '../ui/ShinyText';
 
 type CardNavLink = {
