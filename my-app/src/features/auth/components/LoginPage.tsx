@@ -115,7 +115,7 @@ export function LoginPage() {
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
 
                     <div className="space-y-2">
                         <label className="text-sm font-bold text-white uppercase tracking-wider ml-1">Email / Username</label>
@@ -126,6 +126,7 @@ export function LoginPage() {
                             <input
                                 type="text"
                                 value={email}
+                                autoComplete="off"
                                 onChange={(e) => {
                                     setEmail(e.target.value);
                                     if (errors.email) setErrors(prev => ({ ...prev, email: undefined }));
@@ -158,6 +159,7 @@ export function LoginPage() {
                             <input
                                 type="password"
                                 value={password}
+                                autoComplete="new-password"
                                 onChange={(e) => {
                                     setPassword(e.target.value);
                                     if (errors.password) setErrors(prev => ({ ...prev, password: undefined }));
