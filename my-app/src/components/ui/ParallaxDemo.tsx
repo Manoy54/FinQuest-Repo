@@ -1,0 +1,345 @@
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { Parallax, ParallaxLayer, type IParallax } from '@react-spring/parallax';
+import { GameButton } from './GameButton';
+
+interface GameMode {
+    title: string;
+    description: string;
+    route: string;
+    gradient: string;
+    buttonGradient: string;
+    emoji: string;
+    stripeColor: string;
+}
+
+const gameModes: GameMode[] = [
+    {
+        title: 'Capital Cup',
+        description: 'Test your financial knowledge in our exciting timed quiz mode!',
+        route: '/quiz-bee',
+        gradient: 'red',
+        buttonGradient: 'from-red-600 to-red-800',
+        emoji: '🏆',
+        stripeColor: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)',
+    },
+    {
+        title: 'Monetary Mastery',
+        description: 'Master the art of finance with flashcards and challenges!',
+        route: '/monetary-mastery',
+        gradient: 'slate',
+        buttonGradient: 'from-slate-500 to-slate-700',
+        emoji: '💎',
+        stripeColor: 'linear-gradient(135deg, #475569 0%, #1e293b 100%)',
+    },
+    {
+        title: 'Data Diver',
+        description: 'Find hidden financial terms and expand your vocabulary!',
+        route: '/word-hunt',
+        gradient: 'green',
+        buttonGradient: 'from-green-600 to-green-800',
+        emoji: '🔍',
+        stripeColor: 'linear-gradient(135deg, #16a34a 0%, #14532d 100%)',
+    },
+    {
+        title: 'Corporate Climb',
+        description: 'Solve crossword puzzles with financial terminology!',
+        route: '/crossword',
+        gradient: 'amber',
+        buttonGradient: 'from-yellow-700 to-yellow-900',
+        emoji: '🧩',
+        stripeColor: 'linear-gradient(135deg, #a16207 0%, #451a03 100%)',
+    },
+    {
+        title: 'Speed Round',
+        description: 'Answer as many financial questions as you can in 60 seconds!',
+        route: '/speed-round',
+        gradient: 'pink',
+        buttonGradient: 'from-pink-500 to-pink-700',
+        emoji: '⚡',
+        stripeColor: 'linear-gradient(135deg, #ec4899 0%, #9d174d 100%)',
+    },
+    {
+        title: 'Match Up',
+        description: 'Match financial terms with their correct definitions!',
+        route: '/matching-game',
+        gradient: 'emerald',
+        buttonGradient: 'from-emerald-500 to-emerald-700',
+        emoji: '🧩',
+        stripeColor: 'linear-gradient(135deg, #10b981 0%, #064e3b 100%)',
+    },
+    {
+        title: 'Spot the Difference',
+        description: 'Compare financial documents and find the discrepancies!',
+        route: '/spot-difference',
+        gradient: 'purple',
+        buttonGradient: 'from-purple-500 to-purple-700',
+        emoji: '🔎',
+        stripeColor: 'linear-gradient(135deg, #a855f7 0%, #581c87 100%)',
+    },
+];
+
+interface SlideProps {
+    offset: number;
+    mode: GameMode;
+    onClick: () => void;
+}
+
+const Slide = ({ offset, mode, onClick }: SlideProps) => (
+    <ParallaxLayer
+        offset={offset}
+        speed={0.2}
+        onClick={onClick}
+        style={{ cursor: 'pointer' }}
+    >
+        {/* Diagonal colored stripe — no container clipping, clipPath handles the shape */}
+        <div
+            style={{
+                position: 'absolute',
+                top: 0,
+                right: '-10%',
+                width: '140%',
+                height: '100%',
+                background: mode.stripeColor,
+                clipPath: 'polygon(70% 0, 100% 0, 80% 100%, 50% 100%)',
+                pointerEvents: 'none',
+            }}
+        />
+
+        {/* Game Mode Content */}
+        <div
+            style={{
+                position: 'relative',
+                zIndex: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                height: '100%',
+                paddingLeft: 'clamp(4rem, 12vw, 10rem)',
+                paddingRight: '50%',
+                boxSizing: 'border-box',
+                maxWidth: '100%',
+            }}
+        >
+            <span
+                style={{
+                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+                    display: 'block',
+                    marginBottom: '0.75rem',
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                }}
+            >
+                {mode.emoji}
+            </span>
+            <h2
+                style={{
+                    fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                    fontWeight: 900,
+                    color: '#ffffff',
+                    margin: '0 0 0.5rem 0',
+                    lineHeight: 1.1,
+                    letterSpacing: '-0.02em',
+                    textShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    maxWidth: '100%',
+                    overflowWrap: 'break-word',
+                }}
+            >
+                {mode.title}
+            </h2>
+            <p
+                style={{
+                    fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
+                    color: 'rgba(255,255,255,0.65)',
+                    margin: '0 0 1.5rem 0',
+                    lineHeight: 1.6,
+                    fontWeight: 300,
+                    maxWidth: '90%',
+                }}
+            >
+                {mode.description}
+            </p>
+            <GameButton
+                to={mode.route}
+                gradient={mode.buttonGradient}
+                text="Play Now"
+            />
+        </div>
+    </ParallaxLayer>
+);
+
+/* ── Custom Scrollbar ────────────────────────────── */
+function CustomScrollbar({ parallaxRef }: { parallaxRef: React.RefObject<IParallax | null> }) {
+    const [progress, setProgress] = useState(0);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const draggingRef = useRef(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const totalPages = gameModes.length;
+    const thumbWidthPercent = (1 / totalPages) * 100;
+
+    const getContainer = useCallback((): HTMLDivElement | null => {
+        return (parallaxRef.current as any)?.container?.current ?? null;
+    }, [parallaxRef]);
+
+    /* Sync scroll position → progress */
+    const syncProgress = useCallback(() => {
+        const container = getContainer();
+        if (!container) return;
+        const { scrollLeft, scrollWidth, clientWidth } = container;
+        const maxScroll = scrollWidth - clientWidth;
+        if (maxScroll > 0) {
+            setProgress(scrollLeft / maxScroll);
+        }
+    }, [getContainer]);
+
+    useEffect(() => {
+        let container: HTMLDivElement | null = null;
+        let retryTimer: ReturnType<typeof setInterval>;
+
+        const attach = () => {
+            container = getContainer();
+            if (container) {
+                container.addEventListener('scroll', syncProgress, { passive: true });
+                syncProgress();
+                return true;
+            }
+            return false;
+        };
+
+        if (!attach()) {
+            retryTimer = setInterval(() => {
+                if (attach()) clearInterval(retryTimer);
+            }, 100);
+        }
+
+        return () => {
+            clearInterval(retryTimer!);
+            container?.removeEventListener('scroll', syncProgress);
+        };
+    }, [getContainer, syncProgress]);
+
+    /* Directly set scrollLeft for instant response (no animation) */
+    const scrollToPercent = useCallback((percent: number) => {
+        const container = getContainer();
+        if (!container) return;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+        container.scrollLeft = percent * maxScroll;
+    }, [getContainer]);
+
+    /* Click on track → jump to position */
+    const handleTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!trackRef.current) return;
+        const rect = trackRef.current.getBoundingClientRect();
+        const clickPercent = (e.clientX - rect.left) / rect.width;
+        scrollToPercent(Math.max(0, Math.min(1, clickPercent)));
+    };
+
+    /* Drag the thumb */
+    const handleThumbMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        draggingRef.current = true;
+        setIsDragging(true);
+        document.body.style.cursor = 'grabbing';
+        document.body.style.userSelect = 'none';
+
+        const onMove = (ev: MouseEvent) => {
+            if (!draggingRef.current || !trackRef.current) return;
+            const rect = trackRef.current.getBoundingClientRect();
+            const movePercent = (ev.clientX - rect.left) / rect.width;
+            scrollToPercent(Math.max(0, Math.min(1, movePercent)));
+        };
+
+        const onUp = () => {
+            draggingRef.current = false;
+            setIsDragging(false);
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+        };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+    };
+
+    const thumbLeft = progress * (100 - thumbWidthPercent);
+
+    return (
+        <div
+            ref={trackRef}
+            onClick={handleTrackClick}
+            style={{
+                position: 'absolute',
+                bottom: 8,
+                left: '15%',
+                right: '15%',
+                height: 4,
+                borderRadius: 2,
+                cursor: 'pointer',
+                zIndex: 30,
+            }}
+        >
+            {/* Track background (invisible/transparent wrapper) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    borderRadius: 2,
+                    background: 'rgba(255, 255, 255, 0.05)' // Very subtle track
+                }}
+            />
+
+            <div
+                onMouseDown={handleThumbMouseDown}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: `${thumbLeft}%`,
+                    width: `${thumbWidthPercent}%`,
+                    height: '100%',
+                    background: '#ffffff',
+                    borderRadius: 2,
+                    cursor: isDragging ? 'grabbing' : 'grab',
+                    boxShadow: '0 0 4px rgba(0,0,0,0.3)'
+                }}
+            />
+        </div>
+    );
+}
+
+/* ── Main Component ────────────────────────────── */
+export function ParallaxDemo() {
+    const parallax = useRef<IParallax>(null);
+
+    const scroll = (to: number) => {
+        if (parallax.current) {
+            parallax.current.scrollTo(to);
+        }
+    };
+
+    return (
+        <div style={{ background: '#20232f', height: '100%', width: '100%', position: 'relative' }}>
+            <Parallax
+                className="parallax-container"
+                ref={parallax}
+                pages={gameModes.length}
+                horizontal
+                style={{ height: 'calc(100% - 24px)', top: 0 }} /* Leave space for scrollbar */
+            >
+                {gameModes.map((mode, i) => (
+                    <Slide
+                        key={mode.route}
+                        offset={i}
+                        mode={mode}
+                        onClick={() => scroll((i + 1) % gameModes.length)}
+                    />
+                ))}
+            </Parallax>
+
+            <CustomScrollbar parallaxRef={parallax} />
+        </div>
+    );
+}

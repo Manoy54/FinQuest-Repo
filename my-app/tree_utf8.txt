@@ -1,0 +1,176 @@
+﻿Folder PATH listing for volume OS
+Volume serial number is B62A-D25E
+C:\USERS\ARMEN\ONEDRIVE\DESKTOP\FINQUEST-REPO\MY-APP\SRC
+|   main.tsx
+|   nigtest.txt
+|   vite-env.d.ts
+|   
++---app
+|   |   App.tsx
+|   |   
+|   \---components
+|           Footer.tsx
+|           GameButton.tsx
+|           Header.tsx
+|           HUD.tsx
+|           Nav.tsx
+|           ParallaxDemo.tsx
+|           ShinyText.css
+|           ShinyText.tsx
+|           SmoothScroll.tsx
+|           
++---assets
+|   |   react.svg
+|   |   
+|   \---images
+|           FQlogo.PNG
+|           
++---constant
+|       triviaSeeds.ts
+|       
++---context
+|       AuthContext.tsx
+|       UserContext.tsx
+|       
++---pages
+|   +---avatar-setup
+|   |       AvatarSetupPage.tsx
+|   |       index.ts
+|   |       
+|   +---educator-hub
+|   |       EducatorHubPage.tsx
+|   |       index.ts
+|   |       
+|   +---games
+|   |   |   Crossword.tsx
+|   |   |   index.ts
+|   |   |   MatchingGame.tsx
+|   |   |   MonetaryMastery.tsx
+|   |   |   QuizBee.tsx
+|   |   |   SpeedRound.tsx
+|   |   |   SpotDifference.tsx
+|   |   |   WordHunt.tsx
+|   |   |   
+|   |   +---CrosswordComponents
+|   |   |   |   ClueList.tsx
+|   |   |   |   data.ts
+|   |   |   |   HowToPlayModal.tsx
+|   |   |   |   test_grid.ts
+|   |   |   |   test_grid3.ts
+|   |   |   |   test_grid4.ts
+|   |   |   |   test_grid5.ts
+|   |   |   |   
+|   |   |   \---grids
+|   |   |           BaseGrid.tsx
+|   |   |           EasyCrosswordGrid.tsx
+|   |   |           HardCrosswordGrid.tsx
+|   |   |           MediumCrosswordGrid.tsx
+|   |   |           
+|   |   +---MatchingGameComponents
+|   |   |       index.tsx
+|   |   |       
+|   |   +---MoneytaryMasteryComponents
+|   |   |       AnimatedBackground.tsx
+|   |   |       FlashCard.tsx
+|   |   |       FlashCardData.ts
+|   |   |       GameComplete.tsx
+|   |   |       GameControls.tsx
+|   |   |       GameHeader.tsx
+|   |   |       GameRatingModal.tsx
+|   |   |       GameStyles.ts
+|   |   |       GameTitle.tsx
+|   |   |       HowToPlayModal.tsx
+|   |   |       index.ts
+|   |   |       LevelProgress.tsx
+|   |   |       ProgressBar.tsx
+|   |   |       useGameSounds.ts
+|   |   |       
+|   |   +---QuizBeeComponents
+|   |   |       HowToPlayModal.tsx
+|   |   |       Lifelines.tsx
+|   |   |       MetricCard.tsx
+|   |   |       QuestionCard.tsx
+|   |   |       questions.ts
+|   |   |       QuizBeeComplete.tsx
+|   |   |       TierUnlock.tsx
+|   |   |       types.ts
+|   |   |       
+|   |   +---SpeedRoundComponents
+|   |   |       index.tsx
+|   |   |       
+|   |   +---SpotDifferenceComponents
+|   |   |       index.tsx
+|   |   |       
+|   |   \---WordHuntComponents
+|   |           data.ts
+|   |           extra_levels.ts
+|   |           generate_grid.js
+|   |           Grid.tsx
+|   |           gridGenerator.ts
+|   |           grid_output.txt
+|   |           HowToPlayModal.tsx
+|   |           index.ts
+|   |           WordList.tsx
+|   |           
+|   +---home
+|   |       AboutSection.tsx
+|   |       DailyTrivia.tsx
+|   |       GameModeSection.tsx
+|   |       Home.tsx
+|   |       StreakTracker.tsx
+|   |       
+|   +---landing
+|   |   |   hero.tsx
+|   |   |   index.ts
+|   |   |   LandingPage.tsx
+|   |   |   
+|   |   +---components
+|   |   |       About.tsx
+|   |   |       Developers.tsx
+|   |   |       FAQ.tsx
+|   |   |       Features.tsx
+|   |   |       Footer.tsx
+|   |   |       GameplayPreview.tsx
+|   |   |       Goals.tsx
+|   |   |       Hero.tsx
+|   |   |       HowToPlay.tsx
+|   |   |       
+|   |   \---hooks
+|   |           useScrollAnimation.ts
+|   |           
+|   +---leaderboards
+|   |       index.ts
+|   |       LeaderboardPage.tsx
+|   |       
+|   +---library
+|   |       index.ts
+|   |       LibraryPage.tsx
+|   |       
+|   +---login
+|   |       index.ts
+|   |       LoginPage.tsx
+|   |       
+|   +---pricing
+|   |       index.ts
+|   |       PricingPage.tsx
+|   |       
+|   +---profile
+|   |       Profile.tsx
+|   |       
+|   \---register
+|           index.ts
+|           RegisterPage.tsx
+|           
++---services
+|       generateDailyTrivia.ts
+|       
++---styles
+|       App.css
+|       index.css
+|       
+\---utils
+        achievementSystem.ts
+        levelSystem.ts
+        streakSystem.ts
+        triviaData.ts
+        

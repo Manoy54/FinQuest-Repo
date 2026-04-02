@@ -1,0 +1,730 @@
+﻿
+> my-app@0.0.0 lint
+> eslint .
+
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\api\cron\refresh-trivia.ts
+  5:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  5:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\api\trivia\today.ts
+   5:44  error  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+   5:54  error  Unexpected any. Specify a different type    @typescript-eslint/no-explicit-any
+  21:21  error  'error' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\app\components\Nav.tsx
+   64:17  error    Expected an assignment or function call and instead saw an expression                                                    @typescript-eslint/no-unused-expressions
+  109:8   warning  React Hook useLayoutEffect has a missing dependency: 'createTimeline'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\app\components\ParallaxDemo.tsx
+  179:40  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-explicit-any
+  302:29  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\app\components\ParallaxDemo.tsx:302:29
+  300 |                     background: '#ffffff',
+  301 |                     borderRadius: 2,
+> 302 |                     cursor: draggingRef.current ? 'grabbing' : 'grab',
+      |                             ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  303 |                     boxShadow: '0:0 4px rgba(0,0,0,0.3)'
+  304 |                 }}
+  305 |             />  react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\context\AuthContext.tsx
+  166:17  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\context\UserContext.tsx
+  45:14  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\Crossword.tsx
+  250:8  warning  React Hook useEffect has a missing dependency: 'activeDirection'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\CrosswordComponents\test_grid.ts
+   7:5   error  'hardClues' is never reassigned. Use 'const' instead  prefer-const
+  10:33  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  13:33  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  16:33  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  19:33  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  22:26  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\CrosswordComponents\test_grid3.ts
+   7:5   error  'hardClues' is never reassigned. Use 'const' instead  prefer-const
+  10:32  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  14:32  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  17:34  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  20:33  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  23:26  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\CrosswordComponents\test_grid4.ts
+   7:5   error  'hardClues' is never reassigned. Use 'const' instead  prefer-const
+  10:36  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+  13:26  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\CrosswordComponents\test_grid5.ts
+   7:5   error  'hardClues' is never reassigned. Use 'const' instead  prefer-const
+  12:26  error  Unexpected any. Specify a different type              @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\MatchingGame.tsx
+  99:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\MatchingGame.tsx:99:13
+   97 |             const earnedXp = matchedCount * XP_PER_MATCH + (mistakes === 0 ? BONUS_XP_PERFECT : 0);
+   98 |             const earnedCoins = matchedCount * COINS_PER_MATCH + (mistakes === 0 ? BONUS_COINS_PERFECT : 0);
+>  99 |             setTotalXp(p => p + earnedXp);
+      |             ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  100 |             setTotalCoins(p => p + earnedCoins);
+  101 |             setTotalMatched(p => p + matchedCount);
+  102 |  react-hooks/set-state-in-effect
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\MoneytaryMasteryComponents\useGameSounds.ts
+  5:64  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\QuizBee.tsx
+  116:13  error    Error: Cannot access variable before it is declared
+
+`handleTimeOut` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\QuizBee.tsx:116:13
+  114 |
+  115 |         if (timer <= 0) {
+> 116 |             handleTimeOut();
+      |             ^^^^^^^^^^^^^ `handleTimeOut` accessed before it is declared
+  117 |             return;
+  118 |         }
+  119 |
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\QuizBee.tsx:193:5
+  191 |     }, [currentQuestionIndex, currentQuestions.length, currentTier]);
+  192 |
+> 193 |     const handleTimeOut = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 194 |         playSound('wrong');
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 195 |         livesRef.current -= 1;
+      ΓÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 202 |         }
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 203 |     };
+      | ^^^^^^^ `handleTimeOut` is declared here
+  204 |
+  205 |     const handleOptionSelect = (option: string) => {
+  206 |         if (showFeedback || !currentQuestion) return;  react-hooks/immutability
+  125:8   warning  React Hook useEffect has a missing dependency: 'handleTimeOut'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpeedRound.tsx
+  54:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpeedRound.tsx:54:13
+  52 |         if (phase !== 'COUNTDOWN') return;
+  53 |         if (countdown <= 0) {
+> 54 |             setPhase('PLAYING');
+     |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  55 |             return;
+  56 |         }
+  57 |         const timer = setTimeout(() => setCountdown(p => p - 1), 1000);  react-hooks/set-state-in-effect
+  65:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpeedRound.tsx:65:13
+  63 |         if (phase !== 'PLAYING') return;
+  64 |         if (timeLeft <= 0) {
+> 65 |             setPhase('RESULTS');
+     |             ^^^^^^^^ Avoid calling setState() directly within an effect
+  66 |             return;
+  67 |         }
+  68 |         const timer = setInterval(() => setTimeLeft(p => p - 1), 1000);     react-hooks/set-state-in-effect
+  83:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpeedRound.tsx:83:13
+  81 |             }
+  82 |
+> 83 |             setTotalXp(earnedXp);
+     |             ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  84 |             setTotalCoins(earnedCoins);
+  85 |             if (earnedXp > 0) addXp(earnedXp);
+  86 |             if (earnedCoins > 0) addCoins(earnedCoins);                 react-hooks/set-state-in-effect
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpotDifference.tsx
+  52:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\SpotDifference.tsx:52:13
+  50 |         if (phase !== 'PLAYING' || !doc) return;
+  51 |         if (foundDiffs.length === doc.differences.length) {
+> 52 |             setDocComplete(true);
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  53 |         }
+  54 |     }, [foundDiffs, doc, phase]);
+  55 |  react-hooks/set-state-in-effect
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHunt.tsx
+  147:13  error    'newUnlocked' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     prefer-const
+  160:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHunt.tsx:160:13
+  158 |
+  159 |         if (changed) {
+> 160 |             setUnlockedLevels(newUnlocked);
+      |             ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  161 |         }
+  162 |     }, [xp, unlockedLevels]);
+  163 |                                                                                                                                            react-hooks/set-state-in-effect
+  193:13  error    'rows' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            prefer-const
+  194:13  error    'cols' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            prefer-const
+  199:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHunt.tsx:199:13
+  197 |
+  198 |         if (generated) {
+> 199 |             setGridValues(generated.grid);
+      |             ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  200 |             setWords(generated.placedWords.map(w => ({ ...w, isFound: false })));
+  201 |         } else {
+  202 |             // Fallback to static if generation fails (unlikely)                   react-hooks/set-state-in-effect
+  209:8   warning  React Hook useEffect has a missing dependency: 'gridValues.length'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+  310:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHunt.tsx:310:9
+  308 |     // Initialize Timer on Level Change
+  309 |     useEffect(() => {
+> 310 |         setTimeRemaining(getTimeForLevel(currentLevel.id));
+      |         ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  311 |     }, [currentLevel]);
+  312 |
+  313 |     // Timer Countdown Logic                                                                              react-hooks/set-state-in-effect
+  334:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHunt.tsx:334:13
+  332 |     useEffect(() => {
+  333 |         if (timeRemaining === 0 && !gameComplete) {
+> 334 |             setGameComplete(true);
+      |             ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  335 |             playSound('wrong'); // Or a specific 'time up' sound if available
+  336 |         }
+  337 |     }, [timeRemaining, gameComplete, playSound]);  react-hooks/set-state-in-effect
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHuntComponents\Grid.tsx
+  129:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHuntComponents\Grid.tsx:129:9
+  127 |             }
+  128 |         });
+> 129 |         setFoundLines(lines);
+      |         ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  130 |
+  131 |     }, [words, grid]); // Re-run when words change
+  132 |  react-hooks/set-state-in-effect
+  198:8  warning  React Hook useEffect has a missing dependency: 'handleEnd'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           react-hooks/exhaustive-deps
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\games\WordHuntComponents\gridGenerator.ts
+  38:9   error  'grid' is never reassigned. Use 'const' instead         prefer-const
+  39:9   error  'placedWords' is never reassigned. Use 'const' instead  prefer-const
+  47:13  error  'attempts' is never reassigned. Use 'const' instead     prefer-const
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\home\StreakTracker.tsx
+  13:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\home\StreakTracker.tsx:13:9
+  11 |
+  12 |     useEffect(() => {
+> 13 |         setStreak(loadStreak());
+     |         ^^^^^^^^^ Avoid calling setState() directly within an effect
+  14 |         setCheckedIn(hasCheckedInToday());
+  15 |         setLast7Days(getLast7Days());
+  16 |     }, []);  react-hooks/set-state-in-effect
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx
+  13:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:13:26
+  11 |             <div className="max-w-6xl mx-auto">
+  12 |                 <div
+> 13 |                     ref={heading.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  14 |                     className="text-center transition-all duration-700 ease-out mb-16"
+  15 |                     style={{
+  16 |                         opacity: heading.isVisible ? 1 : 0,                                                                                                                                                                                                                                                              react-hooks/refs
+  16:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:16:34
+  14 |                     className="text-center transition-all duration-700 ease-out mb-16"
+  15 |                     style={{
+> 16 |                         opacity: heading.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  17 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+  18 |                     }}
+  19 |                 >                                                                                                                                                                                                                     react-hooks/refs
+  17:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:17:36
+  15 |                     style={{
+  16 |                         opacity: heading.isVisible ? 1 : 0,
+> 17 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  18 |                     }}
+  19 |                 >
+  20 |                     <h2 className="text-4xl font-bold mb-4">About FinQuest</h2>                                                                                                                                                                                                                          react-hooks/refs
+  29:30  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:29:30
+  27 |                     {/* Vision */}
+  28 |                     <div
+> 29 |                         ref={visionRef.ref}
+     |                              ^^^^^^^^^^^^^ Cannot access ref value during render
+  30 |                         className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-700 ease-out hover:scale-[1.02] flex flex-col items-center text-center shadow-lg group"
+  31 |                         style={{
+  32 |                             opacity: visionRef.isVisible ? 1 : 0,                                                                                               react-hooks/refs
+  32:38  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:32:38
+  30 |                         className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-700 ease-out hover:scale-[1.02] flex flex-col items-center text-center shadow-lg group"
+  31 |                         style={{
+> 32 |                             opacity: visionRef.isVisible ? 1 : 0,
+     |                                      ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  33 |                             transform: visionRef.isVisible ? 'translateY(0)' : 'translateY(50px)',
+  34 |                             transitionDelay: '0ms',
+  35 |                         }}       react-hooks/refs
+  33:40  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:33:40
+  31 |                         style={{
+  32 |                             opacity: visionRef.isVisible ? 1 : 0,
+> 33 |                             transform: visionRef.isVisible ? 'translateY(0)' : 'translateY(50px)',
+     |                                        ^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  34 |                             transitionDelay: '0ms',
+  35 |                         }}
+  36 |                     >                                                                                                                                                                                                                        react-hooks/refs
+  48:30  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:48:30
+  46 |                     {/* Mission */}
+  47 |                     <div
+> 48 |                         ref={missionRef.ref}
+     |                              ^^^^^^^^^^^^^^ Cannot access ref value during render
+  49 |                         className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-700 ease-out hover:scale-[1.02] flex flex-col items-center text-center shadow-lg group"
+  50 |                         style={{
+  51 |                             opacity: missionRef.isVisible ? 1 : 0,                                                                                           react-hooks/refs
+  51:38  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:51:38
+  49 |                         className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/10 hover:bg-white/15 transition-all duration-700 ease-out hover:scale-[1.02] flex flex-col items-center text-center shadow-lg group"
+  50 |                         style={{
+> 51 |                             opacity: missionRef.isVisible ? 1 : 0,
+     |                                      ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  52 |                             transform: missionRef.isVisible ? 'translateY(0)' : 'translateY(50px)',
+  53 |                             transitionDelay: '150ms',
+  54 |                         }}  react-hooks/refs
+  52:40  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\About.tsx:52:40
+  50 |                         style={{
+  51 |                             opacity: missionRef.isVisible ? 1 : 0,
+> 52 |                             transform: missionRef.isVisible ? 'translateY(0)' : 'translateY(50px)',
+     |                                        ^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  53 |                             transitionDelay: '150ms',
+  54 |                         }}
+  55 |                     >                                                                                                                                                                                                                   react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Developers.tsx
+  104:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Developers.tsx:104:26
+  102 |             <div className="max-w-6xl mx-auto text-center">
+  103 |                 <div
+> 104 |                     ref={heading.ref}
+      |                          ^^^^^^^^^^^ Cannot access ref value during render
+  105 |                     className="transition-all duration-700 ease-out"
+  106 |                     style={{
+  107 |                         opacity: heading.isVisible ? 1 : 0,                                                 react-hooks/refs
+  107:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Developers.tsx:107:34
+  105 |                     className="transition-all duration-700 ease-out"
+  106 |                     style={{
+> 107 |                         opacity: heading.isVisible ? 1 : 0,
+      |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  108 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+  109 |                     }}
+  110 |                 >                    react-hooks/refs
+  108:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Developers.tsx:108:36
+  106 |                     style={{
+  107 |                         opacity: heading.isVisible ? 1 : 0,
+> 108 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+      |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  109 |                     }}
+  110 |                 >
+  111 |                     <h2 className="text-4xl font-bold mb-8">Meet The Developers</h2>  react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\FAQ.tsx
+  37:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\FAQ.tsx:37:26
+  35 |             <div className="max-w-3xl mx-auto">
+  36 |                 <h2
+> 37 |                     ref={heading.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  38 |                     className="text-4xl font-bold text-center mb-12 transition-all duration-700 ease-out"
+  39 |                     style={{
+  40 |                         opacity: heading.isVisible ? 1 : 0,                                            react-hooks/refs
+  40:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\FAQ.tsx:40:34
+  38 |                     className="text-4xl font-bold text-center mb-12 transition-all duration-700 ease-out"
+  39 |                     style={{
+> 40 |                         opacity: heading.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  41 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+  42 |                     }}
+  43 |                 >  react-hooks/refs
+  41:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\FAQ.tsx:41:36
+  39 |                     style={{
+  40 |                         opacity: heading.isVisible ? 1 : 0,
+> 41 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  42 |                     }}
+  43 |                 >
+  44 |                     FAQ                                                                                  react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Features.tsx
+  57:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Features.tsx:57:26
+  55 |             <div className="max-w-7xl mx-auto relative z-10">
+  56 |                 <h2
+> 57 |                     ref={heading.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  58 |                     className="text-4xl md:text-5xl font-bold text-center mb-20 transition-all duration-700 ease-out tracking-tight"
+  59 |                     style={{
+  60 |                         opacity: heading.isVisible ? 1 : 0,                              react-hooks/refs
+  60:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Features.tsx:60:34
+  58 |                     className="text-4xl md:text-5xl font-bold text-center mb-20 transition-all duration-700 ease-out tracking-tight"
+  59 |                     style={{
+> 60 |                         opacity: heading.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  61 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+  62 |                     }}
+  63 |                 >  react-hooks/refs
+  61:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Features.tsx:61:36
+  59 |                     style={{
+  60 |                         opacity: heading.isVisible ? 1 : 0,
+> 61 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  62 |                     }}
+  63 |                 >
+  64 |                     Game Modes                                                                                                      react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Footer.tsx
+  11:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Footer.tsx:11:26
+   9 |             <div className="max-w-4xl mx-auto text-center">
+  10 |                 <div
+> 11 |                     ref={content.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  12 |                     className="bg-white/10 backdrop-blur-md rounded-3xl p-12 border border-white/20 shadow-xl max-w-lg mx-auto transition-all duration-700 ease-out"
+  13 |                     style={{
+  14 |                         opacity: content.isVisible ? 1 : 0,                                                react-hooks/refs
+  14:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Footer.tsx:14:34
+  12 |                     className="bg-white/10 backdrop-blur-md rounded-3xl p-12 border border-white/20 shadow-xl max-w-lg mx-auto transition-all duration-700 ease-out"
+  13 |                     style={{
+> 14 |                         opacity: content.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  15 |                         transform: content.isVisible ? 'translateY(0) scale(1)' : 'translateY(0) scale(0.9)',
+  16 |                     }}
+  17 |                 >  react-hooks/refs
+  15:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Footer.tsx:15:36
+  13 |                     style={{
+  14 |                         opacity: content.isVisible ? 1 : 0,
+> 15 |                         transform: content.isVisible ? 'translateY(0) scale(1)' : 'translateY(0) scale(0.9)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  16 |                     }}
+  17 |                 >
+  18 |                     <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">                                               react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\GameplayPreview.tsx
+   20:8   warning  React Hook useEffect has a missing dependency: 'tabs.length'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    react-hooks/exhaustive-deps
+  126:62  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\GameplayPreview.tsx:126:62
+  124 |                     <div key={i} className={`w-10 h-10 flex items-center justify-center rounded-lg text-lg font-bold ${[7, 8, 9, 10].includes(i) ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/40' : 'bg-white/5 text-white/30'
+  125 |                         }`}>
+> 126 |                         {String.fromCharCode(65 + Math.floor(Math.random() * 26))}
+      |                                                              ^^^^^^^^^^^^^ Cannot call impure function
+  127 |                     </div>
+  128 |                 ))}
+  129 |             </div>                                             react-hooks/purity
+  145:42  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\GameplayPreview.tsx:145:42
+  143 |                     return (
+  144 |                         <div key={i} className={`w-10 h-10 ${isBlack ? 'bg-black/50' : 'bg-white/10'} rounded-md flex items-center justify-center ${isSelected ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}`}>
+> 145 |                             {!isBlack && Math.random() > 0.7 && <span className="text-white/60 text-xs font-mono">{String.fromCharCode(65 + i % 26)}</span>}
+      |                                          ^^^^^^^^^^^^^ Cannot call impure function
+  146 |                         </div>
+  147 |                     )
+  148 |                 })}  react-hooks/purity
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx
+  22:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:22:26
+  20 |             <div className="max-w-4xl mx-auto">
+  21 |                 <div
+> 22 |                     ref={heading.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  23 |                     className="text-center mb-16 transition-all duration-700 ease-out"
+  24 |                     style={{
+  25 |                         opacity: heading.isVisible ? 1 : 0,                                                                                         react-hooks/refs
+  25:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:25:34
+  23 |                     className="text-center mb-16 transition-all duration-700 ease-out"
+  24 |                     style={{
+> 25 |                         opacity: heading.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  26 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(20px)',
+  27 |                     }}
+  28 |                 >                                                react-hooks/refs
+  26:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:26:36
+  24 |                     style={{
+  25 |                         opacity: heading.isVisible ? 1 : 0,
+> 26 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(20px)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  27 |                     }}
+  28 |                 >
+  29 |                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6 uppercase relative inline-block">  react-hooks/refs
+  36:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:36:26
+  34 |
+  35 |                 <div
+> 36 |                     ref={goalsRef.ref}
+     |                          ^^^^^^^^^^^^ Cannot access ref value during render
+  37 |                     className="space-y-8 pl-6 border-l border-white/10"
+  38 |                     style={{
+  39 |                         opacity: goalsRef.isVisible ? 1 : 0,                                                                                                                                                     react-hooks/refs
+  39:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:39:34
+  37 |                     className="space-y-8 pl-6 border-l border-white/10"
+  38 |                     style={{
+> 39 |                         opacity: goalsRef.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  40 |                         transform: goalsRef.isVisible ? 'translateY(0)' : 'translateY(20px)',
+  41 |                         transitionDelay: '200ms',
+  42 |                     }}                            react-hooks/refs
+  40:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\Goals.tsx:40:36
+  38 |                     style={{
+  39 |                         opacity: goalsRef.isVisible ? 1 : 0,
+> 40 |                         transform: goalsRef.isVisible ? 'translateY(0)' : 'translateY(20px)',
+     |                                    ^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  41 |                         transitionDelay: '200ms',
+  42 |                     }}
+  43 |                 >                                                                                react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\HowToPlay.tsx
+  43:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\HowToPlay.tsx:43:26
+  41 |             <div className="max-w-6xl mx-auto text-center">
+  42 |                 <h2
+> 43 |                     ref={heading.ref}
+     |                          ^^^^^^^^^^^ Cannot access ref value during render
+  44 |                     className="text-4xl md:text-5xl font-bold mb-20 transition-all duration-700 ease-out tracking-tight"
+  45 |                     style={{
+  46 |                         opacity: heading.isVisible ? 1 : 0,                                react-hooks/refs
+  46:34  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\HowToPlay.tsx:46:34
+  44 |                     className="text-4xl md:text-5xl font-bold mb-20 transition-all duration-700 ease-out tracking-tight"
+  45 |                     style={{
+> 46 |                         opacity: heading.isVisible ? 1 : 0,
+     |                                  ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  47 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+  48 |                     }}
+  49 |                 >  react-hooks/refs
+  47:36  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\landing\components\HowToPlay.tsx:47:36
+  45 |                     style={{
+  46 |                         opacity: heading.isVisible ? 1 : 0,
+> 47 |                         transform: heading.isVisible ? 'translateY(0)' : 'translateY(40px)',
+     |                                    ^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  48 |                     }}
+  49 |                 >
+  50 |                     Start Your Journey                                                                                  react-hooks/refs
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\profile\Profile.tsx
+   75:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\pages\profile\Profile.tsx:75:13
+  73 |     useEffect(() => {
+  74 |         if (!isEditing && contextAvatarConfig) {
+> 75 |             setConfig(contextAvatarConfig as unknown as ReactNiceAvatarConfig);
+     |             ^^^^^^^^^ Avoid calling setState() directly within an effect
+  76 |         }
+  77 |         if (!isEditing && displayName) {
+  78 |             setEditName(displayName);  react-hooks/set-state-in-effect
+   85:39  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+  191:96  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-explicit-any
+
+C:\Users\armen\OneDrive\Desktop\FinQuest-Repo\my-app\src\services\generateDailyTrivia.ts
+  13:5    error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  14:108  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  21:57   error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+
+Γ£û 90 problems (84 errors, 6 warnings)
+  10 errors and 0 warnings potentially fixable with the `--fix` option.
+

@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { getRankForLevel } from '../utils/levelSystem';
+import { getRankForLevel } from '../features/profile/utils/levelSystem';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
