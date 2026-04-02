@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowLeft } from 'react-icons/fa';
 const FQLogo = '/logo.png';
 import { useAuth } from '../../../context/AuthContext';
+import { supabase } from '../../../lib/supabase/client';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -11,7 +12,7 @@ export function LoginPage() {
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: { email?: string; password?: string } = {};
@@ -25,59 +26,29 @@ export function LoginPage() {
             return;
         }
 
-        // Simulate authentication
-        const storedUser = localStorage.getItem('user_credentials');
+        // Supabase Auth
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email, // Note: Supabase currently only natively supports signing in with email. So username login here is restricted conceptually, or we let them type email.
+            password
+        });
 
-        if (!storedUser) {
-            // No user registered
-            const authErrors = {
-                email: "Incorrect username or email"
-            };
-            setErrors(authErrors);
+        if (error) {
+            setErrors({ email: error.message });
             setTimeout(() => setErrors({}), 3000);
             return;
         }
 
-        try {
-            const userData = JSON.parse(storedUser);
-
-            // Check if email matches (allow login with email or username)
-            const isEmailMatch = userData.email === email || userData.username === email;
-
-            if (!isEmailMatch) {
-                const authErrors = {
-                    email: "Incorrect username or email"
-                };
-                setErrors(authErrors);
-                setTimeout(() => setErrors({}), 3000);
-                return;
-            }
-
-            // Check password
-            if (userData.password !== password) {
-                const authErrors = {
-                    password: "Incorrect password"
-                };
-                setErrors(authErrors);
-                setTimeout(() => setErrors({}), 3000);
-                return;
-            }
-
-            // Login successful — check avatar setup status
-            const username = userData.username || userData.email;
-            const { needsAvatarSetup } = login(username);
-            // Allow state to update before navigation
+        if (data.user) {
+            // Login successful
+            const usernameLabel = data.user.user_metadata?.username || data.user.email;
+            
+            // Inform context so avatar setup logic checks run
+            const { needsAvatarSetup } = login(usernameLabel);
+            
+            // Let context update and redirect
             setTimeout(() => {
-                console.log('Login successful, needsAvatarSetup:', needsAvatarSetup);
                 navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
             }, 0);
-        } catch (error) {
-            console.error('Error parsing user data:', error);
-            const authErrors = {
-                email: "An error occurred. Please try again."
-            };
-            setErrors(authErrors);
-            setTimeout(() => setErrors({}), 3000);
         }
     };
 

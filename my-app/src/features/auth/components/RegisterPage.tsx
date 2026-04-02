@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
+import { supabase } from '../../../lib/supabase/client';
 const FQLogo = '/logo.png';
 
 export function RegisterPage() {
@@ -11,7 +12,7 @@ export function RegisterPage() {
     const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string; confirmPassword?: string }>({});
     const [showSuccess, setShowSuccess] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         const newErrors: { username?: string; email?: string; password?: string; confirmPassword?: string } = {};
@@ -31,12 +32,26 @@ export function RegisterPage() {
             return;
         }
 
-        // Handle registration logic here
-        console.log('Registration attempt:', { username, email, password, confirmPassword });
+        // Handle Supabase Registration
+        setErrors({});
 
-        // Save user credentials to localStorage
-        const userData = { username, email, password };
-        localStorage.setItem('user_credentials', JSON.stringify(userData));
+        // Use standard signup with username passed as meta data
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    username: username,
+                    display_name: username
+                }
+            }
+        });
+
+        if (error) {
+            console.error('Registration failed:', error);
+            setErrors({ email: error.message });
+            return;
+        }
 
         // Clear any existing avatar config and auth state to ensure new user goes through setup
         localStorage.removeItem('userAvatarConfig');
