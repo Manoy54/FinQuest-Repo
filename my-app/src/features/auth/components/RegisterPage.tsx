@@ -36,7 +36,7 @@ export function RegisterPage() {
         setErrors({});
 
         // Use standard signup with username passed as meta data
-        const { data, error } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
             email,
             password,
             options: {
