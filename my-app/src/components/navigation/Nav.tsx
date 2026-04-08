@@ -28,6 +28,7 @@ export interface CardNavProps {
     menuColor?: string;
     buttonBgColor?: string;
     buttonTextColor?: string;
+    onExpandChange?: (expanded: boolean, height: number) => void;
 }
 
 const CardNav: React.FC<CardNavProps> = ({
@@ -35,7 +36,8 @@ const CardNav: React.FC<CardNavProps> = ({
     className = '',
     ease = 'power3.out',
     baseColor = '#fff',
-    menuColor
+    menuColor,
+    onExpandChange
 }) => {
     const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
@@ -45,37 +47,34 @@ const CardNav: React.FC<CardNavProps> = ({
 
     const calculateHeight = () => {
         const navEl = navRef.current;
-        if (!navEl) return 360;
+        if (!navEl) return 420;
 
-        const isMobile = window.matchMedia('(max-width: 768px)').matches;
-        if (isMobile) {
-            const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement;
-            if (contentEl) {
-                const wasVisible = contentEl.style.visibility;
-                const wasPointerEvents = contentEl.style.pointerEvents;
-                const wasPosition = contentEl.style.position;
-                const wasHeight = contentEl.style.height;
+        const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement;
+        if (contentEl) {
+            const wasVisible = contentEl.style.visibility;
+            const wasPointerEvents = contentEl.style.pointerEvents;
+            const wasPosition = contentEl.style.position;
+            const wasHeight = contentEl.style.height;
 
-                contentEl.style.visibility = 'visible';
-                contentEl.style.pointerEvents = 'auto';
-                contentEl.style.position = 'static';
-                contentEl.style.height = 'auto';
+            contentEl.style.visibility = 'visible';
+            contentEl.style.pointerEvents = 'auto';
+            contentEl.style.position = 'static';
+            contentEl.style.height = 'auto';
 
-                void contentEl.offsetHeight;
+            void contentEl.offsetHeight;
 
-                const topBar = 51;
-                const padding = 16;
-                const contentHeight = contentEl.scrollHeight;
+            const topBar = 51;
+            const padding = 16;
+            const contentHeight = contentEl.scrollHeight;
 
-                contentEl.style.visibility = wasVisible;
-                contentEl.style.pointerEvents = wasPointerEvents;
-                contentEl.style.position = wasPosition;
-                contentEl.style.height = wasHeight;
+            contentEl.style.visibility = wasVisible;
+            contentEl.style.pointerEvents = wasPointerEvents;
+            contentEl.style.position = wasPosition;
+            contentEl.style.height = wasHeight;
 
-                return topBar + contentHeight + padding;
-            }
+            return topBar + contentHeight + padding;
         }
-        return 360;
+        return 420;
     };
 
     const createTimeline = () => {
@@ -143,10 +142,15 @@ const CardNav: React.FC<CardNavProps> = ({
         if (!isExpanded) {
             setIsHamburgerOpen(true);
             setIsExpanded(true);
+            const expandedHeight = calculateHeight();
+            onExpandChange?.(true, expandedHeight);
             tl.play(0);
         } else {
             setIsHamburgerOpen(false);
-            tl.eventCallback('onReverseComplete', () => setIsExpanded(false));
+            tl.eventCallback('onReverseComplete', () => {
+                setIsExpanded(false);
+                onExpandChange?.(false, 51);
+            });
             tl.reverse();
         }
     };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface MetricCardProps {
@@ -11,7 +10,7 @@ interface MetricCardProps {
 export function MetricCard({ icon, label, value, highlight }: MetricCardProps) {
     return (
         <div
-            className={`flex items-center gap-3 px-4 py-2 rounded-xl backdrop-blur-md border border-white/10 transition-all duration-300 ${highlight ? 'bg-amber-500/20 border-amber-500/50' : 'bg-white/5'}`}
+            className={`flex items-center gap-3 px-4 py-2 rounded-xl backdrop-blur-md border border-white/10 transition-all duration-300 ${highlight ? 'bg-amber-500/20 border-amber-500/50' : 'bg-black/40'}`}
         >
             <div className="text-2xl filter drop-shadow-lg animate-pulse-slow">
                 {icon}

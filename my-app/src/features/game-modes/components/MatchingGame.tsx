@@ -3,6 +3,7 @@ import { AnimatedBackground, GameComplete } from './MoneytaryMasteryComponents';
 import { HUD } from '../../../components/navigation/HUD';
 import { useUserContext } from '../../../context/UserContext';
 import { getMatchRound } from './MatchingGameComponents';
+import { HowToPlayModal } from './MatchingGameComponents/HowToPlayModal';
 
 const PAIRS_PER_ROUND = 6;
 const TOTAL_ROUNDS = 3;
@@ -37,6 +38,7 @@ export function MatchingGame() {
     const [shakeId, setShakeId] = useState<string | null>(null);
     const [flashId, setFlashId] = useState<string | null>(null);
     const [timer, setTimer] = useState(0);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
 
     const setupRound = useCallback(() => {
         const roundPairs = getMatchRound(PAIRS_PER_ROUND);
@@ -273,6 +275,7 @@ export function MatchingGame() {
                 coins={totalCoins}
                 customLevelLabel={`Rd ${round}/${TOTAL_ROUNDS}`}
                 showBadge={true}
+                onHowToPlay={() => setShowHowToPlay(true)}
             >
                 <div className="flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
@@ -304,13 +307,12 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-5 py-4 rounded-xl text-sm font-bold transition-all duration-200 border text-left ${
-                                    card.matched
+                                className={`w-full px-5 py-4 rounded-xl text-sm font-bold transition-all duration-200 border text-left ${card.matched
                                         ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300 opacity-60'
                                         : isSelected
                                             ? 'bg-indigo-500/30 border-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
-                                            : 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20 cursor-pointer'
-                                } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
+                                            : 'bg-black/40 border-white/10 text-white/90 hover:bg-black/60 hover:border-white/20 cursor-pointer shadow-lg'
+                                    } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}
                             </button>
@@ -331,13 +333,12 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-5 py-4 rounded-xl text-sm font-medium transition-all duration-200 border text-left leading-relaxed ${
-                                    card.matched
+                                className={`w-full px-5 py-4 rounded-xl text-sm font-medium transition-all duration-200 border text-left leading-relaxed ${card.matched
                                         ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300 opacity-60'
                                         : isSelected
                                             ? 'bg-purple-500/30 border-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
                                             : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 cursor-pointer'
-                                } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
+                                    } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}
                             </button>
@@ -359,6 +360,11 @@ export function MatchingGame() {
                     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
                 }
             `}</style>
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
+            />
         </div>
     );
 }

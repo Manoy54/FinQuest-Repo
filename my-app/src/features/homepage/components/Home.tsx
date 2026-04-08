@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiLogOut } from 'react-icons/fi';
 import Avatar, { genConfig } from 'react-nice-avatar';
@@ -13,6 +13,13 @@ export function Home() {
     const navigate = useNavigate();
     const { logout, displayName } = useAuth();
     const [avatarConfig, setAvatarConfig] = useState<ReturnType<typeof genConfig> | null>(null);
+    const [navExpanded, setNavExpanded] = useState(false);
+    const [navHeight, setNavHeight] = useState(51);
+
+    const handleNavExpandChange = useCallback((expanded: boolean, height: number) => {
+        setNavExpanded(expanded);
+        setNavHeight(expanded ? height : 51);
+    }, []);
 
     useEffect(() => {
         const loadAvatar = () => {
@@ -79,11 +86,19 @@ export function Home() {
 
             {/* Navigation */}
             <div className="relative z-50 flex-none">
-                <Header />
+                <Header onExpandChange={handleNavExpandChange} />
             </div>
 
             {/* Main Content Area */}
-            <main className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pt-24 pb-20">
+            <main
+                className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pb-20"
+                style={{
+                    paddingTop: navExpanded ? `${navHeight + 30}px` : '96px',
+                    transition: navExpanded
+                        ? 'padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+                        : 'padding-top 0.15s ease-out'
+                }}
+            >
 
                 {/* Welcome Hero Section */}
                 <div className="text-center mb-8 lg:mb-12 shrink-0 mt-12">

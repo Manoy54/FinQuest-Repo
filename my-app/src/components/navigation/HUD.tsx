@@ -107,8 +107,8 @@ export function HUD({
                             {/* Level Badge */}
                             {showBadge && (
                                 <div className="flex items-center gap-2 shrink-0">
-                                    <div className={`h-9 rounded-xl bg-white/10 flex flex-col items-center justify-center border border-white/20 shadow-inner backdrop-blur-sm ${customLevelLabel ? 'px-2 w-auto' : 'w-9'}`}>
-                                        {!customLevelLabel && <span className="text-[8px] text-blue-200 font-bold uppercase tracking-wider leading-none mb-0.5">Lvl</span>}
+                                    <div className={`h-9 rounded-xl bg-black/40 flex flex-col items-center justify-center border border-white/20 shadow-inner backdrop-blur-md ${customLevelLabel ? 'px-2 w-auto' : 'w-9'}`}>
+                                        {!customLevelLabel && <span className="text-[8px] text-blue-300 font-bold uppercase tracking-wider leading-none mb-0.5">Lvl</span>}
                                         <span className={`font-bold text-white leading-none ${customLevelLabel ? 'text-sm' : 'text-sm'}`}>
                                             {customLevelLabel || level}
                                         </span>
@@ -152,10 +152,10 @@ export function HUD({
                 {onHowToPlay && (
                     <button
                         onClick={onHowToPlay}
-                        className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all hover:scale-105 active:scale-95 shadow-lg backdrop-blur-sm"
+                        className="w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 border border-white/20 flex items-center justify-center text-white transition-all hover:scale-110 active:scale-95 shadow-xl backdrop-blur-md group"
                         title="How to Play"
                     >
-                        <span className="text-2xl">❓</span>
+                        <span className="text-2xl group-hover:scale-110 transition-transform">❓</span>
                     </button>
                 )}
             </div>

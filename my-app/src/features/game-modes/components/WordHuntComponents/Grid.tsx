@@ -202,10 +202,10 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
         <div
             className="select-none touch-none p-4 pt-16 rounded-[2rem] relative group flex flex-col items-center justify-center gap-2 w-full h-full"
             style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                backdropFilter: 'blur(10px)',
+                background: 'rgba(15, 23, 42, 0.4)',
+                backdropFilter: 'blur(16px)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)'
+                boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.4)'
             }}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
@@ -284,11 +284,11 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                     ${grid.length > 9 ? 'text-lg md:text-2xl' : 'text-2xl md:text-4xl'} font-black rounded-md
                                     transition-all duration-200 cursor-pointer
                                     select-none relative z-20
-                                    ${!foundColor ? 'bg-white/90 text-gray-800 hover:bg-white' : ''} 
+                                    ${!foundColor ? 'bg-slate-800/80 text-white hover:bg-slate-700/80' : ''} 
                                     ${foundColor ? 'text-white z-30' : ''}
                                     ${isSelected ? 'text-white z-30' : ''}
-                                    ${!foundColor && !isSelected ? 'shadow-[0_1px_0_0_rgba(0,0,0,0.1)]' : ''}
-                                    ${foundColor || isSelected ? 'bg-transparent shadow-none' : ''}
+                                    ${!foundColor && !isSelected ? 'shadow-[0_2px_4px_rgba(0,0,0,0.3)] border border-white/5' : ''}
+                                    ${foundColor || isSelected ? 'bg-transparent shadow-none border-transparent' : ''}
                                 `}
                             >
                                 <span className="relative z-10 drop-shadow-sm pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>

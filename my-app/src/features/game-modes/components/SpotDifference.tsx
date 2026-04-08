@@ -3,6 +3,7 @@ import { AnimatedBackground, GameComplete } from './MoneytaryMasteryComponents';
 import { HUD } from '../../../components/navigation/HUD';
 import { useUserContext } from '../../../context/UserContext';
 import { getDocumentPairs, type DocumentPair } from './SpotDifferenceComponents';
+import { HowToPlayModal } from './SpotDifferenceComponents/HowToPlayModal';
 
 const ROUNDS = 3;
 const XP_PER_DIFF = 50;
@@ -28,6 +29,7 @@ export function SpotDifference() {
     const [flashLabel, setFlashLabel] = useState<string | null>(null);
     const [shakeLabel, setShakeLabel] = useState<string | null>(null);
     const [docComplete, setDocComplete] = useState(false);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
 
     const startGame = useCallback(() => {
         setDocuments(getDocumentPairs(ROUNDS));
@@ -178,6 +180,7 @@ export function SpotDifference() {
                 coins={totalCoins}
                 customLevelLabel={`Doc ${currentDoc + 1}/${ROUNDS}`}
                 showBadge={true}
+                onHowToPlay={() => setShowHowToPlay(true)}
             >
                 <div className="flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
@@ -192,7 +195,7 @@ export function SpotDifference() {
             </HUD>
 
             {/* Document Info */}
-            <div className="w-full max-w-5xl px-6 mt-20 z-10 shrink-0">
+            <div className="w-full max-w-5xl px-6 mt-8 z-10 shrink-0">
                 <div className="text-center mb-4">
                     <span className="text-[10px] uppercase tracking-widest font-bold text-purple-300 bg-purple-500/20 px-2.5 py-1 rounded-full border border-purple-500/30">
                         {doc.category}
@@ -237,7 +240,7 @@ export function SpotDifference() {
                                     className={`w-full flex justify-between items-center px-3 py-2.5 rounded-lg border transition-all duration-200 text-left ${
                                         isFound
                                             ? 'bg-emerald-500/20 border-emerald-500/40'
-                                            : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/15 cursor-pointer'
+                                            : 'bg-black/40 border-white/5 hover:bg-black/60 hover:border-white/15 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out] bg-red-500/10 border-red-500/30' : ''}
                                     ${isFlashing ? 'bg-emerald-500/30 border-emerald-400 scale-[1.02]' : ''}`}
                                 >
@@ -288,6 +291,11 @@ export function SpotDifference() {
                     75% { transform: translateX(-4px); }
                 }
             `}</style>
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
+            />
         </div>
     );
 }

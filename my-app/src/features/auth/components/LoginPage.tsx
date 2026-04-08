@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowLeft } from 'react-icons/fa';
 const FQLogo = '/logo.png';
 import { useAuth } from '../../../context/AuthContext';
-import { supabase } from '../../../lib/supabase/client';
+import { supabase, isSupabaseConfigured } from '../../../lib/supabase/client';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -26,26 +26,41 @@ export function LoginPage() {
             return;
         }
 
-        // Supabase Auth
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: email, // Note: Supabase currently only natively supports signing in with email. So username login here is restricted conceptually, or we let them type email.
-            password
-        });
+        if (isSupabaseConfigured) {
+            // Supabase Auth
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password
+            });
 
-        if (error) {
-            setErrors({ email: error.message });
-            setTimeout(() => setErrors({}), 3000);
-            return;
-        }
+            if (error) {
+                setErrors({ email: error.message });
+                setTimeout(() => setErrors({}), 3000);
+                return;
+            }
 
-        if (data.user) {
-            // Login successful
-            const usernameLabel = data.user.user_metadata?.username || data.user.email;
-            
-            // Inform context so avatar setup logic checks run
+            if (data.user) {
+                const usernameLabel = data.user.user_metadata?.username || data.user.email;
+                const { needsAvatarSetup } = login(usernameLabel);
+                setTimeout(() => {
+                    navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
+                }, 0);
+            }
+        } else {
+            // Fallback: localStorage-based login (demo/dev mode)
+            const existingUsers = JSON.parse(localStorage.getItem('finquest_users') || '[]');
+            const user = existingUsers.find(
+                (u: { email: string; password: string }) => u.email === email && u.password === password
+            );
+
+            if (!user) {
+                setErrors({ email: 'Invalid email or password' });
+                setTimeout(() => setErrors({}), 3000);
+                return;
+            }
+
+            const usernameLabel = user.username || email.split('@')[0];
             const { needsAvatarSetup } = login(usernameLabel);
-            
-            // Let context update and redirect
             setTimeout(() => {
                 navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
             }, 0);

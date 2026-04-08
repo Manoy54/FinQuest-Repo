@@ -19,7 +19,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-white/30 hover:text-white hover:bg-white/10 transition-all border border-white/5 z-10"
+                    className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-xl bg-black/40 text-white/70 hover:text-white hover:bg-black/60 transition-all border border-white/10 z-10"
                 >
                     ✕
                 </button>
@@ -35,7 +35,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                 {/* Content */}
                 <div className="space-y-8">
                     {/* Step 1: The Goal */}
-                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
+                    <div className="bg-black/20 rounded-2xl p-6 border border-white/5 hover:bg-black/30 transition-colors">
                         <div className="flex items-start gap-4">
                             <div className="w-12 h-12 rounded-full bg-indigo-500/20 flex items-center justify-center text-2xl shrink-0">
                                 🎯
@@ -50,7 +50,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                     </div>
 
                     {/* Step 2: Game Mechanics */}
-                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
+                    <div className="bg-black/20 rounded-2xl p-6 border border-white/5 hover:bg-black/30 transition-colors">
                         <div className="flex items-start gap-4">
                             <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-2xl shrink-0">
                                 👆
@@ -76,7 +76,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                     </div>
 
                     {/* Step 3: Rules & Rewards */}
-                    <div className="bg-white/5 rounded-2xl p-6 border border-white/5 hover:bg-white/10 transition-colors">
+                    <div className="bg-black/20 rounded-2xl p-6 border border-white/5 hover:bg-black/30 transition-colors">
                         <div className="flex items-center gap-4 mb-4">
                             <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center text-2xl shrink-0">
                                 ⚡

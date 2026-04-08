@@ -29,23 +29,27 @@ const navItems: CardNavItem[] = [
     },
     {
         label: 'COMMUNITY',
-        bgColor: '#111827',
+        bgColor: '#0f3460',
         textColor: '#ffffff',
         links: [
-            { label: 'FORUM', href: '#', ariaLabel: 'Visit Forum' },
-            { label: 'DISCORD', href: '#', ariaLabel: 'Join Discord' },
-            { label: 'FACEBOOK', href: 'https://www.facebook.com/profile.php?id=61587675674831', ariaLabel: 'Visit Facebook' },
-            { label: 'INSTAGRAM', href: 'https://www.instagram.com/learnwithfinquest?igsh=Z3prbjczdGJsNXVv', ariaLabel: 'Visit Instagram' }
+            { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61587675674831', ariaLabel: 'Visit Facebook' },
+            { label: 'Instagram', href: 'https://www.instagram.com/learnwithfinquest?igsh=Z3prbjczdGJsNXVv', ariaLabel: 'Visit Instagram' }
         ]
     }
 ];
 
-export function Header() {
+interface HeaderProps {
+    onExpandChange?: (expanded: boolean, height: number) => void;
+}
+
+export function Header({ onExpandChange }: HeaderProps) {
     return (
         <CardNav
             items={navItems}
             baseColor="rgba(26, 26, 46, 0.95)"
             menuColor="#ffffff"
+            onExpandChange={onExpandChange}
         />
     );
 }
+

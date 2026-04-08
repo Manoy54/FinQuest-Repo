@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
-import { supabase } from '../../../lib/supabase/client';
+import { supabase, isSupabaseConfigured } from '../../../lib/supabase/client';
 const FQLogo = '/logo.png';
 
 export function RegisterPage() {
@@ -32,25 +32,37 @@ export function RegisterPage() {
             return;
         }
 
-        // Handle Supabase Registration
+        // Handle Registration
         setErrors({});
 
-        // Use standard signup with username passed as meta data
-        const { error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                data: {
-                    username: username,
-                    display_name: username
+        if (isSupabaseConfigured) {
+            // Use Supabase auth when configured
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: {
+                        username: username,
+                        display_name: username
+                    }
                 }
-            }
-        });
+            });
 
-        if (error) {
-            console.error('Registration failed:', error);
-            setErrors({ email: error.message });
-            return;
+            if (error) {
+                console.error('Registration failed:', error);
+                setErrors({ email: error.message });
+                return;
+            }
+        } else {
+            // Fallback: localStorage-based registration (demo/dev mode)
+            const existingUsers = JSON.parse(localStorage.getItem('finquest_users') || '[]');
+            const userExists = existingUsers.some((u: { email: string }) => u.email === email);
+            if (userExists) {
+                setErrors({ email: 'An account with this email already exists' });
+                return;
+            }
+            existingUsers.push({ username, email, password });
+            localStorage.setItem('finquest_users', JSON.stringify(existingUsers));
         }
 
         // Clear any existing avatar config and auth state to ensure new user goes through setup

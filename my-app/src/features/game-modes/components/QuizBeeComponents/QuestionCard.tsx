@@ -26,10 +26,10 @@ export function QuestionCard({
 
         // Base style
         let style = {
-            background: 'rgba(255, 255, 255, 0.05)',
+            background: 'rgba(15, 23, 42, 0.6)', // Darker slate for premium look
             borderColor: 'rgba(255, 255, 255, 0.1)',
             transform: 'scale(1)',
-            boxShadow: 'none'
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
         };
 
         if (showFeedback) {

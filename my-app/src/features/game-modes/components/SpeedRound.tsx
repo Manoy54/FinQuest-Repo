@@ -3,6 +3,7 @@ import { AnimatedBackground, GameComplete } from './MoneytaryMasteryComponents';
 import { HUD } from '../../../components/navigation/HUD';
 import { useUserContext } from '../../../context/UserContext';
 import { getShuffledQuestions, type SpeedRoundQuestion } from './SpeedRoundComponents';
+import { HowToPlayModal } from './SpeedRoundComponents/HowToPlayModal';
 
 const GAME_DURATION = 60;
 const XP_PER_CORRECT = 30;
@@ -31,6 +32,7 @@ export function SpeedRound() {
     const [totalXp, setTotalXp] = useState(0);
     const [totalCoins, setTotalCoins] = useState(0);
     const [flashColor, setFlashColor] = useState<string | null>(null);
+    const [showHowToPlay, setShowHowToPlay] = useState(true);
 
     const startGame = useCallback(() => {
         setQuestions(getShuffledQuestions());
@@ -233,6 +235,7 @@ export function SpeedRound() {
                 coins={totalCoins}
                 showBadge={false}
                 showStats={false}
+                onHowToPlay={() => setShowHowToPlay(true)}
             >
                 <div className="flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
@@ -293,7 +296,7 @@ export function SpeedRound() {
                                     btnClass += 'bg-white/5 border-white/5 text-white/30';
                                 }
                             } else {
-                                btnClass += 'bg-white/5 border-white/10 text-white/80 hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] cursor-pointer active:scale-95';
+                                btnClass += 'bg-black/40 border-white/10 text-white/90 hover:bg-black/60 hover:border-white/20 hover:scale-[1.02] cursor-pointer active:scale-95 shadow-lg';
                             }
 
                             return (
@@ -311,6 +314,11 @@ export function SpeedRound() {
                     </div>
                 </div>
             </div>
+
+            <HowToPlayModal
+                isOpen={showHowToPlay}
+                onClose={() => setShowHowToPlay(false)}
+            />
         </div>
     );
 }
