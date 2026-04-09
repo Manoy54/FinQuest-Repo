@@ -10,6 +10,7 @@ interface GameMode {
     buttonGradient: string;
     emoji: string;
     stripeColor: string;
+    locked?: boolean;
 }
 
 const gameModes: GameMode[] = [
@@ -59,7 +60,7 @@ const gameModes: GameMode[] = [
         stripeColor: 'linear-gradient(135deg, #ec4899 0%, #9d174d 100%)',
     },
     {
-        title: 'Match Up',
+        title: 'Coinnect',
         description: 'Match financial terms with their correct definitions!',
         route: '/matching-game',
         gradient: 'emerald',
@@ -75,6 +76,36 @@ const gameModes: GameMode[] = [
         buttonGradient: 'from-purple-500 to-purple-700',
         emoji: '🔎',
         stripeColor: 'linear-gradient(135deg, #a855f7 0%, #581c87 100%)',
+    },
+    {
+        title: 'Stock Market Simulator',
+        description: 'Experience the thrill of trading stocks and building your portfolio in real-time!',
+        route: '#',
+        gradient: 'blue',
+        buttonGradient: 'from-blue-600 to-blue-800',
+        emoji: '📈',
+        stripeColor: 'linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%)',
+        locked: true,
+    },
+    {
+        title: 'Trading Farm',
+        description: 'Grow your wealth by trading commodities and managing your financial farm!',
+        route: '#',
+        gradient: 'orange',
+        buttonGradient: 'from-orange-500 to-orange-700',
+        emoji: '🌾',
+        stripeColor: 'linear-gradient(135deg, #f97316 0%, #9a3412 100%)',
+        locked: true,
+    },
+    {
+        title: 'Grant the Credit',
+        description: 'Navigate tricky credit scenarios, manage debt, and build your perfect score!',
+        route: '#',
+        gradient: 'cyan',
+        buttonGradient: 'from-cyan-500 to-cyan-700',
+        emoji: '💳',
+        stripeColor: 'linear-gradient(135deg, #06b6d4 0%, #164e63 100%)',
+        locked: true,
     },
 ];
 
@@ -158,11 +189,21 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
             >
                 {mode.description}
             </p>
-            <GameButton
-                to={mode.route}
-                gradient={mode.buttonGradient}
-                text="Play Now"
-            />
+            {mode.locked ? (
+                <button
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#2c3e50]/80 text-[#e2e8f0] font-bold text-xs sm:text-sm shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-white/10 uppercase tracking-widest self-start backdrop-blur-sm cursor-not-allowed transition-all hover:bg-[#34495e]/90"
+                    style={{ maxWidth: 'fit-content' }}
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                >
+                    <span className="text-xl">🔒</span> UNLOCK WITH PRIME
+                </button>
+            ) : (
+                <GameButton
+                    to={mode.route}
+                    gradient={mode.buttonGradient}
+                    text="Play Now"
+                />
+            )}
         </div>
     </ParallaxLayer>
 );
