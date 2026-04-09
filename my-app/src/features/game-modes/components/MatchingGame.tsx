@@ -5,7 +5,7 @@ import { useUserContext } from '../../../context/UserContext';
 import { getMatchRound } from './MatchingGameComponents';
 import { HowToPlayModal } from './MatchingGameComponents/HowToPlayModal';
 
-const PAIRS_PER_ROUND = 6;
+const PAIRS_PER_ROUND = 5;
 const TOTAL_ROUNDS = 3;
 const XP_PER_MATCH = 40;
 const COINS_PER_MATCH = 20;
@@ -40,8 +40,8 @@ export function MatchingGame() {
     const [timer, setTimer] = useState(0);
     const [showHowToPlay, setShowHowToPlay] = useState(true);
 
-    const setupRound = useCallback(() => {
-        const roundPairs = getMatchRound(PAIRS_PER_ROUND);
+    const setupRound = useCallback((currentRound: number) => {
+        const roundPairs = getMatchRound(currentRound);
 
         const termCards: CardItem[] = roundPairs.map(p => ({
             id: `term-${p.id}`,
@@ -82,7 +82,7 @@ export function MatchingGame() {
         setTotalXp(0);
         setTotalCoins(0);
         hasAwardedRef.current = false;
-        setupRound();
+        setupRound(1);
         setPhase('PLAYING');
     }, [setupRound]);
 
@@ -156,8 +156,11 @@ export function MatchingGame() {
     };
 
     const nextRound = () => {
-        setRound(p => p + 1);
-        setupRound();
+        setRound(p => {
+            const next = p + 1;
+            setupRound(next);
+            return next;
+        });
         setPhase('PLAYING');
     };
 
@@ -177,7 +180,7 @@ export function MatchingGame() {
                             WebkitTextFillColor: 'transparent',
                             filter: 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'
                         }}>
-                        MATCH UP
+                        COINNECT
                     </span>
                     <p className="text-base md:text-2xl mb-8 md:mb-14 text-gray-300/90 font-light tracking-wide italic">
                         Match financial terms with their definitions!
@@ -261,12 +264,12 @@ export function MatchingGame() {
     const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
     return (
-        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden px-2"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 
             <HUD
-                title="MATCH UP"
+                title="COINNECT"
                 backPath="/home"
                 currentExp={totalXp}
                 level={round}
@@ -326,10 +329,10 @@ export function MatchingGame() {
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
                                 className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-bold transition-all duration-200 border-l-[3px] border text-left ${card.matched
-                                        ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
-                                        : isSelected
-                                            ? 'bg-indigo-500/30 border-indigo-400 !border-l-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
-                                            : 'bg-white/[0.08] border-white/10 !border-l-indigo-500/40 text-white/90 hover:bg-white/[0.12] hover:border-white/20 hover:!border-l-indigo-400 cursor-pointer'
+                                    ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
+                                    : isSelected
+                                        ? 'bg-indigo-500/30 border-indigo-400 !border-l-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
+                                        : 'bg-white/[0.08] border-white/10 !border-l-indigo-500/40 text-white/90 hover:bg-white/[0.12] hover:border-white/20 hover:!border-l-indigo-400 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}
@@ -352,10 +355,10 @@ export function MatchingGame() {
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
                                 className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-medium transition-all duration-200 border-l-[3px] border text-left leading-relaxed ${card.matched
-                                        ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
-                                        : isSelected
-                                            ? 'bg-purple-500/30 border-purple-400 !border-l-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
-                                            : 'bg-white/[0.04] border-white/[0.06] !border-l-purple-500/30 text-white/70 hover:bg-white/[0.08] hover:border-white/15 hover:!border-l-purple-400 cursor-pointer'
+                                    ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
+                                    : isSelected
+                                        ? 'bg-purple-500/30 border-purple-400 !border-l-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
+                                        : 'bg-white/[0.04] border-white/[0.06] !border-l-purple-500/30 text-white/70 hover:bg-white/[0.08] hover:border-white/15 hover:!border-l-purple-400 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}

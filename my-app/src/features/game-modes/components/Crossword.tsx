@@ -52,7 +52,7 @@ export function Crossword() {
         e.preventDefault();
         e.stopPropagation();
         const delta = e.deltaY > 0 ? -0.05 : 0.05;
-        setZoom(prev => Math.min(Math.max(prev + delta, 0.3), 1.5));
+        setZoom(prev => Math.min(Math.max(prev + delta, 0.4), 2.5));
     }, []);
 
     // Drag-to-pan state
@@ -238,8 +238,8 @@ export function Crossword() {
         };
     }, [grid]);
 
-    const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.1, 1.5));
-    const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.5));
+    const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.1, 2.5));
+    const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.1, 0.4));
 
     // Auto-update direction if we selected a clue logically different
     useEffect(() => {
@@ -430,7 +430,27 @@ export function Crossword() {
     }
 
     return (
-        <div className="h-[100dvh] flex flex-col overflow-hidden bg-[#0f172a] font-sans relative">
+        <div className="h-[100dvh] flex flex-col overflow-hidden bg-[#0f172a] font-sans relative px-2">
+            <style>{`
+                .always-visible-scrollbar::-webkit-scrollbar {
+                    width: 6px;
+                    height: 6px;
+                    display: block;
+                    -webkit-appearance: none;
+                }
+                .always-visible-scrollbar::-webkit-scrollbar-track {
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 10px;
+                }
+                .always-visible-scrollbar::-webkit-scrollbar-thumb {
+                    background: rgba(251, 191, 36, 0.4);
+                    border-radius: 10px;
+                }
+                .always-visible-scrollbar {
+                    scrollbar-width: thin;
+                    scrollbar-color: rgba(251, 191, 36, 0.4) rgba(255, 255, 255, 0.05);
+                }
+            `}</style>
             <AnimatedBackground />
 
             {/* Header */}
@@ -446,14 +466,14 @@ export function Crossword() {
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="bg-black/20 backdrop-blur-md border-b border-white/5"
             >
-                {/* Desktop only */}
-                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
-                    <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+                {/* Desktop and Tablet */}
+                <div className="hidden md:flex items-center gap-1.5 lg:gap-3 shrink-0 relative z-20">
+                    <div className="flex items-center gap-1 bg-white/5 p-0.5 lg:p-1 rounded-md lg:rounded-xl border border-white/10">
                         {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setDifficulty(level)}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${difficulty === level
+                                className={`px-1.5 py-0.5 lg:px-3 lg:py-1.5 rounded-sm lg:rounded-lg text-[8px] lg:text-xs font-bold uppercase tracking-wider transition-all ${difficulty === level
                                     ? 'bg-blue-500 text-white shadow-lg'
                                     : 'text-white/50 hover:text-white hover:bg-white/10'
                                     }`}
@@ -465,7 +485,7 @@ export function Crossword() {
 
                     <button
                         onClick={handleCheck}
-                        className="px-6 py-2 rounded-xl font-bold text-sm uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105 transition-transform"
+                        className="px-3 py-1 lg:px-6 lg:py-2 rounded-md lg:rounded-xl font-bold text-[10px] lg:text-sm uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105 transition-transform"
                     >
                         Check
                     </button>
@@ -473,17 +493,18 @@ export function Crossword() {
             </HUD>
 
             {/* Mobile only: Controls bar */}
-            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
-                <div className="flex items-center justify-between gap-2 px-2 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
-                    <div className="flex items-center gap-1 bg-white/5 p-0.5 rounded-lg border border-white/10">
+            <div className="md:hidden w-full px-2 z-10 shrink-0 mt-0.5 flex justify-center">
+                <div className="flex items-center justify-center gap-0.5 px-1 py-0.5 rounded-md bg-black/30 backdrop-blur-md border border-white/5 w-max mx-auto shadow-sm">
+                    <div className="flex items-center gap-0.5 bg-white/5 p-0.5 rounded-md border border-white/10">
                         {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setDifficulty(level)}
-                                className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${difficulty === level
-                                    ? 'bg-blue-500 text-white shadow-lg'
-                                    : 'text-white/50'
+                                className={`px-1 py-0.5 rounded-sm text-[6px] font-black uppercase tracking-tight transition-all ${difficulty === level
+                                    ? 'bg-blue-500 text-white'
+                                    : 'text-white/40'
                                     }`}
+                                style={{ minWidth: '25px' }}
                             >
                                 {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
                             </button>
@@ -491,7 +512,8 @@ export function Crossword() {
                     </div>
                     <button
                         onClick={handleCheck}
-                        className="px-3 py-1 rounded-lg font-bold text-[10px] uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg hover:scale-105 transition-transform"
+                        className="px-1.5 py-0.5 rounded-sm font-black text-[6px] uppercase tracking-tight bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-sm hover:scale-105 transition-transform"
+                        style={{ minWidth: '30px' }}
                     >
                         Check
                     </button>
@@ -499,17 +521,17 @@ export function Crossword() {
             </div>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col lg:flex-row relative z-10 min-h-0 container mx-auto p-2 md:p-4 gap-2 md:gap-6">
+            <main className="flex-1 flex flex-col lg:flex-row relative z-10 min-h-0 overflow-y-auto lg:overflow-hidden container mx-auto px-2 py-2 md:px-4 md:py-4 gap-4 md:gap-6 always-visible-scrollbar">
 
                 {/* Grid Area */}
                 {/* Grid Area */}
-                <div className="flex-1 flex flex-col min-h-0 bg-white/5 rounded-2xl border border-white/5 shadow-2xl relative">
+                <div className="w-full lg:flex-1 flex flex-col min-h-[450px] lg:min-h-0 bg-white/5 rounded-2xl border border-white/5 shadow-2xl relative">
 
                     {/* Scrollable Grid Container */}
-                    <div ref={gridWrapperRef} className="flex-1 overflow-auto custom-scrollbar relative">
-                        <div className="min-w-full min-h-full flex items-center justify-center p-4 md:p-8">
+                    <div ref={gridWrapperRef} className="flex-1 overflow-auto always-visible-scrollbar relative">
+                        <div className="min-w-full min-h-full flex items-center justify-center p-32 md:p-64">
                             <div
-                                className="transition-transform duration-200 ease-out"
+                                className="transition-transform duration-200 ease-out pointer-events-auto"
                                 style={{
                                     transform: `scale(${zoom})`,
                                     transformOrigin: 'center center',
@@ -570,7 +592,7 @@ export function Crossword() {
                 </div>
 
                 {/* Clues Sidebar */}
-                <div className="lg:w-[350px] shrink-0 flex flex-col bg-black/20 rounded-2xl border border-white/5 backdrop-blur-xl shadow-xl overflow-hidden h-[30vh] lg:h-auto">
+                <div className="w-full lg:w-[350px] shrink-0 flex flex-col bg-black/20 rounded-2xl border border-white/5 backdrop-blur-xl shadow-xl overflow-hidden min-h-[300px] lg:h-auto mb-4 lg:mb-0">
                     <div className="p-4 border-b border-white/10 bg-white/5">
                         <h2 className="text-white font-bold flex items-center gap-2">
                             <span>💡</span> Clues

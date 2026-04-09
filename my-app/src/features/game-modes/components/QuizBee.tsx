@@ -363,7 +363,7 @@ export function QuizBee() {
     }
 
     return (
-        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden font-sans"
+        <div className="min-h-screen w-full flex flex-col items-center relative font-sans px-2"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
@@ -426,8 +426,8 @@ export function QuizBee() {
                 </div>
             </div>
 
-            {/* Progress Bar */}
-            < div className="w-full max-w-2xl px-4 mt-2 md:mt-16 mb-2 md:mb-6 z-10 text-center shrink-0" >
+            {/* Progress Bar Area */}
+            <div className="w-full max-w-2xl px-4 mt-2 md:mt-16 mb-2 md:mb-6 z-10 text-center shrink-0">
                 <div className="flex justify-center items-center gap-4 text-[10px] md:text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-2 md:mb-3">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
@@ -439,10 +439,10 @@ export function QuizBee() {
                         style={{ width: `${((currentQuestionIndex) / currentQuestions.length) * 100}%` }}
                     />
                 </div>
-            </div >
+            </div>
 
             {/* Main Content */}
-            < div className="flex-1 w-full max-w-4xl px-3 md:px-4 flex flex-col items-center justify-center z-10 relative pb-6 md:pb-10 min-h-0" >
+            <div className="flex-1 w-full max-w-4xl px-6 md:px-8 flex flex-col items-center justify-start pt-4 md:pt-12 z-10 relative pb-8 md:pb-10 min-h-0">
                 <QuestionCard
                     question={currentQuestion}
                     selectedOption={selectedOption}

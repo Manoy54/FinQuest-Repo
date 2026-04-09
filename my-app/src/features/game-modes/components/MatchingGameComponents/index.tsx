@@ -2,37 +2,41 @@ export interface MatchPair {
     id: string;
     term: string;
     definition: string;
-    category: string;
 }
 
-export const MATCH_PAIRS: MatchPair[] = [
-    { id: 'asset', term: 'Asset', definition: 'Something of value owned by a person or company', category: 'Accounting' },
-    { id: 'liability', term: 'Liability', definition: 'A financial obligation or debt owed', category: 'Accounting' },
-    { id: 'equity', term: 'Equity', definition: 'Ownership interest in an asset after debts', category: 'Finance' },
-    { id: 'dividend', term: 'Dividend', definition: 'Profit distributed to shareholders', category: 'Investing' },
-    { id: 'inflation', term: 'Inflation', definition: 'General increase in prices over time', category: 'Economics' },
-    { id: 'deflation', term: 'Deflation', definition: 'General decrease in prices over time', category: 'Economics' },
-    { id: 'amortization', term: 'Amortization', definition: 'Spreading loan payments over time', category: 'Banking' },
-    { id: 'collateral', term: 'Collateral', definition: 'Asset pledged as security for a loan', category: 'Banking' },
-    { id: 'capital-gain', term: 'Capital Gain', definition: 'Profit from selling an asset above purchase price', category: 'Investing' },
-    { id: 'depreciation', term: 'Depreciation', definition: 'Decrease in asset value over time', category: 'Accounting' },
-    { id: 'liquidity', term: 'Liquidity', definition: 'How easily an asset can be converted to cash', category: 'Finance' },
-    { id: 'portfolio', term: 'Portfolio', definition: 'Collection of financial investments', category: 'Investing' },
-    { id: 'interest', term: 'Interest Rate', definition: 'Cost of borrowing money expressed as percentage', category: 'Banking' },
-    { id: 'gdp', term: 'GDP', definition: 'Total value of goods and services in a country', category: 'Economics' },
-    { id: 'bear-market', term: 'Bear Market', definition: 'A market where prices are falling', category: 'Investing' },
-    { id: 'bull-market', term: 'Bull Market', definition: 'A market where prices are rising', category: 'Investing' },
-    { id: 'bond', term: 'Bond', definition: 'Debt instrument where issuer owes holder', category: 'Investing' },
-    { id: 'budget', term: 'Budget', definition: 'Plan for managing income and expenses', category: 'Personal Finance' },
-    { id: 'credit-score', term: 'Credit Score', definition: 'Number representing creditworthiness', category: 'Banking' },
-    { id: 'mutual-fund', term: 'Mutual Fund', definition: 'Pooled investment managed by professionals', category: 'Investing' },
+export const MATCH_PAIRS_EASY: MatchPair[] = [
+    { id: 'cash-flow', term: 'Cash Flow', definition: 'The movement of cash coming in and going out of a business.' },
+    { id: 'investments', term: 'Investments', definition: 'Assets purchased with the goal of earning income or increasing value over time.' },
+    { id: 'economics', term: 'Economics', definition: 'The study of how people and governments allocate scarce resources.' },
+    { id: 'stocks', term: 'Stocks', definition: 'Ownership shares in a company that give investors claims on income and assets.' },
+    { id: 'bonds', term: 'Bonds', definition: 'Debt securities where investors lend money to an issuer in exchange for interest payments.' },
 ];
 
-export function getMatchRound(count: number = 6): MatchPair[] {
-    const shuffled = [...MATCH_PAIRS];
-    for (let i = shuffled.length - 1; i > 0; i--) {
+export const MATCH_PAIRS_INTERMEDIATE: MatchPair[] = [
+    { id: 'monetary-policy', term: 'Monetary Policy', definition: 'Actions taken by a central bank to control money supply and interest rates to stabilize the economy.' },
+    { id: 'diversify', term: 'Diversify', definition: 'Spreading investments to reduce risk instead of putting all funds into a single asset.' },
+    { id: 'risk-return', term: 'Risk Return', definition: 'The principle that higher risk is usually associated with higher potential return.' },
+    { id: 'market-value', term: 'Market Value', definition: 'The observed price of an asset in the marketplace.' },
+    { id: 'book-value', term: 'Book Value', definition: 'Value of an asset as recorded on the balance sheet.' },
+];
+
+export const MATCH_PAIRS_HARD: MatchPair[] = [
+    { id: 'current-yield', term: 'Current Yield', definition: "The ratio of annual interest payment to the bond's current market price." },
+    { id: 'leverage', term: 'Leverage', definition: 'Magnification of earnings that results from the use of fixed costs in a company.' },
+    { id: 'serial-bonds', term: 'Serial Bonds', definition: 'Bonds that are paid off in installments over a period of time.' },
+    { id: 'straight-bonds', term: 'Straight Bonds', definition: 'Bonds that mature on a single date.' },
+    { id: 'cost-of-capital', term: 'Cost of Capital', definition: 'The return expected by those who provide capital for the business.' },
+];
+
+export function getMatchRound(round: number): MatchPair[] {
+    let pairs: MatchPair[];
+    if (round === 1) pairs = [...MATCH_PAIRS_EASY];
+    else if (round === 2) pairs = [...MATCH_PAIRS_INTERMEDIATE];
+    else pairs = [...MATCH_PAIRS_HARD];
+
+    for (let i = pairs.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
     }
-    return shuffled.slice(0, count);
+    return pairs;
 }

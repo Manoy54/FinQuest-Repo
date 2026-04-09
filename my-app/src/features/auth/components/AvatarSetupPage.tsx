@@ -48,29 +48,29 @@ export function AvatarSetupPage() {
     };
 
     const renderColorPicker = (label: string, value: string, onChange: (val: string) => void) => (
-        <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">{label}</label>
-            <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-1.5 md:gap-2">
+            <label className="text-[10px] md:text-xs uppercase font-bold text-white/50 tracking-wider">{label}</label>
+            <div className="flex items-center gap-2 md:gap-3">
                 <input
                     type="color"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
-                    className="w-10 h-10 rounded-lg border border-white/20 p-1 bg-white/5 cursor-pointer"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-lg border border-white/20 p-0.5 md:p-1 bg-white/5 cursor-pointer"
                 />
-                <span className="text-sm font-mono text-white/70">{value}</span>
+                <span className="text-xs md:text-sm font-mono text-white/70">{value}</span>
             </div>
         </div>
     );
 
     const renderSelect = (label: string, key: keyof typeof avatarConfigOptions, value: string, onChange: (val: string) => void) => (
         <div className="flex flex-col gap-2">
-            <label className="text-xs uppercase font-bold text-white/50 tracking-wider">{label}</label>
+            <label className="text-[10px] md:text-xs uppercase font-bold text-white/50 tracking-wider">{label}</label>
             <div className="flex flex-wrap gap-2">
                 {avatarConfigOptions[key].map((opt) => (
                     <button
                         key={opt}
                         onClick={() => onChange(opt)}
-                        className={`px-3 py-1.5 rounded-lg text-sm transition-all duration-200 border cursor-pointer ${value === opt
+                        className={`px-3 py-1.5 md:px-3 md:py-1.5 rounded-lg text-xs md:text-sm transition-all duration-200 border cursor-pointer ${value === opt
                             ? 'bg-amber-500 text-white border-amber-400 shadow-lg shadow-amber-500/20'
                             : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20'
                             }`}
@@ -81,6 +81,20 @@ export function AvatarSetupPage() {
             </div>
         </div>
     );
+    
+    const renderTabContent = (tabId: string, isMobile: boolean) => {
+        const spaceClass = isMobile ? 'space-y-4' : 'space-y-6';
+        switch (tabId) {
+            case 'base': return <div className={spaceClass}>{renderSelect('Sex', 'sex', config.sex || 'man', (v) => updateConfig('sex', v))}{renderSelect('Ear Size', 'earSize', config.earSize || 'small', (v) => updateConfig('earSize', v))}</div>;
+            case 'face': return <div className={spaceClass}>{renderColorPicker('Skin Color', config.faceColor || '#F9C9B6', (v) => updateConfig('faceColor', v))}</div>;
+            case 'hair': return <div className={spaceClass}>{renderSelect('Hair Style', 'hairStyle', config.hairStyle || 'normal', (v) => updateConfig('hairStyle', v))}{renderColorPicker('Hair Color', config.hairColor || '#000000', (v) => updateConfig('hairColor', v))}{renderSelect('Hat Style', 'hatStyle', config.hatStyle || 'none', (v) => updateConfig('hatStyle', v))}{config.hatStyle !== 'none' && renderColorPicker('Hat Color', config.hatColor || '#000000', (v) => updateConfig('hatColor', v))}</div>;
+            case 'eyes': return <div className={spaceClass}>{renderSelect('Eye Style', 'eyeStyle', config.eyeStyle || 'oval', (v) => updateConfig('eyeStyle', v))}{renderSelect('Glasses', 'glassesStyle', config.glassesStyle || 'none', (v) => updateConfig('glassesStyle', v))}</div>;
+            case 'mouth': return <div className={spaceClass}>{renderSelect('Nose Style', 'noseStyle', config.noseStyle || 'short', (v) => updateConfig('noseStyle', v))}{renderSelect('Mouth Style', 'mouthStyle', config.mouthStyle || 'smile', (v) => updateConfig('mouthStyle', v))}</div>;
+            case 'clothes': return <div className={spaceClass}>{renderSelect('Shirt Style', 'shirtStyle', config.shirtStyle || 'hoody', (v) => updateConfig('shirtStyle', v))}{renderColorPicker('Shirt Color', config.shirtColor || '#fff', (v) => updateConfig('shirtColor', v))}</div>;
+            case 'bg': return <div className={spaceClass}>{renderColorPicker('Background Color', config.bgColor || '#ff9090', (v) => updateConfig('bgColor', v))}<div className="flex items-center gap-3"><input title="Gradient toggle" type="checkbox" checked={config.isGradient} onChange={(e) => updateConfig('isGradient', e.target.checked)} className="w-5 h-5 rounded border-white/20 bg-white/5 checked:bg-amber-500 accent-amber-500" /><label className="text-[10px] md:text-sm font-bold text-white/70">Enable Gradient</label></div></div>;
+            default: return null;
+        }
+    };
 
     const tabs = [
         { id: 'base', icon: <FaUser />, label: 'Base' },
@@ -101,47 +115,47 @@ export function AvatarSetupPage() {
         >
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-5xl px-4 py-12 flex flex-col gap-8">
+            <div className="relative z-10 w-full max-w-5xl px-4 py-6 md:py-12 flex flex-col gap-4 md:gap-8">
 
                 {/* Header */}
                 <div className="text-center">
-                    <p className="text-amber-400/80 text-sm font-bold uppercase tracking-[0.3em] mb-2">
+                    <p className="text-amber-400/80 text-[10px] md:text-sm font-bold uppercase tracking-[0.3em] mb-1 md:mb-2">
                         Step 1 of 1
                     </p>
                     <h1
-                        className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight"
+                        className="text-3xl md:text-5xl font-black text-white mb-2 md:mb-3 tracking-tight"
                     >
                         Create Your Avatar
                     </h1>
-                    <p className="text-white/50 text-lg max-w-md mx-auto">
+                    <p className="text-white/50 text-sm md:text-lg max-w-md mx-auto">
                         Customize your character before entering the world of FinQuest
                     </p>
                 </div>
 
                 {/* Main Content */}
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="flex flex-col lg:flex-row gap-6 md:gap-8 items-start">
 
                     {/* Avatar Preview Card */}
-                    <div className="lg:w-[320px] shrink-0 mx-auto lg:mx-0">
-                        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col items-center gap-6 shadow-2xl">
+                    <div className="w-[85%] md:w-full lg:w-[320px] shrink-0 mx-auto lg:mx-0">
+                        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-5 md:p-8 flex flex-col items-center gap-4 md:gap-6 shadow-2xl">
 
                             {/* Avatar */}
                             <div className="relative group">
                                 <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity scale-90" />
-                                <div className="relative bg-gray-900 rounded-full p-2 w-48 h-48 ring-2 ring-white/10">
+                                <div className="relative bg-gray-900 rounded-full p-1.5 md:p-2 w-36 h-36 md:w-48 md:h-48 ring-2 ring-white/10">
                                     <Avatar className="w-full h-full" {...config} />
                                 </div>
                             </div>
 
                             {/* Name Input */}
                             <div className="w-full">
-                                <label className="text-xs uppercase font-bold text-white/50 tracking-wider mb-2 block text-center">Display Name</label>
+                                <label className="text-[10px] md:text-xs uppercase font-bold text-white/50 tracking-wider mb-1 md:mb-2 block text-center">Display Name</label>
                                 <input
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     maxLength={12}
-                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-center text-white text-lg font-bold tracking-wide focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all placeholder:text-white/20"
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 md:px-4 md:py-3 text-center text-white text-sm md:text-lg font-bold tracking-wide focus:outline-none focus:border-amber-500/50 focus:bg-white/10 transition-all placeholder:text-white/20"
                                     placeholder="Enter Name"
                                 />
                             </div>
@@ -149,16 +163,16 @@ export function AvatarSetupPage() {
                             {/* Randomize Button */}
                             <button
                                 onClick={handleRandomize}
-                                className="w-full px-5 py-3 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer"
+                                className="w-full px-3 py-2 md:px-5 md:py-3 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 font-bold text-xs md:text-sm flex items-center justify-center gap-1 md:gap-2 transition-all duration-300 cursor-pointer"
                             >
-                                <FaDice className="text-lg" /> Randomize
+                                <FaDice className="text-sm md:text-lg" /> Randomize
                             </button>
 
                             {/* Save Button */}
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className={`w-full px-5 py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all duration-300 cursor-pointer ${saving
+                                className={`w-full px-3 py-2.5 md:px-5 md:py-4 rounded-xl font-bold text-sm md:text-lg flex items-center justify-center gap-2 md:gap-3 transition-all duration-300 cursor-pointer ${saving
                                     ? 'bg-green-500/50 text-white/70 cursor-not-allowed'
                                     : 'bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-white shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]'
                                     }`}
@@ -182,10 +196,10 @@ export function AvatarSetupPage() {
                     </div>
 
                     {/* Customization Panel */}
-                    <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+                    <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:max-h-[500px]">
 
-                        {/* Tabs */}
-                        <div className="flex overflow-x-auto border-b border-white/10 scrollbar-hide">
+                        {/* DESKTOP Tabs */}
+                        <div className="hidden md:flex overflow-x-auto border-b border-white/10 scrollbar-hide">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab.id}
@@ -201,66 +215,23 @@ export function AvatarSetupPage() {
                             ))}
                         </div>
 
-                        {/* Tab Content */}
-                        <div className="p-6 md:p-8 min-h-[320px]">
-                            {activeTab === 'base' && (
-                                <div className="space-y-6">
-                                    {renderSelect('Sex', 'sex', config.sex || 'man', (v) => updateConfig('sex', v))}
-                                    {renderSelect('Ear Size', 'earSize', config.earSize || 'small', (v) => updateConfig('earSize', v))}
-                                </div>
-                            )}
+                        {/* DESKTOP Tab Content */}
+                        <div className="hidden md:block p-8 min-h-[320px] overflow-y-auto w-full">
+                            {renderTabContent(activeTab, false)}
+                        </div>
 
-                            {activeTab === 'face' && (
-                                <div className="space-y-6">
-                                    {renderColorPicker('Skin Color', config.faceColor || '#F9C9B6', (v) => updateConfig('faceColor', v))}
-                                </div>
-                            )}
-
-                            {activeTab === 'hair' && (
-                                <div className="space-y-6">
-                                    {renderSelect('Hair Style', 'hairStyle', config.hairStyle || 'normal', (v) => updateConfig('hairStyle', v))}
-                                    {renderColorPicker('Hair Color', config.hairColor || '#000000', (v) => updateConfig('hairColor', v))}
-                                    {renderSelect('Hat Style', 'hatStyle', config.hatStyle || 'none', (v) => updateConfig('hatStyle', v))}
-                                    {config.hatStyle !== 'none' && renderColorPicker('Hat Color', config.hatColor || '#000000', (v) => updateConfig('hatColor', v))}
-                                </div>
-                            )}
-
-                            {activeTab === 'eyes' && (
-                                <div className="space-y-6">
-                                    {renderSelect('Eye Style', 'eyeStyle', config.eyeStyle || 'oval', (v) => updateConfig('eyeStyle', v))}
-                                    {renderSelect('Glasses', 'glassesStyle', config.glassesStyle || 'none', (v) => updateConfig('glassesStyle', v))}
-                                </div>
-                            )}
-
-                            {activeTab === 'mouth' && (
-                                <div className="space-y-6">
-                                    {renderSelect('Nose Style', 'noseStyle', config.noseStyle || 'short', (v) => updateConfig('noseStyle', v))}
-                                    {renderSelect('Mouth Style', 'mouthStyle', config.mouthStyle || 'smile', (v) => updateConfig('mouthStyle', v))}
-                                </div>
-                            )}
-
-                            {activeTab === 'clothes' && (
-                                <div className="space-y-6">
-                                    {renderSelect('Shirt Style', 'shirtStyle', config.shirtStyle || 'hoody', (v) => updateConfig('shirtStyle', v))}
-                                    {renderColorPicker('Shirt Color', config.shirtColor || '#fff', (v) => updateConfig('shirtColor', v))}
-                                </div>
-                            )}
-
-                            {activeTab === 'bg' && (
-                                <div className="space-y-6">
-                                    {renderColorPicker('Background Color', config.bgColor || '#ff9090', (v) => updateConfig('bgColor', v))}
-                                    <div className="flex items-center gap-3">
-                                        <input
-                                            title="Gradient toggle"
-                                            type="checkbox"
-                                            checked={config.isGradient}
-                                            onChange={(e) => updateConfig('isGradient', e.target.checked)}
-                                            className="w-5 h-5 rounded border-white/20 bg-white/5 checked:bg-amber-500 accent-amber-500"
-                                        />
-                                        <label className="text-sm font-bold text-white/70">Enable Gradient</label>
+                        {/* MOBILE Vertical Layout */}
+                        <div className="md:hidden flex flex-col w-full h-[400px] overflow-y-auto">
+                            {tabs.map((tab) => (
+                                <div key={tab.id} className="flex flex-col">
+                                    <div className="bg-[#ccd0e1] text-[#1e293b] py-2.5 text-center font-bold text-sm tracking-wide">
+                                        {tab.label}
+                                    </div>
+                                    <div className="p-4 bg-black/10 border-b border-white/10">
+                                        {renderTabContent(tab.id, true)}
                                     </div>
                                 </div>
-                            )}
+                            ))}
                         </div>
                     </div>
                 </div>

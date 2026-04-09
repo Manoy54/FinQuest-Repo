@@ -163,7 +163,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
     };
 
     return (
-        <div className="rounded-[2rem] p-4 flex flex-col max-h-full overflow-hidden relative"
+        <div className="rounded-3xl p-3 md:p-5 flex flex-col relative"
             style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 backdropFilter: 'blur(10px)',
@@ -171,11 +171,11 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
                 boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)'
             }}
         >
-            <div className="mb-4 flex-shrink-0">
-                <h2 className="text-2xl font-black mb-2 text-white tracking-wide border-b border-white/10 pb-2">
+            <div className="mb-3 md:mb-5 flex-shrink-0">
+                <h2 className="text-xl md:text-2xl font-black mb-1 md:mb-2 text-white tracking-wide border-b border-white/10 pb-1 md:pb-2">
                     MISSIONS
                 </h2>
-                <div className="w-full bg-gray-700/50 rounded-full h-2 overflow-hidden mt-2">
+                <div className="w-full bg-gray-700/50 rounded-full h-1.5 md:h-2 overflow-hidden mt-1.5 md:mt-2">
                     <div
                         className="h-full transition-all duration-500 ease-out"
                         style={{
@@ -228,7 +228,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
 
                 {/* List View */}
                 <div className={`
-                    flex flex-col gap-2 flex-1 min-h-0 transition-opacity duration-300 overflow-y-auto pr-2
+                    flex flex-col gap-2 flex-1 transition-opacity duration-300
                     ${selectedWordIndex !== null ? 'opacity-0 pointer-events-none' : 'opacity-100'}
                 `}>
                     {/* Unfound Words */}

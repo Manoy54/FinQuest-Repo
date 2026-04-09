@@ -97,17 +97,17 @@ export function DailyTrivia() {
     if (!currentCard) return null;
 
     return (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex-1 min-w-0 relative overflow-hidden">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-7 md:p-10 flex-1 min-w-0 relative overflow-hidden flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between mb-5">
-                <h3 className="text-sm font-black text-white/80 uppercase tracking-wider flex items-center gap-2">
+            <div className="flex items-center justify-between mb-5 md:mb-8">
+                <h3 className="text-xs md:text-sm font-black text-white/80 uppercase tracking-wider flex items-center gap-2">
                     <span className="animate-pulse">📻</span> Daily Finance Updates
                 </h3>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                     {cards.map((_, i) => (
                         <div
                             key={i}
-                            className={`w-2 h-2 rounded-full transition-colors ${
+                            className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-colors ${
                                 i < progress.readIds.length
                                     ? 'bg-indigo-400'
                                     : i === currentIndex ? 'bg-white' : 'bg-white/20'
@@ -118,39 +118,39 @@ export function DailyTrivia() {
             </div>
 
             {/* Source Badge */}
-            <div className="mb-3 flex justify-between items-start">
-                <span className="text-[10px] uppercase tracking-widest font-bold text-emerald-300 bg-emerald-500/20 px-2.5 py-1 rounded-full border border-emerald-500/30">
+            <div className="mb-2 md:mb-3 flex justify-between items-start">
+                <span className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-emerald-300 bg-emerald-500/20 px-2 md:px-2.5 py-1 rounded-full border border-emerald-500/30">
                     {currentCard.source}
                 </span>
             </div>
 
             {/* Content Card */}
-            <div className="mb-6 relative">
-               <h4 className="text-white font-black text-lg mb-2 leading-snug">{currentCard.title}</h4>
-               <p className="text-white/70 text-sm leading-relaxed mb-3">{currentCard.summary}</p>
+            <div className="mb-3 md:mb-6 relative flex-grow">
+               <h4 className="text-white font-black text-base md:text-lg mb-1 md:mb-2 leading-snug">{currentCard.title}</h4>
+               <p className="text-white/70 text-xs md:text-sm leading-relaxed mb-2 md:mb-3 line-clamp-3 md:line-clamp-none">{currentCard.summary}</p>
                
                {currentCard.link && (
-                 <a href={currentCard.link} target="_blank" rel="noopener noreferrer" className="text-xs text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
+                 <a href={currentCard.link} target="_blank" rel="noopener noreferrer" className="text-[10px] md:text-xs text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
                      Read full article ↗
                  </a>
                )}
             </div>
 
             {/* Feedback & Actions */}
-            <div className="mt-auto h-12">
+            <div className="mt-auto h-10 md:h-12">
                {rewardFlash ? (
                     <div className="flex justify-center items-center gap-3 h-full animate-bounce-in">
-                        <span className="text-sm font-black text-amber-400 bg-amber-400/10 px-4 py-2 rounded-full border border-amber-400/20">
+                        <span className="text-xs md:text-sm font-black text-amber-400 bg-amber-400/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-amber-400/20">
                            +{rewardFlash.xp} XP
                         </span>
-                        <span className="text-sm font-black text-yellow-400 bg-yellow-400/10 px-4 py-2 rounded-full border border-yellow-400/20">
+                        <span className="text-xs md:text-sm font-black text-yellow-400 bg-yellow-400/10 px-3 md:px-4 py-1.5 md:py-2 rounded-full border border-yellow-400/20">
                            +{rewardFlash.coins} 🪙
                         </span>
                     </div>
                ) : (
                     <button
                         onClick={handleRead}
-                        className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-sm hover:from-indigo-400 hover:to-purple-400 hover:scale-[1.02] shadow-lg shadow-indigo-500/25 transition-all outline-none"
+                        className="w-full py-2.5 md:py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-black text-xs md:text-sm hover:from-indigo-400 hover:to-purple-400 hover:scale-[1.02] shadow-lg shadow-indigo-500/25 transition-all outline-none"
                     >
                         {currentIndex < cards.length - 1 ? 'Next Article →' : 'Collect Rewards'}
                     </button>
@@ -158,7 +158,7 @@ export function DailyTrivia() {
             </div>
             
             {/* Decorative background glow based on source */}
-            <div className="absolute top-0 right-0 -m-8 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 -m-8 w-24 h-24 md:w-32 md:h-32 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
         </div>
     );
 }

@@ -200,7 +200,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
     return (
         <div
-            className="select-none touch-none p-4 pt-16 rounded-[2rem] relative group flex flex-col items-center justify-center gap-2 w-full h-full"
+            className="select-none touch-none p-4 md:p-6 pt-12 md:pt-16 rounded-3xl md:rounded-[2.5rem] relative group flex flex-col items-center justify-center gap-3 w-full"
             style={{
                 background: 'rgba(15, 23, 42, 0.4)',
                 backdropFilter: 'blur(16px)',
@@ -212,16 +212,16 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
             onContextMenu={(e) => e.preventDefault()}
         >
             {/* Glow Effect */}
-            <div className="absolute inset-0 bg-blue-500/5 rounded-[2rem] blur-xl -z-10 group-hover:bg-blue-500/10 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-blue-500/5 rounded-3xl md:rounded-[2.5rem] blur-xl -z-10 group-hover:bg-blue-500/10 transition-colors duration-500" />
 
             {/* Preview Pill - only rendered when selecting */}
             {currentWord && (
-                <div className="absolute top-6 z-50 h-10 min-w-[160px] rounded-full flex items-center justify-center px-6 shadow-xl border-2 border-white/20 animate-in fade-in zoom-in duration-200"
+                <div className="absolute top-3 md:top-6 z-50 h-8 md:h-10 min-w-[140px] md:min-w-[160px] rounded-full flex items-center justify-center px-4 md:px-6 shadow-xl border-2 border-white/20 animate-in fade-in zoom-in duration-200"
                     style={{
                         background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)'
                     }}
                 >
-                    <span className="text-lg font-black text-white tracking-widest uppercase filter drop-shadow-md">
+                    <span className="text-sm md:text-lg font-black text-white tracking-widest uppercase filter drop-shadow-md">
                         {currentWord}
                     </span>
                 </div>

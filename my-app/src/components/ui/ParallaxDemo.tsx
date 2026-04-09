@@ -10,6 +10,7 @@ interface GameMode {
     buttonGradient: string;
     emoji: string;
     stripeColor: string;
+    locked?: boolean;
 }
 
 const gameModes: GameMode[] = [
@@ -59,7 +60,7 @@ const gameModes: GameMode[] = [
         stripeColor: 'linear-gradient(135deg, #ec4899 0%, #9d174d 100%)',
     },
     {
-        title: 'Match Up',
+        title: 'Coinnect',
         description: 'Match financial terms with their correct definitions!',
         route: '/matching-game',
         gradient: 'emerald',
@@ -75,6 +76,36 @@ const gameModes: GameMode[] = [
         buttonGradient: 'from-purple-500 to-purple-700',
         emoji: '🔎',
         stripeColor: 'linear-gradient(135deg, #a855f7 0%, #581c87 100%)',
+    },
+    {
+        title: 'Stock Market Simulator',
+        description: 'Experience the thrill of trading stocks and building your portfolio in real-time!',
+        route: '#',
+        gradient: 'blue',
+        buttonGradient: 'from-blue-600 to-blue-800',
+        emoji: '📈',
+        stripeColor: 'linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%)',
+        locked: true,
+    },
+    {
+        title: 'Trading Farm',
+        description: 'Grow your wealth by trading commodities and managing your financial farm!',
+        route: '#',
+        gradient: 'orange',
+        buttonGradient: 'from-orange-500 to-orange-700',
+        emoji: '🌾',
+        stripeColor: 'linear-gradient(135deg, #f97316 0%, #9a3412 100%)',
+        locked: true,
+    },
+    {
+        title: 'Grant the Credit',
+        description: 'Navigate tricky credit scenarios, manage debt, and build your perfect score!',
+        route: '#',
+        gradient: 'cyan',
+        buttonGradient: 'from-cyan-500 to-cyan-700',
+        emoji: '💳',
+        stripeColor: 'linear-gradient(135deg, #06b6d4 0%, #164e63 100%)',
+        locked: true,
     },
 ];
 
@@ -115,17 +146,17 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 height: '100%',
-                paddingLeft: 'clamp(4rem, 12vw, 10rem)',
-                paddingRight: '50%',
+                paddingLeft: 'clamp(1.25rem, 8vw, 10rem)',
+                paddingRight: 'clamp(1rem, 15vw, 40%)',
                 boxSizing: 'border-box',
                 maxWidth: '100%',
             }}
         >
             <span
                 style={{
-                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+                    fontSize: 'clamp(1.8rem, 4vw, 4rem)',
                     display: 'block',
-                    marginBottom: '0.75rem',
+                    marginBottom: '0.5rem',
                     filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                 }}
             >
@@ -133,11 +164,11 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
             </span>
             <h2
                 style={{
-                    fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                    fontSize: 'clamp(1.35rem, 3.5vw, 3rem)',
                     fontWeight: 900,
                     color: '#ffffff',
-                    margin: '0 0 0.5rem 0',
-                    lineHeight: 1.1,
+                    margin: '0 0 0.4rem 0',
+                    lineHeight: 1.15,
                     letterSpacing: '-0.02em',
                     textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                     maxWidth: '100%',
@@ -148,21 +179,31 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
             </h2>
             <p
                 style={{
-                    fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
+                    fontSize: 'clamp(0.75rem, 1.2vw, 1rem)',
                     color: 'rgba(255,255,255,0.65)',
-                    margin: '0 0 1.5rem 0',
-                    lineHeight: 1.6,
+                    margin: '0 0 1.25rem 0',
+                    lineHeight: 1.5,
                     fontWeight: 300,
-                    maxWidth: '90%',
+                    maxWidth: '100%',
                 }}
             >
                 {mode.description}
             </p>
-            <GameButton
-                to={mode.route}
-                gradient={mode.buttonGradient}
-                text="Play Now"
-            />
+            {mode.locked ? (
+                <button
+                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#2c3e50]/80 text-[#e2e8f0] font-bold text-xs sm:text-sm shadow-[0_4px_12px_rgba(0,0,0,0.3)] border border-white/10 uppercase tracking-widest self-start backdrop-blur-sm cursor-not-allowed transition-all hover:bg-[#34495e]/90"
+                    style={{ maxWidth: 'fit-content' }}
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                >
+                    <span className="text-xl">🔒</span> UNLOCK WITH PRIME
+                </button>
+            ) : (
+                <GameButton
+                    to={mode.route}
+                    gradient={mode.buttonGradient}
+                    text="Play Now"
+                />
+            )}
         </div>
     </ParallaxLayer>
 );

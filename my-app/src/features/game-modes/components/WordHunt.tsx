@@ -459,7 +459,7 @@ export function WordHunt() {
 
 
     return (
-        <div className="h-[100dvh] w-screen bg-[#1a1a2e] overflow-hidden flex flex-col relative font-sans"
+        <div className="min-h-screen w-screen bg-[#1a1a2e] flex flex-col relative font-sans px-2"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
@@ -479,7 +479,7 @@ export function WordHunt() {
                 customLevelLabel={playerRank}
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="hover:bg-white/5 transition-colors"
-                gap="4px"
+                gap="32px"
             >
                 {/* Timer Display in HUD */}
                 {formattedTime && (
@@ -494,13 +494,13 @@ export function WordHunt() {
             </HUD>
 
             {/* Main Content Area */}
-            <div className="flex-1 w-full flex items-center justify-center overflow-hidden relative z-10">
+            <div className="flex-1 w-full flex flex-col items-center relative z-10 pb-12">
 
-                {/* Mobile Layout: Native responsive (no scaling) */}
-                <div className="md:hidden w-full h-full flex flex-col px-3 py-2 gap-2 overflow-hidden">
-                    {/* Grid Container — fills available width */}
-                    <div className="flex-1 min-h-0 flex items-center justify-center">
-                        <div className="w-full max-w-[95vw] flex items-center justify-center">
+                {/* Mobile Layout: Scrollable flow */}
+                <div className="md:hidden w-full flex flex-col px-4 py-3 gap-5">
+                    {/* Grid Wrapper */}
+                    <div className="w-full flex items-center justify-center">
+                        <div className="w-full max-w-[95vw]">
                             <Grid
                                 grid={grid}
                                 onWordSelection={handleWordSelection}
@@ -510,15 +510,17 @@ export function WordHunt() {
                         </div>
                     </div>
 
-                    {/* Mission List — compact at bottom */}
-                    <div className="shrink-0 w-full max-h-[30vh] overflow-y-auto rounded-xl"
-                        style={{
-                            background: 'rgba(0,0,0,0.3)',
-                            backdropFilter: 'blur(8px)',
-                            border: '1px solid rgba(255,255,255,0.06)',
-                        }}
-                    >
-                        <WordList words={words} />
+                    {/* Mission List Wrapper */}
+                    <div className="w-full mb-6">
+                        <div className="w-full rounded-2xl shadow-2xl"
+                            style={{
+                                background: 'rgba(0,0,0,0.3)',
+                                backdropFilter: 'blur(8px)',
+                                border: '1px solid rgba(255,255,255,0.06)',
+                            }}
+                        >
+                            <WordList words={words} />
+                        </div>
                     </div>
                 </div>
 
