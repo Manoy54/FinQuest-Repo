@@ -115,17 +115,17 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
                 alignItems: 'flex-start',
                 justifyContent: 'center',
                 height: '100%',
-                paddingLeft: 'clamp(4rem, 12vw, 10rem)',
-                paddingRight: '50%',
+                paddingLeft: 'clamp(1.25rem, 8vw, 10rem)',
+                paddingRight: 'clamp(1rem, 15vw, 40%)',
                 boxSizing: 'border-box',
                 maxWidth: '100%',
             }}
         >
             <span
                 style={{
-                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+                    fontSize: 'clamp(1.8rem, 4vw, 4rem)',
                     display: 'block',
-                    marginBottom: '0.75rem',
+                    marginBottom: '0.5rem',
                     filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                 }}
             >
@@ -133,11 +133,11 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
             </span>
             <h2
                 style={{
-                    fontSize: 'clamp(1.75rem, 3.5vw, 3rem)',
+                    fontSize: 'clamp(1.35rem, 3.5vw, 3rem)',
                     fontWeight: 900,
                     color: '#ffffff',
-                    margin: '0 0 0.5rem 0',
-                    lineHeight: 1.1,
+                    margin: '0 0 0.4rem 0',
+                    lineHeight: 1.15,
                     letterSpacing: '-0.02em',
                     textShadow: '0 2px 8px rgba(0,0,0,0.3)',
                     maxWidth: '100%',
@@ -148,12 +148,12 @@ const Slide = ({ offset, mode, onClick }: SlideProps) => (
             </h2>
             <p
                 style={{
-                    fontSize: 'clamp(0.8rem, 1.2vw, 1rem)',
+                    fontSize: 'clamp(0.75rem, 1.2vw, 1rem)',
                     color: 'rgba(255,255,255,0.65)',
-                    margin: '0 0 1.5rem 0',
-                    lineHeight: 1.6,
+                    margin: '0 0 1.25rem 0',
+                    lineHeight: 1.5,
                     fontWeight: 300,
-                    maxWidth: '90%',
+                    maxWidth: '100%',
                 }}
             >
                 {mode.description}

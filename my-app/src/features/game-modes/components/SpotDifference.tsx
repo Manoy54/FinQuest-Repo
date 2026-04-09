@@ -166,7 +166,7 @@ export function SpotDifference() {
     if (!doc) return null;
 
     return (
-        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden px-2"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 

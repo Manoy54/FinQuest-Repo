@@ -235,7 +235,7 @@ export function MonetaryMastery() {
 
     // Main game screen
     return (
-        <div className="h-[100dvh] flex flex-col overflow-hidden"
+        <div className="h-[100dvh] flex flex-col overflow-hidden px-2"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
@@ -266,8 +266,8 @@ export function MonetaryMastery() {
                         Card {currentCardIndex + 1 + levelOffset} of {MAX_LEVEL} | {Math.round(progressPercentage)}% Complete
                     </div>
 
-                    {/* Card Container */}
-                    <div className="flex-1 min-h-0 w-full mt-2 md:mt-4 relative">
+                    {/* Card Container - Note: px-[10%] reduces flashcard width by 20% on mobile */}
+                    <div className="flex-1 min-h-0 w-full mt-2 md:mt-4 relative px-[10%] md:px-0">
                         {/* Navigation Buttons */}
                         <div className="absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 z-20">
                             <button

@@ -34,25 +34,25 @@ export function StreakTracker() {
     const nextMilestone = getNextMilestone(streak.currentStreak);
 
     return (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-5 min-w-[280px]">
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-7 md:p-10 flex flex-col gap-5 md:gap-8 min-w-[280px]">
             {/* Header */}
             <div className="flex items-center justify-between">
-                <h3 className="text-sm font-black text-white/80 uppercase tracking-wider flex items-center gap-2">
+                <h3 className="text-xs md:text-sm font-black text-white/80 uppercase tracking-wider flex items-center gap-2">
                     <span>🔥</span> Daily Streak
                 </h3>
                 {streak.longestStreak > 0 && (
-                    <span className="text-[10px] text-white/30 font-bold uppercase tracking-wider">
+                    <span className="text-[9px] md:text-[10px] text-white/30 font-bold uppercase tracking-wider">
                         Best: {streak.longestStreak}d
                     </span>
                 )}
             </div>
 
             {/* Streak Count */}
-            <div className="text-center py-2">
-                <div className="text-5xl font-black text-white mb-1" style={{ textShadow: streak.currentStreak >= 3 ? '0 0 20px rgba(251, 191, 36, 0.4)' : 'none' }}>
+            <div className="text-center py-1 md:py-2">
+                <div className="text-4xl md:text-5xl font-black text-white mb-1" style={{ textShadow: streak.currentStreak >= 3 ? '0 0 20px rgba(251, 191, 36, 0.4)' : 'none' }}>
                     {streak.currentStreak}
                 </div>
-                <div className="text-white/40 text-xs font-bold uppercase tracking-widest">
+                <div className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-widest">
                     {streak.currentStreak === 1 ? 'Day Streak' : 'Day Streak'}
                 </div>
             </div>
@@ -62,12 +62,12 @@ export function StreakTracker() {
                 {last7Days.map((day) => {
                     const isToday = day.date === new Date().toISOString().split('T')[0];
                     return (
-                        <div key={day.date} className="flex flex-col items-center gap-1.5 flex-1">
-                            <span className={`text-[10px] font-bold uppercase ${isToday ? 'text-amber-400' : 'text-white/30'}`}>
+                        <div key={day.date} className="flex flex-col items-center gap-1 flex-1">
+                            <span className={`text-[9px] font-bold uppercase ${isToday ? 'text-amber-400' : 'text-white/30'}`}>
                                 {day.label}
                             </span>
                             <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                                className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-[10px] md:text-xs font-bold transition-all ${
                                     day.checkedIn
                                         ? 'bg-emerald-500/30 border-2 border-emerald-400 text-emerald-300'
                                         : isToday
@@ -86,7 +86,7 @@ export function StreakTracker() {
             <button
                 onClick={handleCheckIn}
                 disabled={checkedIn}
-                className={`w-full py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 ${
+                className={`w-full py-2.5 md:py-3 rounded-xl font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 ${
                     checkedIn
                         ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 cursor-default'
                         : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-400 hover:to-orange-400 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 active:translate-y-0'
@@ -99,15 +99,15 @@ export function StreakTracker() {
             {showReward && (
                 <div className="text-center animate-bounce-in">
                     {showReward.milestone && (
-                        <p className="text-amber-400 font-black text-sm mb-1 animate-pulse">
+                        <p className="text-amber-400 font-black text-xs md:text-sm mb-1 animate-pulse">
                             🎉 {showReward.milestone}
                         </p>
                     )}
                     <div className="flex justify-center gap-2">
-                        <span className="text-xs font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full">
+                        <span className="text-[10px] md:text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-1 rounded-full">
                             +{showReward.xp} XP
                         </span>
-                        <span className="text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2.5 py-1 rounded-full">
+                        <span className="text-[10px] md:text-xs font-bold text-yellow-400 bg-yellow-400/10 px-2 py-1 rounded-full">
                             +{showReward.coins} 🪙
                         </span>
                     </div>
@@ -117,12 +117,12 @@ export function StreakTracker() {
             {/* Next Milestone */}
             {nextMilestone && !showReward && (
                 <div className="text-center">
-                    <p className="text-white/30 text-[10px] font-bold uppercase tracking-wider mb-1">
+                    <p className="text-white/30 text-[9px] md:text-[10px] font-bold uppercase tracking-wider mb-1">
                         Next milestone in {nextMilestone.days - streak.currentStreak} day{nextMilestone.days - streak.currentStreak !== 1 ? 's' : ''}
                     </p>
                     <div className="flex justify-center gap-2">
-                        <span className="text-[10px] text-amber-400/60 font-bold">+{nextMilestone.xp} XP</span>
-                        <span className="text-[10px] text-yellow-400/60 font-bold">+{nextMilestone.coins} 🪙</span>
+                        <span className="text-[9px] md:text-[10px] text-amber-400/60 font-bold">+{nextMilestone.xp} XP</span>
+                        <span className="text-[9px] md:text-[10px] text-yellow-400/60 font-bold">+{nextMilestone.coins} 🪙</span>
                     </div>
                 </div>
             )}

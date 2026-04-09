@@ -215,7 +215,7 @@ export function SpeedRound() {
     const timerColor = timeLeft <= 10 ? '#ef4444' : timeLeft <= 20 ? '#f59e0b' : '#10b981';
 
     return (
-        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden px-2"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
@@ -290,7 +290,7 @@ export function SpeedRound() {
             </div>
 
             {/* Question */}
-            <div className="flex-1 w-full max-w-3xl px-4 md:px-8 flex flex-col items-center justify-center z-10">
+            <div className="flex-1 w-full max-w-3xl px-4 md:px-8 flex flex-col items-center justify-start pt-6 md:pt-16 z-10">
                 <div className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-2xl">
                     <div className="mb-2">
                         <span className="text-[10px] uppercase tracking-widest font-bold text-pink-300 bg-pink-500/20 px-2.5 py-1 rounded-full border border-pink-500/30">

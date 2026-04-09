@@ -90,64 +90,20 @@ export function Home() {
                 <div className="relative min-h-[60px]">
                     <Header onExpandChange={handleNavExpandChange} />
                 </div>
-
-                {/* Mobile Only: Avatar + Logout Bar (aligned below nav) */}
-                <div className="flex md:hidden items-center justify-between relative mx-auto w-[95%] max-w-[800px] mt-1 px-3 py-2 rounded-xl"
-                    style={{
-                        background: 'rgba(26, 26, 46, 0.7)',
-                        backdropFilter: 'blur(12px)',
-                        WebkitBackdropFilter: 'blur(12px)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                    }}
-                >
-                    <Link to="/profile" className="group cursor-pointer flex items-center gap-2.5">
-                        <div className="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105">
-                            <div className="absolute inset-0.5 bg-amber-500/25 blur-md rounded-full" />
-                            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/20 shadow-lg bg-[#1a1a2e]">
-                                {avatarConfig ? (
-                                    <Avatar className="w-full h-full" {...avatarConfig} />
-                                ) : (
-                                    <div className="w-full h-full bg-gray-700 animate-pulse" />
-                                )}
-                            </div>
-                        </div>
-                        <span className="text-white/80 text-xs font-semibold tracking-wide">
-                            {displayName || 'Profile'}
-                        </span>
-                    </Link>
-                    <button
-                        onClick={() => {
-                            logout();
-                            navigate('/');
-                        }}
-                        className="group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
-                        aria-label="Logout"
-                    >
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/15 transition-all duration-300 border border-white/5 hover:border-red-400/20">
-                            <FiLogOut className="text-[10px] text-white/60 group-hover:text-red-400 transition-colors" />
-                            <span className="text-white/60 group-hover:text-red-400 transition-colors duration-300 font-bold text-[10px] tracking-wider">
-                                LOGOUT
-                            </span>
-                        </div>
-                    </button>
-                </div>
             </div>
 
             {/* Main Content Area */}
             <main
                 className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pb-20"
                 style={{
-                    paddingTop: navExpanded ? `${navHeight + 20}px` : 'clamp(60px, 12vw, 96px)',
-                    transition: navExpanded
-                        ? 'padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
-                        : 'padding-top 0.15s ease-out'
+                    paddingTop: 'clamp(55px, 10vw, 80px)'
                 }}
             >
 
                 {/* Welcome Hero Section */}
-                <div className="text-center mb-6 md:mb-8 lg:mb-12 shrink-0 mt-6 md:mt-12">
+                <div className="text-center mb-7 md:mb-10 shrink-0 mt-4 md:mt-8">
                     <h1
-                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3"
+                        className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-2"
                         style={{
                             fontFamily: "'Literata', serif",
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
@@ -158,13 +114,13 @@ export function Home() {
                     >
                         Welcome{displayName ? `, ${displayName}` : ''}!
                     </h1>
-                    <p className="text-white/60 text-sm sm:text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide px-2">
+                    <p className="text-white/60 text-xs sm:text-sm md:text-xl max-w-2xl mx-auto font-light tracking-wide px-2">
                         Master financial literacy through interactive games and challenges
                     </p>
                 </div>
 
                 {/* Streak + Daily Trivia Section */}
-                <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-8 md:mb-10 lg:mb-14">
+                <div className="w-full max-w-4xl flex flex-col md:flex-row gap-7 mb-14 md:mb-20">
                     <div className="w-full md:w-[340px] shrink-0">
                         <StreakTracker />
                     </div>

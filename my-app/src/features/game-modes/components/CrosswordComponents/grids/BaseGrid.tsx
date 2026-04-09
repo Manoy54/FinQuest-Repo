@@ -64,10 +64,10 @@ export function BaseGrid({
                 const isWrong = validated && userAnswer !== '' && !isCorrect;
 
                 cells.push(
-                    <div key={key} className="relative w-full h-full aspect-square">
+                    <div key={key} className="relative w-full h-full aspect-square flex items-center justify-center overflow-visible">
                         {/* Clue number label */}
                         {cellData.clueNumber && (
-                            <span className="absolute top-0.5 left-1 text-[0.5rem] md:text-[0.65rem] font-bold text-gray-500 select-none z-10 leading-none pointer-events-none">
+                            <span className="absolute top-1.5 left-1.5 text-[0.4rem] md:text-[0.55rem] font-black text-gray-500/90 select-none z-10 leading-none pointer-events-none">
                                 {cellData.clueNumber}
                             </span>
                         )}
@@ -83,12 +83,12 @@ export function BaseGrid({
                             onChange={e => onInputChange(actualRow, actualCol, e.target.value)}
                             onKeyDown={e => onKeyDown(e, actualRow, actualCol)}
                             className={`
-                                w-full h-full text-center text-base md:text-2xl font-black uppercase
+                                w-full h-full text-center text-lg md:text-3xl font-black uppercase
                                 rounded-sm outline-none transition-all duration-200
-                                shadow-[0_1px_0_0_rgba(0,0,0,0.1)] border-none ring-0
+                                shadow-[0_2px_0_0_rgba(0,0,0,0.1)] border-none ring-0
                                 ${isActive
-                                    ? 'bg-blue-500 text-white shadow-lg scale-105 z-20 ring-2 ring-blue-500/20'
-                                    : 'bg-white/90 text-gray-800 hover:bg-white hover:scale-105 hover:z-10'}
+                                    ? 'bg-blue-500 text-white shadow-lg scale-110 z-20 ring-4 ring-blue-500/20'
+                                    : 'bg-white text-gray-800 hover:bg-white/100 hover:scale-105 hover:z-10'}
                                 ${isCorrect ? '!bg-green-500 !text-white !shadow-green-500/40' : ''}
                                 ${isWrong ? '!bg-red-500   !text-white !shadow-red-500/40' : ''}
                                 cursor-pointer caret-transparent
@@ -107,12 +107,13 @@ export function BaseGrid({
 
     return (
         <div
-            className="grid gap-0.5 p-4 bg-transparent rounded-none"
+            className="grid gap-[3px] p-1 bg-transparent rounded-none"
             style={{
                 gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))`,
                 gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
                 width: '100%',
                 height: '100%',
+                minWidth: '500px',
                 aspectRatio: `${numCols} / ${numRows}`,
                 maxHeight: '100%',
                 maxWidth: '100%',
