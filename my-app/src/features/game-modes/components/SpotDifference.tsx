@@ -102,11 +102,11 @@ export function SpotDifference() {
 
     if (phase === 'START') {
         return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden"
+            <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
-                <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full">
-                    <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tighter"
+                <div className="z-10 text-center p-6 md:p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[24px] md:rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-[92%] md:w-full">
+                    <span className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 md:mb-6 tracking-tighter block"
                         style={{
                             background: 'linear-gradient(135deg, #c084fc 0%, #a855f7 50%, #7c3aed 100%)',
                             WebkitBackgroundClip: 'text',
@@ -114,8 +114,8 @@ export function SpotDifference() {
                             filter: 'drop-shadow(0 0 15px rgba(168, 85, 247, 0.4))'
                         }}>
                         SPOT THE DIFFERENCE
-                    </h1>
-                    <p className="text-2xl mb-14 text-gray-300/90 font-light tracking-wide italic">
+                    </span>
+                    <p className="text-base md:text-2xl mb-8 md:mb-14 text-gray-300/90 font-light tracking-wide italic">
                         Compare financial documents and find discrepancies!
                     </p>
 
@@ -131,7 +131,7 @@ export function SpotDifference() {
                         <span className="relative z-10">Start Game</span>
                     </button>
 
-                    <div className="mt-16 flex items-center justify-center gap-10 text-[14px] text-white/60 font-bold uppercase tracking-widest">
+                    <div className="mt-8 md:mt-16 flex flex-wrap items-center justify-center gap-3 md:gap-10 text-[11px] md:text-[14px] text-white/60 font-bold uppercase tracking-widest">
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-purple-400 text-lg">🔎</span>
                             <span>Find Differences</span>
@@ -166,7 +166,7 @@ export function SpotDifference() {
     if (!doc) return null;
 
     return (
-        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 
@@ -182,7 +182,8 @@ export function SpotDifference() {
                 showBadge={true}
                 onHowToPlay={() => setShowHowToPlay(true)}
             >
-                <div className="flex items-center gap-3 shrink-0 relative z-20">
+                {/* Desktop only */}
+                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
                         <span className="text-emerald-400">🔎 {foundDiffs.length}/{doc.differences.length}</span>
                     </div>
@@ -194,40 +195,54 @@ export function SpotDifference() {
                 </div>
             </HUD>
 
+            {/* Mobile only: Stats bar */}
+            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
+                <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-emerald-400">🔎 {foundDiffs.length}/{doc.differences.length}</span>
+                    </div>
+                    {wrongClicks > 0 && (
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 text-xs font-black">
+                            <span className="text-red-400">✕ {wrongClicks}</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+
             {/* Document Info */}
-            <div className="w-full max-w-5xl px-6 mt-8 z-10 shrink-0">
-                <div className="text-center mb-4">
+            <div className="w-full max-w-5xl px-3 md:px-6 mt-1 md:mt-8 z-10 shrink-0">
+                <div className="text-center mb-2 md:mb-4">
                     <span className="text-[10px] uppercase tracking-widest font-bold text-purple-300 bg-purple-500/20 px-2.5 py-1 rounded-full border border-purple-500/30">
                         {doc.category}
                     </span>
-                    <h2 className="text-white font-black text-xl mt-2">{doc.title}</h2>
-                    <p className="text-white/40 text-sm">{doc.description}</p>
+                    <h2 className="text-white font-black text-base md:text-xl mt-1 md:mt-2">{doc.title}</h2>
+                    <p className="text-white/40 text-xs md:text-sm">{doc.description}</p>
                 </div>
             </div>
 
             {/* Side-by-side documents */}
-            <div className="flex-1 w-full max-w-5xl px-6 z-10 flex gap-4 overflow-y-auto pb-8">
+            <div className="flex-1 w-full max-w-5xl px-3 md:px-6 z-10 flex flex-col md:flex-row gap-2 md:gap-4 overflow-y-auto pb-4 md:pb-8">
                 {/* Original */}
-                <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                    <h3 className="text-xs font-black text-emerald-400 uppercase tracking-widest mb-4 text-center border-b border-white/10 pb-2">
+                <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5">
+                    <h3 className="text-[10px] md:text-xs font-black text-emerald-400 uppercase tracking-widest mb-2 md:mb-4 text-center border-b border-white/10 pb-2">
                         ✓ Original Document
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-2 md:space-y-3">
                         {doc.originalFields.map(field => (
-                            <div key={field.label} className="flex justify-between items-center px-3 py-2.5 rounded-lg bg-white/5 border border-white/5">
-                                <span className="text-white/50 text-xs font-bold uppercase tracking-wider">{field.label}</span>
-                                <span className="text-white font-bold text-sm">{field.value}</span>
+                            <div key={field.label} className="flex justify-between items-center px-2 md:px-3 py-1.5 md:py-2.5 rounded-lg bg-white/5 border border-white/5">
+                                <span className="text-white/50 text-[10px] md:text-xs font-bold uppercase tracking-wider">{field.label}</span>
+                                <span className="text-white font-bold text-xs md:text-sm">{field.value}</span>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Modified (clickable) */}
-                <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                    <h3 className="text-xs font-black text-amber-400 uppercase tracking-widest mb-4 text-center border-b border-white/10 pb-2">
+                <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl md:rounded-2xl p-3 md:p-5">
+                    <h3 className="text-[10px] md:text-xs font-black text-amber-400 uppercase tracking-widest mb-2 md:mb-4 text-center border-b border-white/10 pb-2">
                         🔎 Document to Verify — Click differences!
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-2 md:space-y-3">
                         {doc.modifiedFields.map(field => {
                             const isFound = foundDiffs.includes(field.label);
                             const isFlashing = flashLabel === field.label;
@@ -237,15 +252,15 @@ export function SpotDifference() {
                                 <button
                                     key={field.label}
                                     onClick={() => handleFieldClick(field.label)}
-                                    className={`w-full flex justify-between items-center px-3 py-2.5 rounded-lg border transition-all duration-200 text-left ${
+                                    className={`w-full flex justify-between items-center px-2 md:px-3 py-1.5 md:py-2.5 rounded-lg border transition-all duration-200 text-left ${
                                         isFound
                                             ? 'bg-emerald-500/20 border-emerald-500/40'
                                             : 'bg-black/40 border-white/5 hover:bg-black/60 hover:border-white/15 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out] bg-red-500/10 border-red-500/30' : ''}
                                     ${isFlashing ? 'bg-emerald-500/30 border-emerald-400 scale-[1.02]' : ''}`}
                                 >
-                                    <span className="text-white/50 text-xs font-bold uppercase tracking-wider">{field.label}</span>
-                                    <span className={`font-bold text-sm ${isFound ? 'text-emerald-300 line-through' : 'text-white'}`}>
+                                    <span className="text-white/50 text-[10px] md:text-xs font-bold uppercase tracking-wider">{field.label}</span>
+                                    <span className={`font-bold text-xs md:text-sm ${isFound ? 'text-emerald-300 line-through' : 'text-white'}`}>
                                         {field.value}
                                         {isFound && <span className="ml-2 text-emerald-400 no-underline">✓ Found!</span>}
                                     </span>

@@ -48,9 +48,9 @@ export function Home() {
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
-            {/* Top Left Avatar */}
-            <Link to="/profile" className="absolute top-6 left-8 z-[60] group cursor-pointer block">
-                <div className="relative w-24 h-24 md:w-28 md:h-28 transition-transform duration-500 group-hover:scale-105">
+            {/* Desktop Only: Top Left Avatar */}
+            <Link to="/profile" className="hidden md:block absolute md:top-6 md:left-8 z-[60] group cursor-pointer">
+                <div className="relative w-24 h-24 lg:w-28 lg:h-28 transition-transform duration-500 group-hover:scale-105">
                     {/* Soft Glow Behind */}
                     <div className="absolute inset-4 bg-amber-500/40 blur-xl rounded-full" />
 
@@ -65,35 +65,79 @@ export function Home() {
                 </div>
             </Link>
 
-            {/* Top Right Logout */}
+            {/* Desktop Only: Top Right Logout */}
             <button
                 onClick={() => {
                     logout();
                     navigate('/');
                 }}
-                className="absolute top-6 right-8 z-[60] group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
+                className="hidden md:block absolute md:top-6 md:right-8 z-[60] group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
                 aria-label="Logout"
             >
                 <div className="relative transition-transform duration-300 group-hover:scale-105">
                     <div className="relative flex items-center justify-center transition-all duration-300 px-2.5 py-1 rounded-md hover:bg-black hover:shadow-[0_0_20px_black]">
-                        <span className="text-blue-100 group-hover:text-red-400 transition-colors duration-300 font-bold text-[9px] md:text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
-                            <FiLogOut className="text-[10px] md:text-xs" /> LOGOUT
+                        <span className="text-blue-100 group-hover:text-red-400 transition-colors duration-300 font-bold text-[11px] tracking-wider flex items-center gap-1.5 drop-shadow-sm">
+                            <FiLogOut className="text-xs" /> LOGOUT
                         </span>
                     </div>
                 </div>
             </button>
             <AnimatedBackground />
 
-            {/* Navigation */}
+            {/* Navigation + Mobile User Bar */}
             <div className="relative z-50 flex-none">
-                <Header onExpandChange={handleNavExpandChange} />
+                {/* Nav bar (absolutely positioned inside) */}
+                <div className="relative min-h-[60px]">
+                    <Header onExpandChange={handleNavExpandChange} />
+                </div>
+
+                {/* Mobile Only: Avatar + Logout Bar (aligned below nav) */}
+                <div className="flex md:hidden items-center justify-between relative mx-auto w-[95%] max-w-[800px] mt-1 px-3 py-2 rounded-xl"
+                    style={{
+                        background: 'rgba(26, 26, 46, 0.7)',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
+                    }}
+                >
+                    <Link to="/profile" className="group cursor-pointer flex items-center gap-2.5">
+                        <div className="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105">
+                            <div className="absolute inset-0.5 bg-amber-500/25 blur-md rounded-full" />
+                            <div className="relative w-full h-full rounded-full overflow-hidden border border-white/20 shadow-lg bg-[#1a1a2e]">
+                                {avatarConfig ? (
+                                    <Avatar className="w-full h-full" {...avatarConfig} />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-700 animate-pulse" />
+                                )}
+                            </div>
+                        </div>
+                        <span className="text-white/80 text-xs font-semibold tracking-wide">
+                            {displayName || 'Profile'}
+                        </span>
+                    </Link>
+                    <button
+                        onClick={() => {
+                            logout();
+                            navigate('/');
+                        }}
+                        className="group cursor-pointer !border-none !bg-transparent !outline-none focus:outline-none focus-visible:outline-none ring-0 focus:ring-0 p-0"
+                        aria-label="Logout"
+                    >
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/15 transition-all duration-300 border border-white/5 hover:border-red-400/20">
+                            <FiLogOut className="text-[10px] text-white/60 group-hover:text-red-400 transition-colors" />
+                            <span className="text-white/60 group-hover:text-red-400 transition-colors duration-300 font-bold text-[10px] tracking-wider">
+                                LOGOUT
+                            </span>
+                        </div>
+                    </button>
+                </div>
             </div>
 
             {/* Main Content Area */}
             <main
                 className="relative z-10 flex-1 flex flex-col items-center justify-start px-4 lg:px-8 pb-20"
                 style={{
-                    paddingTop: navExpanded ? `${navHeight + 30}px` : '96px',
+                    paddingTop: navExpanded ? `${navHeight + 20}px` : 'clamp(60px, 12vw, 96px)',
                     transition: navExpanded
                         ? 'padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
                         : 'padding-top 0.15s ease-out'
@@ -101,9 +145,9 @@ export function Home() {
             >
 
                 {/* Welcome Hero Section */}
-                <div className="text-center mb-8 lg:mb-12 shrink-0 mt-12">
+                <div className="text-center mb-6 md:mb-8 lg:mb-12 shrink-0 mt-6 md:mt-12">
                     <h1
-                        className="text-5xl md:text-6xl font-black tracking-tight mb-3"
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-3"
                         style={{
                             fontFamily: "'Literata', serif",
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
@@ -114,14 +158,14 @@ export function Home() {
                     >
                         Welcome{displayName ? `, ${displayName}` : ''}!
                     </h1>
-                    <p className="text-white/60 text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide">
+                    <p className="text-white/60 text-sm sm:text-base md:text-xl max-w-2xl mx-auto font-light tracking-wide px-2">
                         Master financial literacy through interactive games and challenges
                     </p>
                 </div>
 
                 {/* Streak + Daily Trivia Section */}
-                <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-10 lg:mb-14">
-                    <div className="md:w-[340px] shrink-0">
+                <div className="w-full max-w-4xl flex flex-col md:flex-row gap-4 mb-8 md:mb-10 lg:mb-14">
+                    <div className="w-full md:w-[340px] shrink-0">
                         <StreakTracker />
                     </div>
                     <DailyTrivia />
@@ -137,7 +181,7 @@ export function Home() {
                     </div>
 
                     {/* Parallax Container with Seamless Fading Edges */}
-                    <div className="relative mx-auto" style={{ height: '45vh', width: '70%' }}>
+                    <div className="relative mx-auto w-full md:w-[85%] lg:w-[70%]" style={{ height: 'clamp(250px, 45vh, 450px)' }}>
                         <div
                             className="w-full h-full overflow-hidden rounded-2xl"
                             style={{

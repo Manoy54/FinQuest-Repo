@@ -297,14 +297,14 @@ export function QuizBee() {
 
     if (gameState === 'START') {
         return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-y-auto"
+            <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-y-auto"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
 
 
 
-                <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full transform transition-all duration-700 hover:scale-[1.02]">
-                    <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
+                <div className="z-10 text-center p-6 md:p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[24px] md:rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-[92%] md:w-full transform transition-all duration-700 hover:scale-[1.02]">
+                    <span className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 tracking-tighter block"
                         style={{
                             fontWeight: 800,
                             background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 50%, #fbbf24 100%)',
@@ -313,8 +313,8 @@ export function QuizBee() {
                             filter: 'drop-shadow(0 0 15px rgba(251, 191, 36, 0.4))'
                         }}>
                         CAPITAL CUP
-                    </h1>
-                    <p className="text-2xl mb-14 text-gray-300/90 font-light tracking-wide italic">Test your Financial Knowledge</p>
+                    </span>
+                    <p className="text-base md:text-2xl mb-8 md:mb-14 text-gray-300/90 font-light tracking-wide italic">Test your Financial Knowledge</p>
 
                     <button
                         onClick={() => setGameState('PLAYING')}
@@ -329,7 +329,7 @@ export function QuizBee() {
                         <span className="relative z-10">Start Game</span>
                     </button>
 
-                    <div className="mt-16 flex items-center justify-center gap-10 text-[14px] text-white/60 font-bold uppercase tracking-widest">
+                    <div className="mt-8 md:mt-16 flex flex-wrap items-center justify-center gap-3 md:gap-10 text-[11px] md:text-[14px] text-white/60 font-bold uppercase tracking-widest">
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-pink-500 text-lg">❤️</span>
                             <span>5 Lives</span>
@@ -363,15 +363,15 @@ export function QuizBee() {
     }
 
     return (
-        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden font-sans"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden font-sans"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
 
-            {/* Header matches first image */}
-            {/* Header matches first image */}
+            {/* Header */}
             <HUD
                 title="CAPITAL CUP"
+                backPath="/home"
                 currentExp={xp}
                 level={playerLevel}
                 expToNextLevel={nextLevelXP}
@@ -382,8 +382,10 @@ export function QuizBee() {
                 showBadge={false}
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className=""
+                gap="4px"
             >
-                <div className="flex items-center gap-3 shrink-0 relative z-20">
+                {/* Desktop only: show stats in HUD right slot */}
+                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
                         <span className="text-amber-400 uppercase tracking-tighter">Score: {score}</span>
                     </div>
@@ -404,9 +406,29 @@ export function QuizBee() {
                 </div>
             </HUD>
 
-            {/* Progress Bar - Matches MM Header Progress */}
-            < div className="w-full max-w-2xl px-4 mt-16 mb-6 z-10 text-center shrink-0" >
-                <div className="flex justify-center items-center gap-4 text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-3">
+            {/* Mobile only: Game stats bar below HUD */}
+            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
+                <div className="flex items-center justify-between gap-1.5 px-3 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-amber-400">⭐ {score}</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-red-400">❤️</span>
+                        <span className="text-white">{lives}</span>
+                    </div>
+                    <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black ${timer <= 5 ? 'bg-red-500/20 text-red-300 animate-pulse' : 'bg-white/10 text-blue-300'}`}>
+                        <span>⏱️</span>
+                        <span>{timer}s</span>
+                    </div>
+                    <div className={`px-2 py-0.5 rounded-full text-[9px] font-black tracking-wider uppercase ${currentTier === 'BEGINNER' ? 'bg-green-500/20 text-green-400' : currentTier === 'INTERMEDIATE' ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'}`}>
+                        {currentTier}
+                    </div>
+                </div>
+            </div>
+
+            {/* Progress Bar */}
+            < div className="w-full max-w-2xl px-4 mt-2 md:mt-16 mb-2 md:mb-6 z-10 text-center shrink-0" >
+                <div className="flex justify-center items-center gap-4 text-[10px] md:text-[12px] text-white/50 uppercase tracking-[0.2em] font-black mb-2 md:mb-3">
                     <span>Question {currentQuestionIndex + 1} of {currentQuestions.length}</span>
                     <span className="text-white/20">|</span>
                     <span>{Math.round(((currentQuestionIndex) / currentQuestions.length) * 100)}% Complete</span>
@@ -420,7 +442,7 @@ export function QuizBee() {
             </div >
 
             {/* Main Content */}
-            < div className="flex-1 w-full max-w-4xl px-4 flex flex-col items-center justify-center z-10 relative pb-10 min-h-0" >
+            < div className="flex-1 w-full max-w-4xl px-3 md:px-4 flex flex-col items-center justify-center z-10 relative pb-6 md:pb-10 min-h-0" >
                 <QuestionCard
                     question={currentQuestion}
                     selectedOption={selectedOption}
@@ -430,7 +452,7 @@ export function QuizBee() {
                     showFeedback={showFeedback}
                 />
 
-                <div className="mt-12">
+                <div className="mt-6 md:mt-12">
                     <Lifelines
                         onClick={handleNextQuestion}
                         disabled={!showFeedback}

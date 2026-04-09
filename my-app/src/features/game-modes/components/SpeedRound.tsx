@@ -129,12 +129,12 @@ export function SpeedRound() {
     // START screen
     if (phase === 'START') {
         return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden"
+            <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
 
-                <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full">
-                    <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
+                <div className="z-10 text-center p-6 md:p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[24px] md:rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-[92%] md:w-full">
+                    <span className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 tracking-tighter block"
                         style={{
                             background: 'linear-gradient(135deg, #f472b6 0%, #ec4899 50%, #db2777 100%)',
                             WebkitBackgroundClip: 'text',
@@ -142,8 +142,8 @@ export function SpeedRound() {
                             filter: 'drop-shadow(0 0 15px rgba(236, 72, 153, 0.4))'
                         }}>
                         SPEED ROUND
-                    </h1>
-                    <p className="text-2xl mb-14 text-gray-300/90 font-light tracking-wide italic">
+                    </span>
+                    <p className="text-base md:text-2xl mb-8 md:mb-14 text-gray-300/90 font-light tracking-wide italic">
                         Answer as many as you can in 60 seconds!
                     </p>
 
@@ -159,7 +159,7 @@ export function SpeedRound() {
                         <span className="relative z-10">Start Game</span>
                     </button>
 
-                    <div className="mt-16 flex items-center justify-center gap-10 text-[14px] text-white/60 font-bold uppercase tracking-widest">
+                    <div className="mt-8 md:mt-16 flex flex-wrap items-center justify-center gap-3 md:gap-10 text-[11px] md:text-[14px] text-white/60 font-bold uppercase tracking-widest">
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-pink-400 text-lg">⚡</span>
                             <span>60 Seconds</span>
@@ -181,11 +181,11 @@ export function SpeedRound() {
     // COUNTDOWN
     if (phase === 'COUNTDOWN') {
         return (
-            <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
+            <div className="min-h-[100dvh] w-full flex items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
                 <div className="z-10 text-center">
-                    <div className="text-[12rem] font-black text-white animate-pulse" style={{ textShadow: '0 0 60px rgba(236, 72, 153, 0.6)' }}>
+                    <div className="text-[6rem] md:text-[12rem] font-black text-white animate-pulse" style={{ textShadow: '0 0 60px rgba(236, 72, 153, 0.6)' }}>
                         {countdown || 'GO!'}
                     </div>
                     <p className="text-white/50 text-xl uppercase tracking-widest font-bold mt-4">Get Ready!</p>
@@ -215,7 +215,7 @@ export function SpeedRound() {
     const timerColor = timeLeft <= 10 ? '#ef4444' : timeLeft <= 20 ? '#f59e0b' : '#10b981';
 
     return (
-        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
 
             <AnimatedBackground />
@@ -237,7 +237,8 @@ export function SpeedRound() {
                 showStats={false}
                 onHowToPlay={() => setShowHowToPlay(true)}
             >
-                <div className="flex items-center gap-3 shrink-0 relative z-20">
+                {/* Desktop only */}
+                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
                         <span className="text-emerald-400">✓ {correct}</span>
                     </div>
@@ -252,13 +253,30 @@ export function SpeedRound() {
                 </div>
             </HUD>
 
+            {/* Mobile only: Stats bar */}
+            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
+                <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-emerald-400">✓ {correct}</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-red-400">✕ {wrong}</span>
+                    </div>
+                    {streak >= 3 && (
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 text-xs font-black animate-pulse">
+                            <span className="text-amber-400">🔥 {streak}</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+
             {/* Timer Bar */}
-            <div className="w-full max-w-3xl px-8 mt-20 z-10 shrink-0">
-                <div className="flex items-center gap-4 mb-2">
-                    <span className={`text-3xl font-black ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
+            <div className="w-full max-w-3xl px-4 md:px-8 mt-2 md:mt-20 z-10 shrink-0">
+                <div className="flex items-center gap-2 md:gap-4 mb-2">
+                    <span className={`text-xl md:text-3xl font-black ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-white'}`}>
                         {timeLeft}s
                     </span>
-                    <div className="flex-1 h-3 bg-black/30 rounded-full overflow-hidden border border-white/10">
+                    <div className="flex-1 h-2 md:h-3 bg-black/30 rounded-full overflow-hidden border border-white/10">
                         <div
                             className="h-full rounded-full transition-all duration-1000 ease-linear"
                             style={{
@@ -272,15 +290,15 @@ export function SpeedRound() {
             </div>
 
             {/* Question */}
-            <div className="flex-1 w-full max-w-3xl px-8 flex flex-col items-center justify-center z-10">
-                <div className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+            <div className="flex-1 w-full max-w-3xl px-4 md:px-8 flex flex-col items-center justify-center z-10">
+                <div className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-2xl">
                     <div className="mb-2">
                         <span className="text-[10px] uppercase tracking-widest font-bold text-pink-300 bg-pink-500/20 px-2.5 py-1 rounded-full border border-pink-500/30">
                             {currentQuestion.category}
                         </span>
                     </div>
 
-                    <p className="text-white font-bold text-xl md:text-2xl mb-8 leading-relaxed">
+                    <p className="text-white font-bold text-base md:text-2xl mb-4 md:mb-8 leading-relaxed">
                         {currentQuestion.question}
                     </p>
 

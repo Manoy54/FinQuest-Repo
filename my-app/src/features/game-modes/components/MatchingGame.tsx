@@ -166,11 +166,11 @@ export function MatchingGame() {
 
     if (phase === 'START') {
         return (
-            <div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden"
+            <div className="min-h-[100dvh] w-full flex flex-col items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
-                <div className="z-10 text-center p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-full">
-                    <h1 className="text-7xl md:text-9xl font-black mb-6 tracking-tighter"
+                <div className="z-10 text-center p-6 md:p-16 backdrop-blur-xl bg-[#1e293b]/60 rounded-[24px] md:rounded-[40px] border border-white/10 shadow-[0_0_100px_rgba(0,0,0,0.7)] max-w-2xl w-[92%] md:w-full">
+                    <span className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 md:mb-6 tracking-tighter block"
                         style={{
                             background: 'linear-gradient(135deg, #34d399 0%, #10b981 50%, #059669 100%)',
                             WebkitBackgroundClip: 'text',
@@ -178,8 +178,8 @@ export function MatchingGame() {
                             filter: 'drop-shadow(0 0 15px rgba(16, 185, 129, 0.4))'
                         }}>
                         MATCH UP
-                    </h1>
-                    <p className="text-2xl mb-14 text-gray-300/90 font-light tracking-wide italic">
+                    </span>
+                    <p className="text-base md:text-2xl mb-8 md:mb-14 text-gray-300/90 font-light tracking-wide italic">
                         Match financial terms with their definitions!
                     </p>
 
@@ -195,7 +195,7 @@ export function MatchingGame() {
                         <span className="relative z-10">Start Game</span>
                     </button>
 
-                    <div className="mt-16 flex items-center justify-center gap-10 text-[14px] text-white/60 font-bold uppercase tracking-widest">
+                    <div className="mt-8 md:mt-16 flex flex-wrap items-center justify-center gap-3 md:gap-10 text-[11px] md:text-[14px] text-white/60 font-bold uppercase tracking-widest">
                         <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5">
                             <span className="text-emerald-400 text-lg">🧩</span>
                             <span>{PAIRS_PER_ROUND} Pairs</span>
@@ -216,7 +216,7 @@ export function MatchingGame() {
 
     if (phase === 'ROUND_COMPLETE') {
         return (
-            <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden"
+            <div className="min-h-[100dvh] w-full flex items-center justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
                 <AnimatedBackground />
                 <div className="z-10 text-center p-12 backdrop-blur-xl bg-[#1e293b]/60 rounded-[40px] border border-white/10 shadow-2xl max-w-lg w-full">
@@ -261,7 +261,7 @@ export function MatchingGame() {
     const formatTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
     return (
-        <div className="h-screen w-full flex flex-col items-center relative overflow-hidden"
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 
@@ -277,7 +277,8 @@ export function MatchingGame() {
                 showBadge={true}
                 onHowToPlay={() => setShowHowToPlay(true)}
             >
-                <div className="flex items-center gap-3 shrink-0 relative z-20">
+                {/* Desktop only */}
+                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
                     <div className="px-5 py-2 rounded-full text-sm font-black backdrop-blur-xl bg-white/10 border border-white/5 shadow-2xl">
                         <span className="text-white/70">⏱️ {formatTime(timer)}</span>
                     </div>
@@ -292,11 +293,28 @@ export function MatchingGame() {
                 </div>
             </HUD>
 
+            {/* Mobile only: Stats bar */}
+            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
+                <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-white/70">⏱️ {formatTime(timer)}</span>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 text-xs font-black">
+                        <span className="text-emerald-400">{matchedCount}/{PAIRS_PER_ROUND}</span>
+                    </div>
+                    {mistakes > 0 && (
+                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-500/10 text-xs font-black">
+                            <span className="text-red-400">✕ {mistakes}</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+
             {/* Match Area */}
-            <div className="flex-1 w-full max-w-5xl px-6 mt-20 z-10 flex gap-6 items-start justify-center overflow-y-auto pb-8">
+            <div className="flex-1 w-full max-w-5xl px-3 md:px-6 mt-2 md:mt-20 z-10 flex flex-col md:flex-row gap-4 md:gap-6 items-start justify-center overflow-y-auto pb-4 md:pb-8">
                 {/* Terms column */}
-                <div className="flex-1 flex flex-col gap-3">
-                    <h3 className="text-[10px] font-black text-white/30 uppercase tracking-widest text-center mb-1">Terms</h3>
+                <div className="flex-1 w-full flex flex-col gap-2 md:gap-3">
+                    <h3 className="text-[10px] font-black text-indigo-300/50 uppercase tracking-[0.2em] mb-0.5 pl-1">Terms</h3>
                     {termCards.map(card => {
                         const isSelected = selected?.id === card.id;
                         const isShaking = shakeId?.includes(card.id);
@@ -307,11 +325,11 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-5 py-4 rounded-xl text-sm font-bold transition-all duration-200 border text-left ${card.matched
-                                        ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300 opacity-60'
+                                className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-bold transition-all duration-200 border-l-[3px] border text-left ${card.matched
+                                        ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
                                         : isSelected
-                                            ? 'bg-indigo-500/30 border-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
-                                            : 'bg-black/40 border-white/10 text-white/90 hover:bg-black/60 hover:border-white/20 cursor-pointer shadow-lg'
+                                            ? 'bg-indigo-500/30 border-indigo-400 !border-l-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
+                                            : 'bg-white/[0.08] border-white/10 !border-l-indigo-500/40 text-white/90 hover:bg-white/[0.12] hover:border-white/20 hover:!border-l-indigo-400 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}
@@ -321,8 +339,8 @@ export function MatchingGame() {
                 </div>
 
                 {/* Definitions column */}
-                <div className="flex-1 flex flex-col gap-3">
-                    <h3 className="text-[10px] font-black text-white/30 uppercase tracking-widest text-center mb-1">Definitions</h3>
+                <div className="flex-1 w-full flex flex-col gap-2 md:gap-3">
+                    <h3 className="text-[10px] font-black text-purple-300/50 uppercase tracking-[0.2em] mb-0.5 pl-1">Definitions</h3>
                     {defCards.map(card => {
                         const isSelected = selected?.id === card.id;
                         const isShaking = shakeId?.includes(card.id);
@@ -333,11 +351,11 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-5 py-4 rounded-xl text-sm font-medium transition-all duration-200 border text-left leading-relaxed ${card.matched
-                                        ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300 opacity-60'
+                                className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-medium transition-all duration-200 border-l-[3px] border text-left leading-relaxed ${card.matched
+                                        ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
                                         : isSelected
-                                            ? 'bg-purple-500/30 border-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
-                                            : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:border-white/20 cursor-pointer'
+                                            ? 'bg-purple-500/30 border-purple-400 !border-l-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
+                                            : 'bg-white/[0.04] border-white/[0.06] !border-l-purple-500/30 text-white/70 hover:bg-white/[0.08] hover:border-white/15 hover:!border-l-purple-400 cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
                                 {card.matched ? '✓ ' : ''}{card.content}

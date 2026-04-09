@@ -235,7 +235,7 @@ export function MonetaryMastery() {
 
     // Main game screen
     return (
-        <div className="h-screen flex flex-col overflow-hidden"
+        <div className="h-[100dvh] flex flex-col overflow-hidden"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
@@ -245,6 +245,7 @@ export function MonetaryMastery() {
             {/* Header */}
             <HUD
                 title="MONETARY MASTERY"
+                backPath="/home"
                 currentExp={exp}
                 // level calculation was Math.floor((level - 1) / 10) + 1
                 level={Math.floor((level - 1) / 10) + 1}
@@ -256,32 +257,32 @@ export function MonetaryMastery() {
                 className=""
             />
             {/* Main Content Area - Flexible to take remaining space, containing the Card */}
-            <div className="relative z-10 flex-1 w-full px-4 pt-4 pb-4 min-h-0 flex flex-col items-center justify-center">
+            <div className="relative z-10 flex-1 w-full px-3 md:px-4 pt-2 md:pt-4 pb-2 md:pb-4 min-h-0 flex flex-col items-center justify-center">
                 <div className="relative w-full max-w-2xl h-full flex flex-col items-center">
 
 
                     {/* Card Status Text */}
-                    <div className="text-center text-white/50 text-sm font-medium mb-2 tracking-wide">
+                    <div className="text-center text-white/50 text-xs md:text-sm font-medium mb-1 md:mb-2 tracking-wide">
                         Card {currentCardIndex + 1 + levelOffset} of {MAX_LEVEL} | {Math.round(progressPercentage)}% Complete
                     </div>
 
                     {/* Card Container */}
-                    <div className="flex-1 min-h-0 w-full mt-4 relative">
-                        {/* Navigation Buttons Outside Card */}
-                        <div className="absolute top-1/2 -translate-y-1/2 -left-16 z-20">
+                    <div className="flex-1 min-h-0 w-full mt-2 md:mt-4 relative">
+                        {/* Navigation Buttons */}
+                        <div className="absolute top-1/2 -translate-y-1/2 left-0 md:-left-16 z-20">
                             <button
                                 onClick={goToPrevCard}
                                 disabled={currentCardIndex === 0}
-                                className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 text-4xl hover:text-white transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
+                                className="w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white/50 text-2xl md:text-4xl hover:text-white transition-all duration-300 disabled:opacity-20 disabled:cursor-not-allowed hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
                                 style={{ outline: 'none', boxShadow: 'none' }}
                             >
                                 ←
                             </button>
                         </div>
-                        <div className="absolute top-1/2 -translate-y-1/2 -right-16 z-20">
+                        <div className="absolute top-1/2 -translate-y-1/2 right-0 md:-right-16 z-20">
                             <button
                                 onClick={goToNextCard}
-                                className="w-12 h-12 rounded-full flex items-center justify-center text-white/50 text-4xl hover:text-white transition-all duration-300 hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
+                                className="w-9 h-9 md:w-12 md:h-12 rounded-full flex items-center justify-center text-white/50 text-2xl md:text-4xl hover:text-white transition-all duration-300 hover:scale-110 active:scale-95 !bg-transparent hover:!bg-white/10 !border-none outline-none shadow-none"
                                 style={{ outline: 'none', boxShadow: 'none' }}
                             >
                                 →
@@ -295,12 +296,12 @@ export function MonetaryMastery() {
                         />
                     </div>
                     {/* Fixed Answer Buttons Footer - Always Visible */}
-                    <div className="relative z-20 px-4 pb-8 pt-8 w-full flex justify-center shrink-0">
-                        <div className="w-full max-w-2xl flex justify-center gap-4">
+                    <div className="relative z-20 px-2 md:px-4 pb-4 md:pb-8 pt-4 md:pt-8 w-full flex justify-center shrink-0">
+                        <div className="w-full max-w-2xl flex justify-center gap-3 md:gap-4">
                             <button
                                 onClick={handleDidntKnow}
                                 disabled={!isFlipped}
-                                className={`flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
+                                className={`flex-1 max-w-[160px] md:max-w-[180px] py-3 md:py-4 rounded-xl font-bold text-sm md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
                                 style={{
                                     background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
                                     color: '#fff',
@@ -314,7 +315,7 @@ export function MonetaryMastery() {
                             <button
                                 onClick={handleKnew}
                                 disabled={!isFlipped}
-                                className={`flex-1 max-w-[180px] py-4 rounded-xl font-bold text-base md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
+                                className={`flex-1 max-w-[160px] md:max-w-[180px] py-3 md:py-4 rounded-xl font-bold text-sm md:text-lg transition-all duration-300 ${!isFlipped ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-105 active:scale-95'}`}
                                 style={{
                                     background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)', // Green
                                     color: '#fff',

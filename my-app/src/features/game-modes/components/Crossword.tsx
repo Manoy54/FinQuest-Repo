@@ -430,13 +430,14 @@ export function Crossword() {
     }
 
     return (
-        <div className="h-screen flex flex-col overflow-hidden bg-[#0f172a] font-sans relative">
+        <div className="h-[100dvh] flex flex-col overflow-hidden bg-[#0f172a] font-sans relative">
             <AnimatedBackground />
 
             {/* Header */}
             {/* Header */}
             <HUD
                 title="CORPORATE CLIMB"
+                backPath="/home"
                 currentExp={score}
                 expToNextLevel={maxScore}
                 progress={progress}
@@ -445,31 +446,60 @@ export function Crossword() {
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="bg-black/20 backdrop-blur-md border-b border-white/5"
             >
-                <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10 mr-4">
-                    {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
-                        <button
-                            key={level}
-                            onClick={() => setDifficulty(level)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${difficulty === level
-                                ? 'bg-blue-500 text-white shadow-lg'
-                                : 'text-white/50 hover:text-white hover:bg-white/10'
-                                }`}
-                        >
-                            {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
-                        </button>
-                    ))}
-                </div>
+                {/* Desktop only */}
+                <div className="hidden md:flex items-center gap-3 shrink-0 relative z-20">
+                    <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+                        {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
+                            <button
+                                key={level}
+                                onClick={() => setDifficulty(level)}
+                                className={`px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${difficulty === level
+                                    ? 'bg-blue-500 text-white shadow-lg'
+                                    : 'text-white/50 hover:text-white hover:bg-white/10'
+                                    }`}
+                            >
+                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
+                            </button>
+                        ))}
+                    </div>
 
-                <button
-                    onClick={handleCheck}
-                    className="px-6 py-2 rounded-xl font-bold text-sm uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105 transition-transform"
-                >
-                    Check
-                </button>
+                    <button
+                        onClick={handleCheck}
+                        className="px-6 py-2 rounded-xl font-bold text-sm uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105 transition-transform"
+                    >
+                        Check
+                    </button>
+                </div>
             </HUD>
 
+            {/* Mobile only: Controls bar */}
+            <div className="md:hidden w-full px-3 z-10 shrink-0 -mt-0.5">
+                <div className="flex items-center justify-between gap-2 px-2 py-1.5 rounded-xl bg-black/30 backdrop-blur-md border border-white/5">
+                    <div className="flex items-center gap-1 bg-white/5 p-0.5 rounded-lg border border-white/10">
+                        {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
+                            <button
+                                key={level}
+                                onClick={() => setDifficulty(level)}
+                                className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider transition-all ${difficulty === level
+                                    ? 'bg-blue-500 text-white shadow-lg'
+                                    : 'text-white/50'
+                                    }`}
+                            >
+                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
+                            </button>
+                        ))}
+                    </div>
+                    <button
+                        onClick={handleCheck}
+                        className="px-3 py-1 rounded-lg font-bold text-[10px] uppercase tracking-wider bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg hover:scale-105 transition-transform"
+                    >
+                        Check
+                    </button>
+                </div>
+            </div>
+
             {/* Main Content */}
-            <main className="flex-1 flex flex-col lg:flex-row relative z-10 min-h-0 container mx-auto p-4 gap-6">
+            <main className="flex-1 flex flex-col lg:flex-row relative z-10 min-h-0 container mx-auto p-2 md:p-4 gap-2 md:gap-6">
 
                 {/* Grid Area */}
                 {/* Grid Area */}
@@ -477,7 +507,7 @@ export function Crossword() {
 
                     {/* Scrollable Grid Container */}
                     <div ref={gridWrapperRef} className="flex-1 overflow-auto custom-scrollbar relative">
-                        <div className="min-w-full min-h-full flex items-center justify-center p-8">
+                        <div className="min-w-full min-h-full flex items-center justify-center p-4 md:p-8">
                             <div
                                 className="transition-transform duration-200 ease-out"
                                 style={{
@@ -521,17 +551,17 @@ export function Crossword() {
                     </div>
 
                     {/* Zoom Controls (Bottom Right) */}
-                    <div className="absolute bottom-4 right-4 z-20 flex gap-2">
+                    <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4 z-20 flex gap-1.5 md:gap-2">
                         <button
                             onClick={handleZoomOut}
-                            className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/20 hover:scale-105 active:scale-95 shadow-xl backdrop-blur-sm"
+                            className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 hover:bg-black/70 text-white font-bold text-lg md:text-xl flex items-center justify-center transition-colors border border-white/20 hover:scale-105 active:scale-95 shadow-xl backdrop-blur-sm"
                             title="Zoom Out"
                         >
                             −
                         </button>
                         <button
                             onClick={handleZoomIn}
-                            className="w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white font-bold text-xl flex items-center justify-center transition-colors border border-white/20 hover:scale-105 active:scale-95 shadow-xl backdrop-blur-sm"
+                            className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-black/50 hover:bg-black/70 text-white font-bold text-lg md:text-xl flex items-center justify-center transition-colors border border-white/20 hover:scale-105 active:scale-95 shadow-xl backdrop-blur-sm"
                             title="Zoom In"
                         >
                             +
@@ -540,7 +570,7 @@ export function Crossword() {
                 </div>
 
                 {/* Clues Sidebar */}
-                <div className="lg:w-[350px] shrink-0 flex flex-col bg-black/20 rounded-2xl border border-white/5 backdrop-blur-xl shadow-xl overflow-hidden h-[40vh] lg:h-auto">
+                <div className="lg:w-[350px] shrink-0 flex flex-col bg-black/20 rounded-2xl border border-white/5 backdrop-blur-xl shadow-xl overflow-hidden h-[30vh] lg:h-auto">
                     <div className="p-4 border-b border-white/10 bg-white/5">
                         <h2 className="text-white font-bold flex items-center gap-2">
                             <span>💡</span> Clues

@@ -414,26 +414,27 @@ export function WordHunt() {
 
     // Scaling Logic
     const [scale, setScale] = useState(1);
+    const [stageWidth, setStageWidth] = useState(1280);
+    const [stageHeight, setStageHeight] = useState(800);
 
     useEffect(() => {
         const handleResize = () => {
-            const TARGET_WIDTH = 1280;
-            const TARGET_HEIGHT = 800;
+            const isMobile = window.innerWidth < 768;
+            const TARGET_WIDTH = isMobile ? 640 : 1280;
+            const TARGET_HEIGHT = isMobile ? 500 : 800;
 
-            // Calculate scale to fit strictly within the viewport
-            // Use 'contain' logic: fit completely visible
-            // Subtract HUD height (approx 100px) from available height
-            const HUD_OFFSET = 100;
+            const HUD_OFFSET = isMobile ? 70 : 100;
             const scaleX = window.innerWidth / TARGET_WIDTH;
             const scaleY = (window.innerHeight - HUD_OFFSET) / TARGET_HEIGHT;
 
-            // Choose the smaller scale to ensure it fits entirely
             const newScale = Math.min(scaleX, scaleY);
 
-            setScale(newScale); // Exact fit, no margin needed if we center it properly
+            setScale(newScale);
+            setStageWidth(TARGET_WIDTH);
+            setStageHeight(TARGET_HEIGHT);
         };
 
-        handleResize(); // Initial
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -458,16 +459,17 @@ export function WordHunt() {
 
 
     return (
-        <div className="h-screen w-screen bg-[#1a1a2e] overflow-hidden flex flex-col relative font-sans"
+        <div className="h-[100dvh] w-screen bg-[#1a1a2e] overflow-hidden flex flex-col relative font-sans"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
             <AnimatedBackground />
 
-            {/* Header - Moved outside scaled container for consistency */}
+            {/* Header */}
             <HUD
                 title="DATA DIVER"
+                backPath="/home"
                 currentExp={xp}
                 level={playerLevel}
                 expToNextLevel={nextLevelXP}
@@ -477,12 +479,13 @@ export function WordHunt() {
                 customLevelLabel={playerRank}
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="hover:bg-white/5 transition-colors"
+                gap="4px"
             >
                 {/* Timer Display in HUD */}
                 {formattedTime && (
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-black/40 border border-white/10 backdrop-blur-md shadow-lg ml-4">
-                        <span className="text-xl">⏱️</span>
-                        <span className={`text-xl font-bold font-mono ${(timeRemaining || 0) < 30 ? 'text-red-400 animate-pulse' : 'text-white'
+                    <div className="flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1 md:py-2 rounded-xl bg-black/40 border border-white/10 backdrop-blur-md shadow-lg">
+                        <span className="text-sm md:text-xl">⏱️</span>
+                        <span className={`text-sm md:text-xl font-bold font-mono ${(timeRemaining || 0) < 30 ? 'text-red-400 animate-pulse' : 'text-white'
                             }`}>
                             {formattedTime}
                         </span>
@@ -490,49 +493,66 @@ export function WordHunt() {
                 )}
             </HUD>
 
-            {/* Main Content Area - Centered Scaled Stage */}
+            {/* Main Content Area */}
             <div className="flex-1 w-full flex items-center justify-center overflow-hidden relative z-10">
 
-                {/* Scaled Container - The Rigid "Stage" */}
-                <div
-                    className="relative flex flex-col items-center shadow-2xl overflow-hidden"
-                    style={{
-                        width: '1280px',
-                        height: '800px',
-                        transform: `scale(${scale})`,
-                        // transformOrigin: 'center center', // Default
-                        border: '1px solid rgba(255,255,255,0.05)',
-                        borderRadius: '24px',
-                        background: 'rgba(0,0,0,0.2)',
-                        backdropFilter: 'blur(10px)'
-                    }}
-                >
-                    {/* Header */}
-                    {/* Header */}
+                {/* Mobile Layout: Native responsive (no scaling) */}
+                <div className="md:hidden w-full h-full flex flex-col px-3 py-2 gap-2 overflow-hidden">
+                    {/* Grid Container — fills available width */}
+                    <div className="flex-1 min-h-0 flex items-center justify-center">
+                        <div className="w-full max-w-[95vw] flex items-center justify-center">
+                            <Grid
+                                grid={grid}
+                                onWordSelection={handleWordSelection}
+                                foundColors={foundColors}
+                                words={words}
+                            />
+                        </div>
+                    </div>
 
+                    {/* Mission List — compact at bottom */}
+                    <div className="shrink-0 w-full max-h-[30vh] overflow-y-auto rounded-xl"
+                        style={{
+                            background: 'rgba(0,0,0,0.3)',
+                            backdropFilter: 'blur(8px)',
+                            border: '1px solid rgba(255,255,255,0.06)',
+                        }}
+                    >
+                        <WordList words={words} />
+                    </div>
+                </div>
 
-                    {/* Main Content Area - Fixed Grid Layout */}
-                    <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
-
-                        {/* Left Column: Grid Container - 60% Width */}
-                        <div className="w-[60%] h-full flex items-center justify-center">
-                            <div className="w-full max-h-full flex items-center justify-center">
-                                <Grid
-                                    grid={grid}
-                                    onWordSelection={handleWordSelection}
-                                    foundColors={foundColors}
-                                    words={words}
-                                />
+                {/* Desktop Layout: Scaled Stage */}
+                <div className="hidden md:block">
+                    <div
+                        className="relative flex flex-col items-center shadow-2xl overflow-hidden"
+                        style={{
+                            width: `${stageWidth}px`,
+                            height: `${stageHeight}px`,
+                            transform: `scale(${scale})`,
+                            border: '1px solid rgba(255,255,255,0.05)',
+                            borderRadius: '24px',
+                            background: 'rgba(0,0,0,0.2)',
+                            backdropFilter: 'blur(10px)'
+                        }}
+                    >
+                        <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
+                            <div className="w-[60%] h-full flex items-center justify-center">
+                                <div className="w-full max-h-full flex items-center justify-center">
+                                    <Grid
+                                        grid={grid}
+                                        onWordSelection={handleWordSelection}
+                                        foundColors={foundColors}
+                                        words={words}
+                                    />
+                                </div>
+                            </div>
+                            <div className="w-[38%] max-h-full flex flex-col justify-center">
+                                <div className="w-full max-h-full">
+                                    <WordList words={words} />
+                                </div>
                             </div>
                         </div>
-
-                        {/* Right Column: Mission List - 38% Width */}
-                        <div className="w-[38%] max-h-full flex flex-col justify-center">
-                            <div className="w-full max-h-full">
-                                <WordList words={words} />
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>

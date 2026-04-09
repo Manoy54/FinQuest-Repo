@@ -34,14 +34,14 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4"
+        <div className="min-h-[100dvh] flex items-center justify-center p-3 md:p-4"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
         >
             <AnimatedParticles />
 
-            <div className="relative z-10 text-center p-12 rounded-3xl"
+            <div className="relative z-10 text-center p-6 md:p-12 rounded-2xl md:rounded-3xl w-[95%] md:w-auto"
                 style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(20px)',
@@ -49,8 +49,8 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
                 }}
             >
-                <div className="text-6xl mb-6">🏆</div>
-                <h2 className="text-4xl font-bold mb-4"
+                <div className="text-4xl md:text-6xl mb-4 md:mb-6">🏆</div>
+                <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4"
                     style={{
                         background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)',
                         WebkitBackgroundClip: 'text',
@@ -60,33 +60,33 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                     Game Complete!
                 </h2>
 
-                <p className="text-2xl text-gray-300 mb-2">Results</p>
-                <div className="flex justify-center gap-6 mb-6">
+                <p className="text-lg md:text-2xl text-gray-300 mb-2">Results</p>
+                <div className="flex flex-wrap justify-center gap-3 md:gap-6 mb-4 md:mb-6">
                     <div className="text-center">
-                        <p className="text-sm text-gray-400 mb-1">Score</p>
-                        <p className="text-4xl font-bold text-white">
+                        <p className="text-xs md:text-sm text-gray-400 mb-1">Score</p>
+                        <p className="text-2xl md:text-4xl font-bold text-white">
                             {score} / {totalCards}
                         </p>
                     </div>
                     {exp > 0 && (
                         <div className="text-center">
-                            <p className="text-sm text-gray-400 mb-1">EXP</p>
-                            <p className="text-4xl font-bold text-blue-400 border-l border-gray-600 pl-6">
+                            <p className="text-xs md:text-sm text-gray-400 mb-1">EXP</p>
+                            <p className="text-2xl md:text-4xl font-bold text-blue-400 md:border-l md:border-gray-600 md:pl-6">
                                 +{exp}
                             </p>
                         </div>
                     )}
                     {coins > 0 && (
                         <div className="text-center">
-                            <p className="text-sm text-gray-400 mb-1">Coins</p>
-                            <p className="text-4xl font-bold text-yellow-400 border-l border-gray-600 pl-6">
+                            <p className="text-xs md:text-sm text-gray-400 mb-1">Coins</p>
+                            <p className="text-2xl md:text-4xl font-bold text-yellow-400 md:border-l md:border-gray-600 md:pl-6">
                                 +{coins}
                             </p>
                         </div>
                     )}
                 </div>
 
-                <p className="text-xl mb-8" style={{ color: getResultColor() }}>
+                <p className="text-base md:text-xl mb-6 md:mb-8" style={{ color: getResultColor() }}>
                     {getResultMessage()}
                 </p>
 
@@ -95,7 +95,7 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                         score >= requiredScore ? (
                             <button
                                 onClick={onNextLevel}
-                                className="w-full px-8 py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
+                                className="w-full px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-bold rounded-xl transition-all duration-300 hover:scale-105"
                                 style={{
                                     background: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)', // Purple to Indigo
                                     color: '#fff',
@@ -108,7 +108,7 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                         ) : (
                             <button
                                 disabled
-                                className="w-full px-8 py-4 text-lg font-bold rounded-xl opacity-70 cursor-not-allowed"
+                                className="w-full px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-bold rounded-xl opacity-70 cursor-not-allowed"
                                 style={{
                                     background: 'linear-gradient(135deg, #4b5563 0%, #374151 100%)', // Gray
                                     color: '#9ca3af',
@@ -122,7 +122,7 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                     ) : showComingSoon ? (
                         <button
                             disabled
-                            className="w-full px-8 py-4 text-lg font-bold rounded-xl opacity-80 cursor-not-allowed"
+                            className="w-full px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-bold rounded-xl opacity-80 cursor-not-allowed"
                             style={{
                                 background: 'linear-gradient(135deg, #374151 0%, #1f2937 100%)',
                                 color: '#e5e7eb',
