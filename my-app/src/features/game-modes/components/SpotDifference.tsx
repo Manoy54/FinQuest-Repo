@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, MouseEvent as ReactMouseEvent } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AnimatedBackground, GameComplete } from './MoneytaryMasteryComponents';
 import { HUD } from '../../../components/navigation/HUD';
 import { useUserContext } from '../../../context/UserContext';
@@ -75,7 +75,7 @@ export function SpotDifference() {
         }
     }, [phase, totalXp, totalCoins, addXp, addCoins]);
 
-    const handleSuccessClick = (e: ReactMouseEvent, diff: DifferenceZone) => {
+    const handleSuccessClick = (e: React.MouseEvent<HTMLDivElement>, diff: DifferenceZone) => {
         e.stopPropagation();
         if (!puzzle || docComplete || foundDiffs.includes(diff.id)) return;
         
@@ -84,7 +84,7 @@ export function SpotDifference() {
         setTimeout(() => setFlashLabel(null), 600);
     };
 
-    const handleWrongClick = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const handleWrongClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!puzzle || docComplete) return;
 
         // Calculate click coordinates relative to the div
