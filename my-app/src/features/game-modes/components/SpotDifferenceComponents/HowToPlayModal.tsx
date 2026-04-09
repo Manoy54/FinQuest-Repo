@@ -41,7 +41,7 @@ export function HowToPlayModal({ isOpen, onClose }: HowToPlayModalProps) {
                             <div>
                                 <h3 className="text-xl font-bold text-white mb-2">The Goal</h3>
                                 <p className="text-white/70 leading-relaxed">
-                                    Compare the <strong>Original Document</strong> with the <strong>Document to Verify</strong> and click on the differences.
+                                    Compare the <strong>Original Image</strong> with the <strong>Edited Image</strong> and click/tap on the visual differences you spot.
                                 </p>
                             </div>
                         </div>

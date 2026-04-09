@@ -1,149 +1,104 @@
-export interface DocumentPair {
+export const AI_SYSTEM_PROMPT = `I am conducting a UI/UX precision test. Please locate the two differences in the 'Edited' image relative to the 'Original' and provide the center point (x, y) of each change relative to the image frame.
+
+Example (PNB Logo): Difference 1 is the missing star at the top center of the shield. Difference 2 is the thickened blue frame.
+Example (Jollibee): Difference 1 is the blacked-out pupils (missing white glints). Difference 2 is the modified curve of the cheek line/color saturation.`;
+
+/*
+
+
+Rules:
+- Only report deliberate edits, not JPEG compression artifacts or minor rendering noise
+- Do not describe the images overall \u2014 only describe the differences
+- If you find no differences, say so clearly
+- Aim to find ALL differences before responding
+
+After listing all differences, add a summary line:
+"Total differences found: X"
+
+Tone: friendly, encouraging, like a game show host revealing answers.`;
+*/
+
+export interface DifferenceZone {
+    id: string;
+    x: number; // percentage-based 0-100 left
+    y: number; // percentage-based 0-100 top
+    width: number; // percentage-based width
+    height: number; // percentage-based height
+    description: string;
+    difficulty: 'Easy' | 'Medium' | 'Hard';
+}
+
+export interface ImagePuzzle {
     id: string;
     title: string;
     category: string;
     description: string;
-    originalFields: FieldItem[];
-    modifiedFields: FieldItem[];
-    differences: string[];
+    originalImage: string;
+    editedImage: string;
+    differences: DifferenceZone[];
 }
 
-export interface FieldItem {
-    label: string;
-    value: string;
-    isDifferent?: boolean;
-}
-
-export const DOCUMENT_PAIRS: DocumentPair[] = [
+export const PUZZLES: ImagePuzzle[] = [
     {
-        id: 'check-1',
-        title: 'Bank Check Verification',
-        category: 'Banking',
-        description: 'Compare two bank checks and find the discrepancies.',
-        originalFields: [
-            { label: 'Pay to', value: 'Maria Santos' },
-            { label: 'Amount (words)', value: 'Five Thousand Pesos' },
-            { label: 'Amount (figures)', value: '₱5,000.00' },
-            { label: 'Date', value: 'March 15, 2026' },
-            { label: 'Bank', value: 'BDO Unibank' },
-            { label: 'Check No.', value: '0012345' },
-            { label: 'Memo', value: 'Rent Payment' },
-        ],
-        modifiedFields: [
-            { label: 'Pay to', value: 'Maria Santos' },
-            { label: 'Amount (words)', value: 'Fifty Thousand Pesos', isDifferent: true },
-            { label: 'Amount (figures)', value: '₱5,000.00' },
-            { label: 'Date', value: 'March 15, 2026' },
-            { label: 'Bank', value: 'BPI' , isDifferent: true },
-            { label: 'Check No.', value: '0012345' },
-            { label: 'Memo', value: 'Rent Payment' },
-        ],
-        differences: ['Amount (words)', 'Bank'],
-    },
-    {
-        id: 'statement-1',
-        title: 'Financial Statement Audit',
-        category: 'Accounting',
-        description: 'Compare two income statements and spot the errors.',
-        originalFields: [
-            { label: 'Company', value: 'SM Investments Corp.' },
-            { label: 'Revenue', value: '₱450,000,000' },
-            { label: 'COGS', value: '₱180,000,000' },
-            { label: 'Gross Profit', value: '₱270,000,000' },
-            { label: 'Operating Expenses', value: '₱95,000,000' },
-            { label: 'Net Income', value: '₱175,000,000' },
-            { label: 'Period', value: 'Q1 2026' },
-        ],
-        modifiedFields: [
-            { label: 'Company', value: 'SM Investments Corp.' },
-            { label: 'Revenue', value: '₱450,000,000' },
-            { label: 'COGS', value: '₱108,000,000', isDifferent: true },
-            { label: 'Gross Profit', value: '₱270,000,000' },
-            { label: 'Operating Expenses', value: '₱95,000,000' },
-            { label: 'Net Income', value: '₱175,000,000' },
-            { label: 'Period', value: 'Q2 2026', isDifferent: true },
-        ],
-        differences: ['COGS', 'Period'],
-    },
-    {
-        id: 'receipt-1',
-        title: 'Official Receipt Check',
-        category: 'Taxation',
-        description: 'Compare two official receipts for tax compliance.',
-        originalFields: [
-            { label: 'Seller', value: 'Metro Retail Stores' },
-            { label: 'TIN', value: '123-456-789-000' },
-            { label: 'Subtotal', value: '₱8,500.00' },
-            { label: 'VAT (12%)', value: '₱1,020.00' },
-            { label: 'Total', value: '₱9,520.00' },
-            { label: 'Date', value: 'Feb 28, 2026' },
-            { label: 'OR No.', value: 'OR-2026-00451' },
-        ],
-        modifiedFields: [
-            { label: 'Seller', value: 'Metro Retail Stores' },
-            { label: 'TIN', value: '123-456-789-001', isDifferent: true },
-            { label: 'Subtotal', value: '₱8,500.00' },
-            { label: 'VAT (12%)', value: '₱1,200.00', isDifferent: true },
-            { label: 'Total', value: '₱9,520.00' },
-            { label: 'Date', value: 'Feb 28, 2026' },
-            { label: 'OR No.', value: 'OR-2026-00451' },
-        ],
-        differences: ['TIN', 'VAT (12%)'],
-    },
-    {
-        id: 'loan-1',
-        title: 'Loan Agreement Review',
-        category: 'Banking',
-        description: 'Spot differences between two loan agreements.',
-        originalFields: [
-            { label: 'Borrower', value: 'Juan Dela Cruz' },
-            { label: 'Lender', value: 'PNB' },
-            { label: 'Principal', value: '₱500,000' },
-            { label: 'Interest Rate', value: '6.5% per annum' },
-            { label: 'Term', value: '36 months' },
-            { label: 'Monthly Payment', value: '₱15,347' },
-            { label: 'Collateral', value: 'Real property' },
-        ],
-        modifiedFields: [
-            { label: 'Borrower', value: 'Juan Dela Cruz' },
-            { label: 'Lender', value: 'PNB' },
-            { label: 'Principal', value: '₱500,000' },
-            { label: 'Interest Rate', value: '8.5% per annum', isDifferent: true },
-            { label: 'Term', value: '36 months' },
-            { label: 'Monthly Payment', value: '₱15,347' },
-            { label: 'Collateral', value: 'Motor vehicle', isDifferent: true },
-        ],
-        differences: ['Interest Rate', 'Collateral'],
-    },
-    {
-        id: 'currency-1',
-        title: 'Currency Note Inspection',
+        id: 'peso-100',
+        title: '₱100 Bill Verification',
         category: 'Currency',
-        description: 'Compare two banknote descriptions to identify counterfeits.',
-        originalFields: [
-            { label: 'Denomination', value: '₱1,000' },
-            { label: 'Series', value: '2020' },
-            { label: 'Portraits', value: 'Abad Santos, Lim, Escoda' },
-            { label: 'Watermark', value: 'Abad Santos' },
-            { label: 'Security Thread', value: 'Embedded, color-shifting' },
-            { label: 'Serial No.', value: 'AB123456' },
-            { label: 'Signature', value: 'BSP Governor' },
-        ],
-        modifiedFields: [
-            { label: 'Denomination', value: '₱1,000' },
-            { label: 'Series', value: '2020' },
-            { label: 'Portraits', value: 'Abad Santos, Lim, Escoda' },
-            { label: 'Watermark', value: 'Jose Rizal', isDifferent: true },
-            { label: 'Security Thread', value: 'Printed, non-shifting', isDifferent: true },
-            { label: 'Serial No.', value: 'AB123456' },
-            { label: 'Signature', value: 'BSP Governor' },
-        ],
-        differences: ['Watermark', 'Security Thread'],
+        description: 'Spot the counterfeit errors in this 100 Philippine Peso bill.',
+        originalImage: '/spot-diff/Original - 100 Peso Bill.jpg',
+        editedImage: '/spot-diff/Edited - 100 Peso Bill.jpg',
+        differences: [
+            { id: 'diff-1', x: 60, y: 20, width: 30, height: 15, description: 'Missing digit in top-right serial number', difficulty: 'Easy' }
+        ]
     },
+    {
+        id: 'peso-1000',
+        title: '₱1000 Bill Inspection',
+        category: 'Currency',
+        description: 'Compare the new ₱1000 polymer bill with a suspected fake.',
+        originalImage: '/spot-diff/Original - 1k Bill.jpg',
+        editedImage: '/spot-diff/Edited - 1k Bill.jpg',
+        differences: [
+            { id: 'diff-1', x: 35, y: 60, width: 25, height: 25, description: 'Black line striking across the pearl', difficulty: 'Easy' }
+        ]
+    },
+    {
+        id: 'starbucks-logo',
+        title: 'Starbucks Logo Audit',
+        category: 'Brand Recognition',
+        description: 'Identify the subtle changes made to this well-known brand logo.',
+        originalImage: '/spot-diff/Original - Starbucks.png',
+        editedImage: '/spot-diff/Edited- Starbucks.jpg',
+        differences: [
+            { id: 'diff-1', x: 40, y: 5, width: 20, height: 20, description: 'Missing five-pointed star on the crown', difficulty: 'Easy' },
+            { id: 'diff-2', x: 40, y: 35, width: 20, height: 20, description: 'Altered eyes and mouth details', difficulty: 'Medium' }
+        ]
+    },
+    {
+        id: 'jollibee-logo',
+        title: 'Jollibee Mascot Verification',
+        category: 'Brand Recognition',
+        description: 'Find the differences in this classic fast-food mascot.',
+        originalImage: '/spot-diff/Original _ Jollibee.png',
+        editedImage: '/spot-diff/Edited - Jollibee.jpg',
+        differences: [
+            { id: 'diff-1', x: 30, y: 35, width: 40, height: 25, description: 'Solid black pupils missing white glint reflections', difficulty: 'Medium' }
+        ]
+    },
+    {
+        id: 'pnb-logo',
+        title: 'PNB Logo Authenticity',
+        category: 'Corporate Identity',
+        description: 'Spot what has been changed in the bank\'s official visual identity.',
+        originalImage: '/spot-diff/Original - PNB.jpg',
+        editedImage: '/spot-diff/Edited - PNB.jpg',
+        differences: [
+            { id: 'diff-1', x: 40, y: 5, width: 20, height: 20, description: 'Missing middle gold star above shield', difficulty: 'Easy' }
+        ]
+    }
 ];
 
-export function getDocumentPairs(count: number = 3): DocumentPair[] {
-    const shuffled = [...DOCUMENT_PAIRS];
+export function getPuzzles(count: number = 5): ImagePuzzle[] {
+    const shuffled = [...PUZZLES];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
