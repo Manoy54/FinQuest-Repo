@@ -313,10 +313,10 @@ export function Profile() {
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap justify-center md:justify-start gap-1 md:gap-1.5 mb-2 md:mb-6 pb-1">
+                    <div className="flex flex-wrap justify-center md:justify-start gap-1 mb-2 md:mb-6 pb-1">
                         <button
                             onClick={() => setBadgeFilter('all')}
-                            className={`px-1.5 md:px-3 py-0.5 md:py-1.5 rounded md:rounded-lg text-[7px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
+                            className={`px-2 md:px-3 py-0.5 md:py-1 rounded md:rounded-md text-[6px] md:text-[10px] font-black uppercase tracking-wider transition-all shrink-0 ${
                                 badgeFilter === 'all' ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/40 border border-white/5 hover:text-white/60'
                             }`}
                         >
@@ -326,11 +326,11 @@ export function Profile() {
                             <button
                                 key={cat}
                                 onClick={() => setBadgeFilter(cat)}
-                                className={`flex items-center gap-0.5 md:gap-1.5 px-1.5 md:px-3 py-0.5 md:py-1.5 rounded md:rounded-lg text-[7px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
+                                className={`flex items-center gap-0.5 md:gap-1 px-2 md:px-3 py-0.5 md:py-1 rounded md:rounded-md text-[6px] md:text-[10px] font-black uppercase tracking-wider transition-all shrink-0 ${
                                     badgeFilter === cat ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/40 border border-white/5 hover:text-white/60'
                                 }`}
                             >
-                                <span className="text-[8px] md:text-sm leading-none">{CATEGORY_LABELS[cat].icon}</span> 
+                                <span className="text-[7px] md:text-[12px] leading-none">{CATEGORY_LABELS[cat].icon}</span> 
                                 <span className="leading-none">{CATEGORY_LABELS[cat].label}</span>
                             </button>
                         ))}
