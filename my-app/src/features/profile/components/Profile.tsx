@@ -121,44 +121,44 @@ export function Profile() {
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-4xl px-4 py-6 md:py-20 flex flex-col gap-4 md:gap-8">
+            <div className="relative z-10 w-full max-w-4xl px-3 md:px-4 py-3 md:py-20 flex flex-col gap-3 md:gap-8">
 
                 {/* Back link */}
-                <Link to="/home" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider w-fit">
+                <Link to="/home" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs md:text-sm font-bold uppercase tracking-wider w-fit">
                     ← Back to Home
                 </Link>
 
                 {/* Header Card */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-8 flex flex-col md:flex-row items-center gap-4 md:gap-8 shadow-2xl">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-8 flex flex-col md:flex-row items-center gap-3 md:gap-8 shadow-2xl">
                     <div className="relative group shrink-0">
                         <div className="absolute inset-0 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                        <div className="relative bg-gray-900 rounded-full p-1 md:p-2 w-24 h-24 md:w-48 md:h-48">
+                        <div className="relative bg-gray-900 rounded-full p-1 md:p-2 w-16 h-16 md:w-48 md:h-48">
                             <Avatar className="w-full h-full" {...config} />
                         </div>
-                        <button onClick={() => setIsEditing(!isEditing)} className="absolute bottom-1 right-1 md:bottom-2 md:right-2 bg-blue-500 hover:bg-blue-600 w-8 h-8 md:w-12 md:h-12 rounded-full border-2 md:border-4 border-gray-900 flex items-center justify-center text-white transition-colors shadow-lg z-10" title="Customize Avatar">
-                            <FaPalette className="text-xs md:text-base"/>
+                        <button onClick={() => setIsEditing(!isEditing)} className="absolute -bottom-1 -right-1 md:bottom-2 md:right-2 bg-blue-500 hover:bg-blue-600 w-6 h-6 md:w-12 md:h-12 rounded-full border-2 md:border-4 border-gray-900 flex items-center justify-center text-white transition-colors shadow-lg z-10" title="Customize Avatar">
+                            <FaPalette className="text-[10px] md:text-base"/>
                         </button>
                     </div>
 
-                    <div className="flex-1 text-center md:text-left">
-                        <h1 className="text-2xl md:text-4xl font-black text-white mb-1 md:mb-2 tracking-tight">{displayName || 'Player'}</h1>
-                        <p className="text-white/60 text-sm md:text-lg mb-2 md:mb-4">{rank} • Level {level}</p>
-                        <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3">
-                            <span className="px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs md:text-sm font-bold">📅 Joined Jan 2026</span>
+                    <div className="flex-1 text-center md:text-left mt-1 md:mt-0">
+                        <h1 className="text-lg md:text-4xl font-black text-white mb-0 md:mb-2 tracking-tight leading-tight">{displayName || 'Player'}</h1>
+                        <p className="text-white/60 text-xs md:text-lg mb-1.5 md:mb-4">{rank} • Level {level}</p>
+                        <div className="flex flex-wrap justify-center md:justify-start gap-1.5 md:gap-3">
+                            <span className="px-2 md:px-4 py-0.5 md:py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[9px] md:text-sm font-bold">📅 Joined Jan 2026</span>
                             {streakData.currentStreak > 0 && (
-                                <span className="px-3 md:px-4 py-1 md:py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs md:text-sm font-bold">🔥 {streakData.currentStreak}-Day Streak</span>
+                                <span className="px-2 md:px-4 py-0.5 md:py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] md:text-sm font-bold">🔥 {streakData.currentStreak}-Day Streak</span>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex gap-2 md:gap-4 w-full md:w-auto">
-                        <div className="text-center py-3 md:py-6 px-4 md:px-8 bg-white/5 rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
-                            <div className="text-2xl md:text-4xl font-black text-amber-400 mb-1 md:mb-2">{Math.floor(xp / 2).toLocaleString()}</div>
-                            <div className="text-[10px] md:text-sm text-white/50 uppercase tracking-wider font-bold">XP</div>
+                    <div className="flex gap-2 md:gap-4 w-full md:w-auto mt-1 md:mt-0">
+                        <div className="text-center py-1.5 md:py-6 px-2 md:px-8 bg-white/5 rounded-xl md:rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
+                            <div className="text-base md:text-4xl font-black text-amber-400 mb-0 md:mb-2 leading-none">{Math.floor(xp / 2).toLocaleString()}</div>
+                            <div className="text-[8px] md:text-sm text-white/50 uppercase tracking-wider font-bold">XP</div>
                         </div>
-                        <div className="text-center py-3 md:py-6 px-4 md:px-8 bg-white/5 rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
-                            <div className="text-2xl md:text-4xl font-black text-yellow-400 mb-1 md:mb-2">{coins.toLocaleString()}</div>
-                            <div className="text-[10px] md:text-sm text-white/50 uppercase tracking-wider font-bold">Coins</div>
+                        <div className="text-center py-1.5 md:py-6 px-2 md:px-8 bg-white/5 rounded-xl md:rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
+                            <div className="text-base md:text-4xl font-black text-yellow-400 mb-0 md:mb-2 leading-none">{coins.toLocaleString()}</div>
+                            <div className="text-[8px] md:text-sm text-white/50 uppercase tracking-wider font-bold">Coins</div>
                         </div>
                     </div>
                 </div>
@@ -212,87 +212,87 @@ export function Profile() {
                 )}
 
                 {/* ─── Performance Dashboard ───────────────────────── */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-6">
-                    <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-6">
+                    <h2 className="text-base md:text-xl font-bold text-white mb-2 md:mb-6 flex items-center gap-2">
                         <span className="text-indigo-400">📊</span> Performance Dashboard
                     </h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
-                        <div className="flex flex-row md:flex-col items-center gap-4 p-3 md:p-4 bg-white/5 rounded-2xl border border-white/5">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
+                        <div className="flex flex-row md:flex-col items-center gap-2.5 md:gap-4 p-2 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/5">
                             <div className="relative shrink-0">
-                                <ProgressRing percent={gameCompletionPercent} color="#3b82f6" size={56} strokeWidth={4} />
+                                <ProgressRing percent={gameCompletionPercent} color="#3b82f6" size={44} strokeWidth={3.5} />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-xs md:text-lg font-black text-blue-400">{gameCompletionPercent}%</span>
+                                    <span className="text-[10px] md:text-lg font-black text-blue-400">{gameCompletionPercent}%</span>
                                 </div>
                             </div>
-                            <div className="text-left md:text-center w-full md:w-auto">
-                                <div className="text-white font-bold text-sm">Game Modes</div>
-                                <div className="text-white/40 text-xs">{gamesPlayed}/{GAME_MODES.length} Played</div>
+                            <div className="text-left md:text-center shrink-0">
+                                <div className="text-white font-bold text-xs md:text-sm">Game Modes</div>
+                                <div className="text-white/40 text-[9px] md:text-xs">{gamesPlayed}/{GAME_MODES.length} Played</div>
                             </div>
                         </div>
 
-                        <div className="flex flex-row md:flex-col items-center gap-4 p-3 md:p-4 bg-white/5 rounded-2xl border border-white/5">
+                        <div className="flex flex-row md:flex-col items-center gap-2.5 md:gap-4 p-2 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/5">
                             <div className="relative shrink-0">
-                                <ProgressRing percent={achievementPercent} color="#10b981" size={56} strokeWidth={4} />
+                                <ProgressRing percent={achievementPercent} color="#10b981" size={44} strokeWidth={3.5} />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-xs md:text-lg font-black text-emerald-400">{achievementPercent}%</span>
+                                    <span className="text-[10px] md:text-lg font-black text-emerald-400">{achievementPercent}%</span>
                                 </div>
                             </div>
-                            <div className="text-left md:text-center w-full md:w-auto">
-                                <div className="text-white font-bold text-sm">Achievements</div>
-                                <div className="text-white/40 text-xs">{achievementProgress.unlockedIds.length}/{ACHIEVEMENTS.length} Unlocked</div>
+                            <div className="text-left md:text-center shrink-0">
+                                <div className="text-white font-bold text-xs md:text-sm">Achievements</div>
+                                <div className="text-white/40 text-[9px] md:text-xs">{achievementProgress.unlockedIds.length}/{ACHIEVEMENTS.length} Unlocked</div>
                             </div>
                         </div>
 
-                        <div className="flex flex-row md:flex-col items-center gap-4 p-3 md:p-4 bg-white/5 rounded-2xl border border-white/5">
+                        <div className="flex flex-row md:flex-col items-center gap-2.5 md:gap-4 p-2 md:p-4 bg-white/5 rounded-xl md:rounded-2xl border border-white/5">
                             <div className="relative shrink-0">
-                                <ProgressRing percent={Math.min(100, (streakData.longestStreak / 30) * 100)} color="#f59e0b" size={56} strokeWidth={4} />
+                                <ProgressRing percent={Math.min(100, (streakData.longestStreak / 30) * 100)} color="#f59e0b" size={44} strokeWidth={3.5} />
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <span className="text-xs md:text-lg font-black text-amber-400">{streakData.longestStreak}</span>
+                                    <span className="text-[10px] md:text-lg font-black text-amber-400">{streakData.longestStreak}</span>
                                 </div>
                             </div>
-                            <div className="text-left md:text-center w-full md:w-auto">
-                                <div className="text-white font-bold text-sm">Best Streak</div>
-                                <div className="text-white/40 text-xs">{streakData.checkInHistory.length} Total Check-ins</div>
+                            <div className="text-left md:text-center shrink-0">
+                                <div className="text-white font-bold text-xs md:text-sm">Best Streak</div>
+                                <div className="text-white/40 text-[9px] md:text-xs">{streakData.checkInHistory.length} Total Check-ins</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-4 md:p-6">
-                        <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-6">
+                        <h2 className="text-base md:text-xl font-bold text-white mb-2 md:mb-6 flex items-center gap-2">
                             <span className="text-blue-400">📊</span> Recent Activity
                         </h2>
-                        <div className="space-y-3 md:space-y-4">
+                        <div className="space-y-1.5 md:space-y-4">
                             {[
                                 { game: 'Monetary Mastery', action: 'Completed Level 3', time: '2 mins ago', xp: '+150 XP' },
                                 { game: 'Corporate Climb', action: 'Solved Daily Puzzle', time: '1 hour ago', xp: '+300 XP' },
                                 { game: 'Data Diver', action: 'New High Score', time: 'Yesterday', xp: '+500 XP' },
                             ].map((item, i) => (
-                                <div key={i} className="flex items-center justify-between p-2 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                                <div key={i} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                                     <div>
-                                        <div className="text-white font-medium text-sm md:text-base">{item.game}</div>
-                                        <div className="text-white/40 text-[10px] md:text-sm">{item.action} • {item.time}</div>
+                                        <div className="text-white font-medium text-xs md:text-base leading-tight">{item.game}</div>
+                                        <div className="text-white/40 text-[9px] md:text-sm leading-tight">{item.action} • {item.time}</div>
                                     </div>
-                                    <div className="text-amber-400 font-bold text-[10px] md:text-sm bg-amber-400/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full">{item.xp}</div>
+                                    <div className="text-amber-400 font-bold text-[9px] md:text-sm bg-amber-400/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full">{item.xp}</div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
-                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-4 md:p-6">
-                        <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2">
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-6">
+                        <h2 className="text-base md:text-xl font-bold text-white mb-2 md:mb-6 flex items-center gap-2">
                             <span className="text-purple-400">🎮</span> Game Mode Progress
                         </h2>
-                        <div className="space-y-2 md:space-y-3">
+                        <div className="space-y-1 md:space-y-3">
                             {GAME_MODES.map(game => {
                                 const played = !!localStorage.getItem(game.key);
                                 return (
-                                    <Link key={game.key} to={game.route} className="flex items-center justify-between p-2 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-white/5 no-underline">
-                                        <span className={`font-bold text-xs md:text-sm ${played ? 'text-white' : 'text-white/40'}`}>{game.name}</span>
-                                        <span className={`text-[8px] md:text-[10px] uppercase tracking-widest font-black px-2 md:px-2.5 py-0.5 md:py-1 rounded-full ${played ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-white/30 border border-white/10'}`}>
+                                    <Link key={game.key} to={game.route} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-white/5 no-underline">
+                                        <span className={`font-bold text-[10px] md:text-sm leading-tight ${played ? 'text-white' : 'text-white/40'}`}>{game.name}</span>
+                                        <span className={`text-[7px] md:text-[10px] uppercase tracking-widest font-black px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full ${played ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-white/30 border border-white/10'}`}>
                                             {played ? '✓ Played' : 'Not Played'}
                                         </span>
                                     </Link>
@@ -303,20 +303,20 @@ export function Profile() {
                 </div>
 
                 {/* ─── Achievement Badges ───────────────────────── */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-6">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 md:mb-6 gap-2">
-                        <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-6">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between mb-3 md:mb-6 gap-1 md:gap-2">
+                        <h2 className="text-base md:text-xl font-bold text-white flex items-center gap-2">
                             <span className="text-yellow-400"><FaTrophy /></span> Achievement Badges
                         </h2>
-                        <span className="text-white/40 text-[10px] md:text-xs font-bold">
+                        <span className="text-white/40 text-[9px] md:text-xs font-bold">
                             {achievementProgress.unlockedIds.length}/{ACHIEVEMENTS.length} Unlocked
                         </span>
                     </div>
 
-                    <div className="flex gap-1.5 mb-4 md:mb-6 overflow-x-auto pb-1 scrollbar-hide">
+                    <div className="flex flex-wrap gap-1.5 mb-3 md:mb-6 pb-1">
                         <button
                             onClick={() => setBadgeFilter('all')}
-                            className={`px-3 py-1.5 rounded-lg text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
+                            className={`px-2 md:px-3 py-1 md:py-1.5 rounded-md md:rounded-lg text-[9px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
                                 badgeFilter === 'all' ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/40 border border-white/5 hover:text-white/60'
                             }`}
                         >
@@ -326,7 +326,7 @@ export function Profile() {
                             <button
                                 key={cat}
                                 onClick={() => setBadgeFilter(cat)}
-                                className={`px-3 py-1 md:py-1.5 rounded-lg text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
+                                className={`px-2 md:px-3 py-1 md:py-1.5 rounded-md md:rounded-lg text-[9px] md:text-xs font-bold uppercase tracking-wider transition-all shrink-0 ${
                                     badgeFilter === cat ? 'bg-white/15 text-white border border-white/20' : 'bg-white/5 text-white/40 border border-white/5 hover:text-white/60'
                                 }`}
                             >
@@ -335,29 +335,29 @@ export function Profile() {
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1.5 md:gap-3">
                         {filteredAchievements.map(achievement => {
                             const isUnlocked = achievementProgress.unlockedIds.includes(achievement.id);
                             return (
                                 <div
                                     key={achievement.id}
-                                    className={`p-2 md:p-4 rounded-xl border flex flex-col items-center text-center gap-1 md:gap-2 transition-all duration-200 ${
+                                    className={`p-1.5 md:p-4 rounded-xl border flex flex-col items-center text-center gap-0.5 md:gap-2 transition-all duration-200 ${
                                         isUnlocked
                                             ? 'bg-gradient-to-br from-emerald-500/15 to-teal-500/15 border-emerald-500/30 hover:scale-[1.02]'
                                             : 'bg-white/5 border-white/5 grayscale opacity-50'
                                     }`}
                                     title={achievement.description}
                                 >
-                                    <div className="text-xl md:text-3xl mb-0.5 md:mb-1">{achievement.icon}</div>
-                                    <div className="text-white font-bold text-[10px] md:text-xs">{achievement.title}</div>
-                                    <div className="text-white/40 text-[8px] md:text-[10px] leading-tight">{achievement.description}</div>
-                                    <div className={`text-[8px] md:text-[9px] uppercase tracking-widest font-black mt-1 ${isUnlocked ? 'text-emerald-400' : 'text-white/20'}`}>
+                                    <div className="text-lg md:text-3xl mb-0 md:mb-1">{achievement.icon}</div>
+                                    <div className="text-white font-bold text-[9px] md:text-xs leading-tight">{achievement.title}</div>
+                                    <div className="text-white/40 text-[7px] md:text-[10px] leading-tight">{achievement.description}</div>
+                                    <div className={`text-[7px] md:text-[9px] uppercase tracking-widest font-black mt-0.5 md:mt-1 ${isUnlocked ? 'text-emerald-400' : 'text-white/20'}`}>
                                         {isUnlocked ? '✓ Unlocked' : achievement.requirement}
                                     </div>
                                     {isUnlocked && (
                                         <div className="flex gap-1 md:gap-1.5 mt-0.5 md:mt-1">
-                                            <span className="text-[8px] md:text-[9px] font-bold text-amber-400">+{achievement.xpReward} XP</span>
-                                            {achievement.coinReward > 0 && <span className="text-[8px] md:text-[9px] font-bold text-yellow-400">+{achievement.coinReward} 🪙</span>}
+                                            <span className="text-[7px] md:text-[9px] font-bold text-amber-400">+{achievement.xpReward} XP</span>
+                                            {achievement.coinReward > 0 && <span className="text-[7px] md:text-[9px] font-bold text-yellow-400">+{achievement.coinReward} 🪙</span>}
                                         </div>
                                     )}
                                 </div>
