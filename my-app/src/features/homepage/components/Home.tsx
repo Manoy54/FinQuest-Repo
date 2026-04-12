@@ -13,12 +13,12 @@ export function Home() {
     const navigate = useNavigate();
     const { logout, displayName } = useAuth();
     const [avatarConfig, setAvatarConfig] = useState<ReturnType<typeof genConfig> | null>(null);
-    const [navExpanded, setNavExpanded] = useState(false);
-    const [navHeight, setNavHeight] = useState(51);
+    // const [navExpanded, setNavExpanded] = useState(false);
+    // const [navHeight, setNavHeight] = useState(51);
 
-    const handleNavExpandChange = useCallback((expanded: boolean, height: number) => {
-        setNavExpanded(expanded);
-        setNavHeight(expanded ? height : 51);
+    const handleNavExpandChange = useCallback((_expanded: boolean, _height: number) => {
+        // setNavExpanded(_expanded);
+        // setNavHeight(_expanded ? _height : 51);
     }, []);
 
     useEffect(() => {

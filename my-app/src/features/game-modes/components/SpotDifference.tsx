@@ -35,7 +35,7 @@ export function SpotDifference() {
     const [imgErrorCount, setImgErrorCount] = useState(0);
     
     // Debug: show last click
-    const [lastClick, setLastClick] = useState<{x: number, y: number} | null>(null);
+    // const [lastClick, setLastClick] = useState<{x: number, y: number} | null>(null);
     
     // For hit visual effects
     const [mistakeMarkers, setMistakeMarkers] = useState<{id: number, x: number, y: number}[]>([]);
@@ -92,7 +92,7 @@ export function SpotDifference() {
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-        setLastClick({x, y});
+        // setLastClick({x, y});
         setWrongClicks(p => p + 1);
         const newMarker = { id: Date.now(), x, y };
         setMistakeMarkers(prev => [...prev, newMarker]);

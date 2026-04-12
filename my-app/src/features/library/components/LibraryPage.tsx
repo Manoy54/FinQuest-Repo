@@ -75,7 +75,7 @@ export function LibraryPage() {
 
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
+                    <h1 className="text-xs md:text-sm font-black text-white mb-2 tracking-tight">
                         📚 The Vault of{' '}
                         <span
                             style={{
@@ -87,37 +87,56 @@ export function LibraryPage() {
                             Knowledge
                         </span>
                     </h1>
-                    <p className="text-white/40 text-sm max-w-lg mx-auto">
+                    <p className="text-white/40 text-xs max-w-lg mx-auto">
                         Browse modules, notes, presentations, and video lectures from educators and the FinQuest community.
                     </p>
                 </div>
 
                 {/* Search + Filters */}
-                <div className="flex flex-col md:flex-row gap-3">
-                    <div className="flex-1 relative">
-                        <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 text-sm" />
+                <div className="flex flex-col gap-2 w-full">
+                    <div className="relative w-full">
+                        <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-xs" />
                         <input
                             type="text"
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                             placeholder="Search modules, topics, authors..."
-                            className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-medium focus:outline-none focus:border-indigo-500 transition-all placeholder:text-white/20"
+                            className="w-full pl-9 pr-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs font-medium focus:outline-none focus:border-indigo-500 transition-all placeholder:text-white/20"
                         />
                     </div>
-                    <div className="flex gap-1.5 bg-white/5 p-1 rounded-xl border border-white/10">
-                        {(['all', 'modules', 'notes', 'presentations', 'videos'] as ContentType[]).map(type => (
-                            <button
-                                key={type}
-                                onClick={() => setFilter(type)}
-                                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
-                                    filter === type
-                                        ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
-                                        : 'text-white/40 hover:text-white/70 hover:bg-white/5'
-                                }`}
-                            >
-                                {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
-                            </button>
-                        ))}
+                    <div className="flex flex-col w-full gap-0.5 bg-white/5 p-0.5 rounded-xl border border-white/10">
+                        {/* Row 1: All, Modules, Notes */}
+                        <div className="flex w-full gap-0.5 h-[28px]">
+                            {(['all', 'modules', 'notes'] as ContentType[]).map(type => (
+                                <button
+                                    key={type}
+                                    onClick={() => setFilter(type)}
+                                    className={`flex-1 flex items-center justify-center rounded-lg text-[8px] font-bold uppercase tracking-tight transition-all ${
+                                        filter === type
+                                            ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md'
+                                            : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                                    }`}
+                                >
+                                    {type === 'all' ? 'All' : type.charAt(0).toUpperCase() + type.slice(1)}
+                                </button>
+                            ))}
+                        </div>
+                        {/* Row 2: Presentations, Videos */}
+                        <div className="flex w-full gap-0.5 h-[28px]">
+                            {(['presentations', 'videos'] as ContentType[]).map(type => (
+                                <button
+                                    key={type}
+                                    onClick={() => setFilter(type)}
+                                    className={`flex-1 flex items-center justify-center rounded-lg text-[8px] font-bold uppercase tracking-tight transition-all ${
+                                        filter === type
+                                            ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md'
+                                            : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                                    }`}
+                                >
+                                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
@@ -130,20 +149,17 @@ export function LibraryPage() {
                                 item.isPremium ? 'opacity-80' : ''
                             }`}
                         >
-                            {item.isPremium && (
-                                <div className="absolute top-3 right-3">
-                                    <span className="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30">
-                                        <FaLock className="w-2.5 h-2.5" /> Premium
-                                    </span>
-                                </div>
-                            )}
-
-                            <div className="flex items-center gap-3 mb-1">
-                                <div className="text-3xl">{item.icon}</div>
+                            <div className="flex items-start gap-3">
+                                <div className="text-3xl shrink-0">{item.icon}</div>
                                 <div className="flex-1 min-w-0">
-                                    <h3 className="text-white font-black text-sm truncate">{item.title}</h3>
+                                    <h3 className="text-white font-black text-sm pr-1">{item.title}</h3>
                                     <p className="text-white/40 text-[11px]">by {item.author}</p>
                                 </div>
+                                {item.isPremium && (
+                                    <span className="shrink-0 flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[9px] font-black uppercase tracking-wide border border-amber-500/30">
+                                        <FaLock className="w-2 h-2" /> Premium
+                                    </span>
+                                )}
                             </div>
 
                             <p className="text-white/50 text-xs leading-relaxed flex-1">{item.description}</p>

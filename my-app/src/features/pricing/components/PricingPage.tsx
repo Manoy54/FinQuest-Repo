@@ -87,7 +87,7 @@ export function PricingPage() {
         >
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-6xl px-4 py-8 flex flex-col gap-8">
+            <div className="relative z-10 w-full max-w-6xl px-4 py-4 flex flex-col gap-4">
                 {/* Back Button */}
                 <Link
                     to="/home"
@@ -98,10 +98,10 @@ export function PricingPage() {
 
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-4xl font-black text-white mb-2 tracking-tight">
-                        FinQuest
+                    <h1 className="font-black text-white mb-1 tracking-tight leading-tight">
+                        <span className="block text-sm md:text-base">FinQuest</span>
                         <span
-                            className="ml-2"
+                            className="block text-base md:text-xl"
                             style={{
                                 background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)',
                                 WebkitBackgroundClip: 'text',
@@ -111,78 +111,78 @@ export function PricingPage() {
                             Subscription Plans
                         </span>
                     </h1>
-                    <p className="text-white/40 text-sm max-w-lg mx-auto">
+                    <p className="text-white/40 text-xs max-w-lg mx-auto">
                         Choose the plan that fits your learning journey. Upgrade anytime to unlock premium features.
                     </p>
                 </div>
 
                 {/* Billing Toggle */}
                 <div className="flex justify-center">
-                    <div className="flex gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+                    <div className="flex gap-0.5 bg-white/5 p-0.5 rounded-xl border border-white/10 h-[32px]">
                         {(['monthly', 'annual'] as BillingCycle[]).map((cycle) => (
                             <button
                                 key={cycle}
                                 onClick={() => setBilling(cycle)}
-                                className={`px-6 py-2 rounded-lg font-bold text-sm uppercase tracking-wider transition-all duration-300 ${
+                                className={`flex items-center justify-center px-4 rounded-lg font-bold text-[9px] uppercase tracking-wider transition-all duration-300 ${
                                     billing === cycle
                                         ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
                                         : 'text-white/40 hover:text-white/70'
                                 }`}
                             >
                                 {cycle === 'monthly' ? 'Monthly' : 'Annual'}
-                                {cycle === 'annual' && <span className="ml-1 text-emerald-400 text-[10px]">Save 15%</span>}
+                                {cycle === 'annual' && <span className="ml-1 text-emerald-400 text-[7px]">Save 15%</span>}
                             </button>
                         ))}
                     </div>
                 </div>
 
                 {/* Plan Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     {plans.map((plan) => (
                         <div
                             key={plan.key}
-                            className={`relative bg-gradient-to-b ${plan.color} backdrop-blur-xl border ${plan.borderColor} rounded-3xl p-6 flex flex-col gap-4 transition-transform duration-300`}
+                            className={`relative bg-gradient-to-b ${plan.color} backdrop-blur-xl border ${plan.borderColor} rounded-2xl p-3 flex flex-col gap-2 transition-transform duration-300`}
                         >
                             {plan.badge && (
-                                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                                    <span className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-black uppercase tracking-wider shadow-lg">
+                                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
+                                    <span className="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[8px] font-black uppercase tracking-wide shadow-lg">
                                         {plan.badge}
                                     </span>
                                 </div>
                             )}
 
-                            <div className="text-center pt-2">
-                                <div className="text-3xl mb-2">{plan.icon}</div>
-                                <h3 className="text-white font-black text-lg">{plan.name}</h3>
-                                <span className="text-white/40 text-xs font-bold uppercase tracking-widest">{plan.tier}</span>
+                            <div className="text-center pt-1">
+                                <div className="text-2xl mb-1">{plan.icon}</div>
+                                <h3 className="text-white font-black text-sm">{plan.name}</h3>
+                                <span className="text-white/40 text-[9px] font-bold uppercase tracking-widest">{plan.tier}</span>
                             </div>
 
-                            <div className="text-center py-3 border-y border-white/10">
+                            <div className="text-center py-2 border-y border-white/10">
                                 {plan.monthly === 0 ? (
-                                    <div className="text-3xl font-black text-emerald-400">FREE</div>
+                                    <div className="text-xl font-black text-emerald-400">FREE</div>
                                 ) : (
                                     <>
-                                        <div className="text-3xl font-black text-white">
+                                        <div className="text-xl font-black text-white">
                                             ₱{(billing === 'monthly' ? plan.monthly : plan.annual).toLocaleString()}
                                         </div>
-                                        <div className="text-white/30 text-xs font-bold">
+                                        <div className="text-white/30 text-[9px] font-bold">
                                             per {billing === 'monthly' ? 'month' : 'year'}
                                         </div>
                                     </>
                                 )}
                             </div>
 
-                            <ul className="space-y-2 flex-1">
+                            <ul className="space-y-1 flex-1">
                                 {features.map((feat) => {
                                     const val = feat[plan.key as keyof PlanFeature];
                                     return (
-                                        <li key={feat.label} className="flex items-center gap-2 text-xs">
+                                        <li key={feat.label} className="flex items-center gap-1.5 text-[10px]">
                                             {val === true ? (
-                                                <FaCheck className="text-emerald-400 shrink-0 w-3 h-3" />
+                                                <FaCheck className="text-emerald-400 shrink-0 w-2.5 h-2.5" />
                                             ) : val === false ? (
-                                                <FaTimes className="text-red-400/40 shrink-0 w-3 h-3" />
+                                                <FaTimes className="text-red-400/40 shrink-0 w-2.5 h-2.5" />
                                             ) : (
-                                                <FaCheck className="text-emerald-400 shrink-0 w-3 h-3" />
+                                                <FaCheck className="text-emerald-400 shrink-0 w-2.5 h-2.5" />
                                             )}
                                             <span className={`${val === false ? 'text-white/30' : 'text-white/70'}`}>
                                                 {typeof val === 'string' ? `${feat.label}: ${val}` : feat.label}
@@ -193,7 +193,7 @@ export function PricingPage() {
                             </ul>
 
                             <button
-                                className={`w-full py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 ${
+                                className={`w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all duration-300 ${
                                     plan.monthly === 0
                                         ? 'bg-white/10 text-white/60 border border-white/10 hover:bg-white/15'
                                         : 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white hover:from-emerald-400 hover:to-cyan-400 shadow-lg shadow-emerald-500/20'

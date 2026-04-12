@@ -57,25 +57,25 @@ const features: FeatureCardProps[] = [
 
 function FeatureCard({ feature }: { feature: FeatureCardProps }) {
     return (
-        <div className={`relative bg-gradient-to-b ${feature.gradient} backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col gap-4 transition-transform duration-300`}>
+        <div className={`relative bg-gradient-to-b ${feature.gradient} backdrop-blur-xl border border-white/10 rounded-2xl p-3 flex flex-col gap-2 transition-transform duration-300`}>
             {feature.status === 'coming-soon' && (
-                <div className="absolute -top-2.5 right-4">
-                    <span className="px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30">
+                <div className="absolute -top-2 right-3">
+                    <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[8px] font-black uppercase tracking-wide border border-amber-500/30">
                         Coming Soon
                     </span>
                 </div>
             )}
 
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-xl text-white/80 border border-white/10">
+            <div className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-sm text-white/80 border border-white/10">
                 {feature.icon}
             </div>
 
-            <h3 className="text-white font-black text-lg">{feature.title}</h3>
-            <p className="text-white/50 text-sm leading-relaxed flex-1">{feature.description}</p>
+            <h3 className="text-white font-black text-sm">{feature.title}</h3>
+            <p className="text-white/50 text-xs leading-snug flex-1">{feature.description}</p>
 
             <button
                 disabled={feature.status === 'coming-soon'}
-                className={`w-full py-2.5 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 ${
+                className={`w-full py-1.5 rounded-lg font-bold text-[10px] uppercase tracking-wider transition-all duration-300 ${
                     feature.status === 'coming-soon'
                         ? 'bg-white/5 text-white/30 border border-white/5 cursor-not-allowed'
                         : 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-400 hover:to-purple-400'
@@ -95,7 +95,7 @@ export function EducatorHubPage() {
         >
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-6xl px-4 py-8 flex flex-col gap-8">
+            <div className="relative z-10 w-full max-w-6xl px-4 py-4 flex flex-col gap-4">
                 {/* Back Button */}
                 <Link
                     to="/home"
@@ -106,7 +106,7 @@ export function EducatorHubPage() {
 
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
+                    <h1 className="text-xl md:text-2xl font-black text-white mb-1 tracking-tight">
                         🎓 Educator{' '}
                         <span
                             style={{
@@ -118,26 +118,26 @@ export function EducatorHubPage() {
                             Hub
                         </span>
                     </h1>
-                    <p className="text-white/40 text-sm max-w-lg mx-auto">
+                    <p className="text-white/40 text-xs max-w-lg mx-auto">
                         A dedicated space for professors and instructors to manage classes, create quizzes, and track student performance on FinQuest.
                     </p>
                 </div>
 
                 {/* Educator CTA */}
-                <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-8 text-center">
-                    <div className="text-4xl mb-3">👨‍🏫</div>
-                    <h2 className="text-xl font-black text-white mb-2">Are you an Educator?</h2>
-                    <p className="text-white/50 text-sm mb-6 max-w-md mx-auto">
+                <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-xl border border-indigo-500/20 rounded-2xl p-4 text-center">
+                    <div className="text-2xl mb-1">👨‍🏫</div>
+                    <h2 className="text-sm font-black text-white mb-1">Are you an Educator?</h2>
+                    <p className="text-white/50 text-xs mb-3 max-w-md mx-auto">
                         The Educator Hub provides tools to integrate FinQuest into your financial literacy curriculum. Create quizzes, monitor student progress, and host live quiz bees.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-3">
-                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-bold uppercase tracking-wider">
+                    <div className="flex flex-wrap justify-center gap-2">
+                        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-wider">
                             📊 Analytics Dashboard
                         </div>
-                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-bold uppercase tracking-wider">
+                        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-wider">
                             📝 Quiz Builder
                         </div>
-                        <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-bold uppercase tracking-wider">
+                        <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-[10px] font-bold uppercase tracking-wider">
                             👥 Class Management
                         </div>
                     </div>

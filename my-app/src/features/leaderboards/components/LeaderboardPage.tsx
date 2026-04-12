@@ -64,59 +64,69 @@ export function LeaderboardPage() {
         >
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-3xl px-4 py-8 flex flex-col gap-6">
+            <div className="relative z-10 w-full max-w-3xl px-6 py-8 flex flex-col gap-4">
                 {/* Back Button */}
                 <Link
                     to="/home"
-                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider w-fit"
+                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider w-fit"
                 >
                     <FaArrowLeft className="w-3 h-3" /> Back to Home
                 </Link>
 
                 {/* Header */}
                 <div className="text-center">
-                    <h1 className="text-4xl font-black text-white mb-2 tracking-tight">🏆 Leaderboards</h1>
-                    <p className="text-white/40 text-sm">Top performers in FinQuest — Top 3 earn bonus rewards!</p>
+                    <h1 className="text-2xl font-black text-white mb-0 tracking-tight flex flex-col items-center gap-1">
+                        <span className="text-3xl">🏆</span> 
+                        Leaderboards
+                    </h1>
+                    <p className="text-white/40 text-[10px] mt-1">Top performers in FinQuest — Top 3 earn bonus rewards!</p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10">
+                {/* Tabs */}
+                <div className="flex gap-0.5 bg-white/5 p-0.5 rounded-[10px] border border-white/10 mt-1 h-[36px]">
                     {(['xp', 'coins'] as TabType[]).map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`flex-1 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all duration-300 ${
+                            className={`flex-1 flex items-center justify-center rounded-lg font-bold text-[8px] sm:text-[10px] md:text-[11px] uppercase tracking-tighter whitespace-nowrap transition-all duration-300 ${
                                 activeTab === tab
                                     ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg'
                                     : 'text-white/40 hover:text-white/70 hover:bg-white/5'
                             }`}
                         >
-                            {tab === 'xp' ? '⚡ Highest XP' : '🪙 Most Coins'}
+                            <span className="flex items-center justify-center gap-0.5 w-full text-center">
+                                {tab === 'xp' ? (
+                                    <><span>⚡</span> <span>Highest XP</span></>
+                                ) : (
+                                    <><span>🪙</span> <span>Most Coins</span></>
+                                )}
+                            </span>
                         </button>
                     ))}
                 </div>
 
                 {/* Top 3 Podium */}
-                <div className="flex items-end justify-center gap-3 pt-4 pb-2">
+                <div className="flex items-end justify-center gap-2 pt-2 pb-1">
                     {[data[1], data[0], data[2]].map((entry, i) => {
                         const order = [2, 1, 3][i];
                         const medal = getMedalStyle(order);
-                        const size = order === 1 ? 'h-36' : order === 2 ? 'h-28' : 'h-24';
+                        const size = order === 1 ? 'h-24' : order === 2 ? 'h-20' : 'h-16';
 
                         const rewardLabels: Record<number, string> = { 1: '+500 XP • +250 🪙', 2: '+300 XP • +150 🪙', 3: '+150 XP • +75 🪙' };
 
                         return (
-                            <div key={entry.rank} className="flex flex-col items-center flex-1 max-w-[140px]">
-                                <div className="text-3xl mb-2">{medal.icon}</div>
-                                <p className={`text-sm font-black ${medal.text} mb-1 text-center truncate w-full`}>{entry.name}</p>
-                                <p className="text-white/30 text-[10px] font-bold uppercase mb-1">
+                            <div key={entry.rank} className="flex flex-col items-center flex-1 max-w-[120px]">
+                                <div className="text-2xl mb-1">{medal.icon}</div>
+                                <p className={`text-xs font-black ${medal.text} mb-0.5 text-center truncate w-full`}>{entry.name}</p>
+                                <p className="text-white/30 text-[9px] font-bold uppercase mb-0.5">
                                     {getRankTier(entry.level).name}
                                 </p>
-                                <p className="text-amber-400/70 text-[9px] font-bold mb-2">
+                                <p className="text-amber-400/70 text-[8px] font-bold mb-1.5">
                                     {rewardLabels[order]}
                                 </p>
-                                <div className={`w-full ${size} bg-gradient-to-t ${medal.bg} border ${medal.border} rounded-t-2xl flex items-start justify-center pt-4`}>
-                                    <span className={`text-lg font-black ${medal.text}`}>
+                                <div className={`w-full ${size} bg-gradient-to-t ${medal.bg} border ${medal.border} rounded-t-xl flex items-start justify-center pt-2`}>
+                                    <span className={`text-sm font-black ${medal.text}`}>
                                         {entry.value.toLocaleString()} {activeTab === 'xp' ? 'XP' : '🪙'}
                                     </span>
                                 </div>
@@ -126,8 +136,8 @@ export function LeaderboardPage() {
                 </div>
 
                 {/* Full List */}
-                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden">
-                    <div className="grid grid-cols-[60px_1fr_auto] gap-2 px-5 py-3 border-b border-white/10 text-[10px] text-white/30 uppercase font-bold tracking-widest">
+                <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
+                    <div className="grid grid-cols-[50px_1fr_auto] gap-2 px-4 py-2 border-b border-white/10 text-[9px] text-white/30 uppercase font-bold tracking-widest">
                         <span>Rank</span>
                         <span>Player</span>
                         <span className="text-right">{activeTab === 'xp' ? 'XP' : 'Coins'}</span>
@@ -141,25 +151,25 @@ export function LeaderboardPage() {
                         return (
                             <div key={entry.rank}>
                                 {showGap && (
-                                    <div className="text-center py-2 text-white/20 text-xs">• • •</div>
+                                    <div className="text-center py-1 text-white/20 text-[10px]">• • •</div>
                                 )}
-                                <div className={`grid grid-cols-[60px_1fr_auto] gap-2 px-5 py-3 items-center transition-colors ${
+                                <div className={`grid grid-cols-[50px_1fr_auto] gap-2 px-4 py-2 items-center transition-colors ${
                                     isUser
                                         ? 'bg-indigo-500/20 border-l-4 border-indigo-400'
                                         : 'hover:bg-white/5 border-l-4 border-transparent'
                                 }`}>
-                                    <span className={`font-black text-sm ${isUser ? 'text-indigo-300' : 'text-white/40'}`}>
+                                    <span className={`font-black text-xs ${isUser ? 'text-indigo-300' : 'text-white/40'}`}>
                                         #{entry.rank}
                                     </span>
                                     <div>
-                                        <span className={`font-bold text-sm ${isUser ? 'text-indigo-200' : 'text-white/80'}`}>
+                                        <span className={`font-bold text-xs ${isUser ? 'text-indigo-200' : 'text-white/80'}`}>
                                             {entry.name}
                                         </span>
-                                        <span className="text-[10px] ml-2 font-bold uppercase" style={{ color: rank.color }}>
+                                        <span className="text-[9px] ml-2 font-bold uppercase" style={{ color: rank.color }}>
                                             {rank.icon} Lv.{entry.level}
                                         </span>
                                     </div>
-                                    <span className={`font-black text-sm text-right ${isUser ? 'text-indigo-300' : 'text-white/60'}`}>
+                                    <span className={`font-black text-xs text-right ${isUser ? 'text-indigo-300' : 'text-white/60'}`}>
                                         {entry.value.toLocaleString()}
                                     </span>
                                 </div>
@@ -169,25 +179,25 @@ export function LeaderboardPage() {
                 </div>
 
                 {/* Rewards Info */}
-                <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 backdrop-blur-xl border border-amber-500/20 rounded-2xl p-5">
-                    <h3 className="text-sm font-black text-amber-300 uppercase tracking-wider mb-3 flex items-center gap-2">
+                <div className="bg-gradient-to-r from-amber-500/10 to-orange-500/10 backdrop-blur-xl border border-amber-500/20 rounded-xl p-4">
+                    <h3 className="text-xs font-black text-amber-300 uppercase tracking-wider mb-2 flex items-center gap-2">
                         🎁 Weekly Rewards for Top Performers
                     </h3>
-                    <div className="grid grid-cols-3 gap-3 text-center">
-                        <div className="bg-white/5 rounded-xl p-3 border border-amber-500/20">
-                            <div className="text-xl mb-1">🥇</div>
-                            <div className="text-amber-300 text-xs font-bold">1st Place</div>
-                            <div className="text-white/50 text-[10px] mt-1">+500 XP • +250 Coins</div>
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                        <div className="bg-white/5 rounded-lg p-2 border border-amber-500/20">
+                            <div className="text-lg mb-0.5">🥇</div>
+                            <div className="text-amber-300 text-[10px] font-bold">1st Place</div>
+                            <div className="text-white/50 text-[8px] mt-0.5">+500 XP • +250 🪙</div>
                         </div>
-                        <div className="bg-white/5 rounded-xl p-3 border border-gray-400/20">
-                            <div className="text-xl mb-1">🥈</div>
-                            <div className="text-gray-300 text-xs font-bold">2nd Place</div>
-                            <div className="text-white/50 text-[10px] mt-1">+300 XP • +150 Coins</div>
+                        <div className="bg-white/5 rounded-lg p-2 border border-gray-400/20">
+                            <div className="text-lg mb-0.5">🥈</div>
+                            <div className="text-gray-300 text-[10px] font-bold">2nd Place</div>
+                            <div className="text-white/50 text-[8px] mt-0.5">+300 XP • +150 🪙</div>
                         </div>
-                        <div className="bg-white/5 rounded-xl p-3 border border-orange-500/20">
-                            <div className="text-xl mb-1">🥉</div>
-                            <div className="text-orange-300 text-xs font-bold">3rd Place</div>
-                            <div className="text-white/50 text-[10px] mt-1">+150 XP • +75 Coins</div>
+                        <div className="bg-white/5 rounded-lg p-2 border border-orange-500/20">
+                            <div className="text-lg mb-0.5">🥉</div>
+                            <div className="text-orange-300 text-[10px] font-bold">3rd Place</div>
+                            <div className="text-white/50 text-[8px] mt-0.5">+150 XP • +75 🪙</div>
                         </div>
                     </div>
                 </div>

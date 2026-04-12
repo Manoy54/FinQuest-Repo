@@ -314,10 +314,10 @@ export function MatchingGame() {
             </div>
 
             {/* Match Area */}
-            <div className="flex-1 w-full max-w-5xl px-3 md:px-6 mt-2 md:mt-20 z-10 flex flex-col md:flex-row gap-4 md:gap-6 items-start justify-center overflow-y-auto pb-4 md:pb-8">
+            <div className="flex-1 w-full max-w-5xl px-2 md:px-6 mt-2 md:mt-20 z-10 flex flex-row gap-2 md:gap-6 items-start justify-center overflow-y-auto pb-4 md:pb-8">
                 {/* Terms column */}
-                <div className="flex-1 w-full flex flex-col gap-2 md:gap-3">
-                    <h3 className="text-[10px] font-black text-indigo-300/50 uppercase tracking-[0.2em] mb-0.5 pl-1">Terms</h3>
+                <div className="w-[45%] flex flex-col gap-2 md:gap-3">
+                    <h3 className="text-[10px] font-black text-[#5674b9] uppercase tracking-[0.2em] mb-0.5 text-left pl-1">Terms</h3>
                     {termCards.map(card => {
                         const isSelected = selected?.id === card.id;
                         const isShaking = shakeId?.includes(card.id);
@@ -328,22 +328,24 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-bold transition-all duration-200 border-l-[3px] border text-left ${card.matched
-                                    ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
+                                className={`w-full px-1.5 md:px-5 py-1.5 md:py-4 rounded-xl transition-all duration-200 border flex flex-col outline-none h-[76px] md:h-[90px] overflow-y-auto hide-scrollbar ${card.matched
+                                    ? 'bg-[#10b981]/20 border-[#10b981]/30 text-[#6ee7b7] opacity-60'
                                     : isSelected
-                                        ? 'bg-indigo-500/30 border-indigo-400 !border-l-indigo-400 text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
-                                        : 'bg-white/[0.08] border-white/10 !border-l-indigo-500/40 text-white/90 hover:bg-white/[0.12] hover:border-white/20 hover:!border-l-indigo-400 cursor-pointer'
+                                        ? 'bg-[#4f46e5]/40 border-[#6366f1] text-white scale-[1.02] shadow-lg shadow-indigo-500/20'
+                                        : 'bg-[#2d3a66] border-[#3b4c7d] text-[#e2e8f0] hover:bg-[#364673] hover:border-[#4c5e93] cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
-                                {card.matched ? '✓ ' : ''}{card.content}
+                                <span className="m-auto text-center w-full text-[12px] sm:text-[13px] md:text-base font-bold leading-tight">
+                                    {card.matched ? '✓ ' : ''}{card.content}
+                                </span>
                             </button>
                         );
                     })}
                 </div>
 
                 {/* Definitions column */}
-                <div className="flex-1 w-full flex flex-col gap-2 md:gap-3">
-                    <h3 className="text-[10px] font-black text-purple-300/50 uppercase tracking-[0.2em] mb-0.5 pl-1">Definitions</h3>
+                <div className="w-[55%] flex flex-col gap-2 md:gap-3">
+                    <h3 className="text-[10px] font-black text-[#458caf] uppercase tracking-[0.2em] mb-0.5 text-right pr-1">Definitions</h3>
                     {defCards.map(card => {
                         const isSelected = selected?.id === card.id;
                         const isShaking = shakeId?.includes(card.id);
@@ -354,14 +356,16 @@ export function MatchingGame() {
                                 key={card.id}
                                 onClick={() => handleCardClick(card)}
                                 disabled={card.matched}
-                                className={`w-full px-3 md:px-5 py-3 md:py-4 rounded-xl text-xs md:text-sm font-medium transition-all duration-200 border-l-[3px] border text-left leading-relaxed ${card.matched
-                                    ? 'bg-emerald-500/20 border-emerald-500/30 !border-l-emerald-400 text-emerald-300 opacity-60'
+                                className={`w-full px-1.5 md:px-5 py-1.5 md:py-4 rounded-xl transition-all duration-200 border flex flex-col outline-none h-[76px] md:h-[90px] overflow-y-auto hide-scrollbar ${card.matched
+                                    ? 'bg-[#10b981]/20 border-[#10b981]/30 text-[#6ee7b7] opacity-60'
                                     : isSelected
-                                        ? 'bg-purple-500/30 border-purple-400 !border-l-purple-400 text-white scale-[1.02] shadow-lg shadow-purple-500/20'
-                                        : 'bg-white/[0.04] border-white/[0.06] !border-l-purple-500/30 text-white/70 hover:bg-white/[0.08] hover:border-white/15 hover:!border-l-purple-400 cursor-pointer'
+                                        ? 'bg-[#701a75]/40 border-[#d946ef] text-white scale-[1.02] shadow-lg shadow-purple-500/20'
+                                        : 'bg-[#183950] border-[#20506e] text-[#cbd5e1] hover:bg-[#1e4460] hover:border-[#2a6d89] cursor-pointer'
                                     } ${isShaking ? 'animate-[shake_0.4s_ease-in-out]' : ''} ${isFlashing ? 'animate-[flash_0.5s_ease-in-out]' : ''}`}
                             >
-                                {card.matched ? '✓ ' : ''}{card.content}
+                                <span className="m-auto text-center w-full text-[10.5px] sm:text-[11.5px] md:text-sm font-medium leading-tight md:leading-relaxed tracking-tight">
+                                    {card.matched ? '✓ ' : ''}{card.content}
+                                </span>
                             </button>
                         );
                     })}
@@ -379,6 +383,13 @@ export function MatchingGame() {
                     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
                     50% { box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.4); }
                     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+                }
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .hide-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
                 }
             `}</style>
 
