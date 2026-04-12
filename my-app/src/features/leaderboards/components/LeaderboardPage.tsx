@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 import { AnimatedBackground } from '../../game-modes/components/MoneytaryMasteryComponents';
 import { getRankTier } from '../../profile/utils/levelSystem';
 
@@ -66,12 +65,7 @@ export function LeaderboardPage() {
 
             <div className="relative z-10 w-full max-w-3xl px-6 py-8 flex flex-col gap-4">
                 {/* Back Button */}
-                <Link
-                    to="/home"
-                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs font-bold uppercase tracking-wider w-fit"
-                >
-                    <FaArrowLeft className="w-3 h-3" /> Back to Home
-                </Link>
+                <BackToHomeButton />
 
                 {/* Header */}
                 <div className="text-center">

@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { AnimatedParticles } from './AnimatedBackground';
+import { BackToHomeButton } from '../../../../components/ui/BackToHomeButton';
 
 interface GameCompleteProps {
     score: number;
@@ -164,15 +164,7 @@ export function GameComplete({ score, levelScore, exp = 0, coins = 0, totalCards
                         </div>
 
                         {/* Secondary Action */}
-                        <Link
-                            to="/home"
-                            className="w-full block px-4 py-3 text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 text-white/70 hover:text-white"
-                            style={{
-                                textDecoration: 'none'
-                            }}
-                        >
-                            Back to Home
-                        </Link>
+                        <BackToHomeButton />
                     </div>
                 </div>
             </div>

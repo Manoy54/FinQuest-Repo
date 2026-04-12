@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaLock, FaSearch, FaBookOpen, FaFilePowerpoint, FaStickyNote, FaVideo } from 'react-icons/fa';
+import { FaLock, FaSearch, FaBookOpen, FaFilePowerpoint, FaStickyNote, FaVideo } from 'react-icons/fa';
+import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 import { AnimatedBackground } from '../../game-modes/components/MoneytaryMasteryComponents';
 
 type ContentType = 'all' | 'modules' | 'notes' | 'presentations' | 'videos';
@@ -66,12 +66,7 @@ export function LibraryPage() {
 
             <div className="relative z-10 w-full max-w-6xl px-4 py-8 flex flex-col gap-6">
                 {/* Back */}
-                <Link
-                    to="/home"
-                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider w-fit"
-                >
-                    <FaArrowLeft className="w-3 h-3" /> Back to Home
-                </Link>
+                <BackToHomeButton />
 
                 {/* Header */}
                 <div className="text-center">

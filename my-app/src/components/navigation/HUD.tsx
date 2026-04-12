@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaCoins } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
+import { BackToHomeButton } from '../ui/BackToHomeButton';
 
 interface HUDProps {
     // Header Props
@@ -54,19 +54,16 @@ export function HUD({
 
             {/* BACK BUTTON — Fixed top-left, independent of HUD bar */}
             {(backPath || onBack) && (
-                <Link
-                    to={backPath || '/home'}
-                    onClick={(e) => {
-                        if (onBack) {
-                            e.preventDefault();
-                            onBack();
-                        }
-                    }}
-                    className="absolute left-3 md:left-6 top-2.5 w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white text-sm z-20"
-                    style={{ textDecoration: 'none' }}
-                >
-                    ←
-                </Link>
+                onBack ? (
+                    <button
+                        onClick={onBack}
+                        className="absolute left-3 md:left-6 top-2.5 z-20 flex items-center justify-center p-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-amber-400 hover:text-amber-300 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-xl"
+                    >
+                        <span className="text-sm group-hover:-translate-x-0.5 transition-transform duration-300">←</span>
+                    </button>
+                ) : (
+                    <BackToHomeButton to={backPath || '/home'} />
+                )
             )}
 
             {/* TITLE — Topmost element, always centered above HUD */}

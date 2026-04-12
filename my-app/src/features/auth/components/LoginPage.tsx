@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaLock, FaArrowLeft } from 'react-icons/fa';
+import { FaUser, FaLock } from 'react-icons/fa';
+import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 const FQLogo = '/logo.png';
 import { useAuth } from '../../../context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase/client';
@@ -70,13 +71,7 @@ export function LoginPage() {
     return (
         <div className="h-[100dvh] md:min-h-screen w-full flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-zinc-900 to-black relative overflow-hidden font-['Rajdhani']">
             {/* Back to Home Button */}
-            <Link
-                to="/"
-                className="absolute top-4 left-4 lg:top-6 lg:left-6 z-50 flex items-center justify-center gap-2 p-2.5 lg:px-5 lg:py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300 group shadow-xl"
-            >
-                <FaArrowLeft className="w-3 h-3 md:w-4 md:h-4 group-hover:-translate-x-1 transition-transform duration-300" />
-                <span className="hidden lg:block text-sm font-bold uppercase tracking-widest">Back to Home</span>
-            </Link>
+            <BackToHomeButton to="/" />
             {/* Background Image using Logo - faint overlay */}
             <div
                 className="absolute inset-0 z-0 opacity-[0.03]"

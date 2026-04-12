@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { FaTrophy, FaDice, FaSave, FaUser, FaSmile, FaEye, FaTshirt, FaPalette } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 import Avatar, { genConfig } from 'react-nice-avatar';
 import { AnimatedBackground } from '../../game-modes/components/MoneytaryMasteryComponents';
 import { useUserContext } from '../../../context/UserContext';
@@ -124,9 +125,7 @@ export function Profile() {
             <div className="relative z-10 w-full max-w-4xl px-3 md:px-4 py-3 md:py-20 flex flex-col gap-3 md:gap-8">
 
                 {/* Back link */}
-                <Link to="/home" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-xs md:text-sm font-bold uppercase tracking-wider w-fit">
-                    ← Back to Home
-                </Link>
+                <BackToHomeButton />
 
                 {/* Header Card */}
                 <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-8 flex flex-col md:flex-row items-center gap-3 md:gap-8 shadow-2xl">

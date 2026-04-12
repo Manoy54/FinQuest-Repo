@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaChalkboardTeacher, FaChartBar, FaPlusCircle, FaUsers, FaClipboardList, FaCog } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaChartBar, FaPlusCircle, FaUsers, FaClipboardList, FaCog } from 'react-icons/fa';
+import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 import { AnimatedBackground } from '../../game-modes/components/MoneytaryMasteryComponents';
 
 interface FeatureCardProps {
@@ -97,12 +97,7 @@ export function EducatorHubPage() {
 
             <div className="relative z-10 w-full max-w-6xl px-4 py-4 flex flex-col gap-4">
                 {/* Back Button */}
-                <Link
-                    to="/home"
-                    className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors text-sm font-bold uppercase tracking-wider w-fit"
-                >
-                    <FaArrowLeft className="w-3 h-3" /> Back to Home
-                </Link>
+                <BackToHomeButton />
 
                 {/* Header */}
                 <div className="text-center">
