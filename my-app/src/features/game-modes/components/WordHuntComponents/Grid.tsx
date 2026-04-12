@@ -282,9 +282,9 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 className={`
                                     w-full aspect-square flex items-center justify-center
                                     ${grid.length > 9 ? 'text-lg md:text-2xl' : 'text-2xl md:text-4xl'} font-black rounded-md
-                                    transition-all duration-200 cursor-pointer
+                                    cursor-pointer
                                     select-none relative z-20
-                                    ${!foundColor ? 'bg-slate-800/80 text-white hover:bg-slate-700/80' : ''} 
+                                    ${!foundColor ? 'bg-slate-800/80 text-white' : ''} 
                                     ${foundColor ? 'text-white z-30' : ''}
                                     ${isSelected ? 'text-white z-30' : ''}
                                     ${!foundColor && !isSelected ? 'shadow-[0_2px_4px_rgba(0,0,0,0.3)] border border-white/5' : ''}
