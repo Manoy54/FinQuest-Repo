@@ -1,4 +1,4 @@
-import { FaMoneyBillWave, FaSearch, FaPuzzlePiece, FaTrophy } from 'react-icons/fa';
+import { FaMoneyBillWave, FaSearch, FaPuzzlePiece, FaTrophy, FaBolt, FaExchangeAlt, FaBinoculars } from 'react-icons/fa';
 import { useScrollAnimation } from '../../../../hooks/useScrollAnimation';
 
 export function Features() {
@@ -7,6 +7,9 @@ export function Features() {
     const ddCard = useScrollAnimation(0.2);
     const ccCard = useScrollAnimation(0.2);
     const quizCard = useScrollAnimation(0.2);
+    const speedCard = useScrollAnimation(0.2);
+    const coinnectCard = useScrollAnimation(0.2);
+    const spotCard = useScrollAnimation(0.2);
 
     const features = [
         {
@@ -44,6 +47,33 @@ export function Features() {
             title: "Capital Cup",
             subtitle: "Quiz Competition",
             desc: "Compete in high-stakes trivia to prove your financial expertise. Answer correctly to climb the leaderboard and earn rewards."
+        },
+        {
+            ref: speedCard,
+            icon: <FaBolt className="text-2xl" />,
+            color: "text-rose-400",
+            bg: "bg-rose-400/20",
+            title: "Speed Round",
+            subtitle: "Time Challenge",
+            desc: "Answer as many financial questions as you can in 60 seconds! Test your speed and precision under pressure."
+        },
+        {
+            ref: coinnectCard,
+            icon: <FaExchangeAlt className="text-2xl" />,
+            color: "text-cyan-400",
+            bg: "bg-cyan-400/20",
+            title: "Coinnect",
+            subtitle: "Matching Game",
+            desc: "Match financial terms with their correct definitions! A perfect way to reinforce your understanding and vocabulary."
+        },
+        {
+            ref: spotCard,
+            icon: <FaBinoculars className="text-2xl" />,
+            color: "text-indigo-400",
+            bg: "bg-indigo-400/20",
+            title: "Spot the Difference",
+            subtitle: "Visual Analysis",
+            desc: "Compare financial documents and find the discrepancies! Sharpen your eye for detail and identify common errors."
         }
     ];
 
@@ -64,12 +94,12 @@ export function Features() {
                     Game Modes
                 </h2>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="flex flex-wrap justify-center gap-6">
                     {features.map((feature, index) => (
                         <div
                             key={index}
                             ref={feature.ref.ref}
-                            className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 ease-out hover:shadow-2xl group"
+                            className="bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-500 ease-out hover:shadow-2xl group w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] xl:w-[calc(25%-1.5rem)]"
                             style={{
                                 opacity: feature.ref.isVisible ? 1 : 0,
                                 transform: feature.ref.isVisible ? 'translateY(0)' : 'translateY(40px)',

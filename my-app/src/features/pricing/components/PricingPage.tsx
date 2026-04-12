@@ -14,7 +14,7 @@ interface PlanFeature {
 }
 
 const features: PlanFeature[] = [
-    { label: 'Basic Game Modes (4)', studentBasic: true, studentPrime: true, educatorBasic: true, educatorPrime: true },
+    { label: 'Basic Game Modes (7)', studentBasic: true, studentPrime: true, educatorBasic: true, educatorPrime: true },
     { label: 'Access to Library', studentBasic: 'Limited', studentPrime: true, educatorBasic: true, educatorPrime: true },
     { label: 'Access to Premium Game Modes', studentBasic: false, studentPrime: true, educatorBasic: false, educatorPrime: true },
     { label: 'EXP and Coin System', studentBasic: true, studentPrime: 'Double XP Events', educatorBasic: false, educatorPrime: false },
