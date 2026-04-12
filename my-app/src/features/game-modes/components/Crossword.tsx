@@ -9,6 +9,7 @@ import {
 import { EasyCrosswordGrid } from './CrosswordComponents/grids/EasyCrosswordGrid';
 import { MediumCrosswordGrid } from './CrosswordComponents/grids/MediumCrosswordGrid';
 import { HardCrosswordGrid } from './CrosswordComponents/grids/HardCrosswordGrid';
+import { ExtremeCrosswordGrid } from './CrosswordComponents/grids/ExtremeCrosswordGrid';
 import { ClueList } from './CrosswordComponents/ClueList';
 import { HowToPlayModal } from './CrosswordComponents/HowToPlayModal';
 import {
@@ -23,7 +24,7 @@ export function Crossword() {
     const { addXp, addCoins } = useUserContext();
     const hasAwardedRef = useRef(false);
 
-    const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'hard'>('beginner');
+    const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'hard' | 'extreme'>('beginner');
     const [grid, setGrid] = useState(() => generateGrid('beginner'));
     const [userAnswers, setUserAnswers] = useState<Map<string, string>>(new Map());
     const [activeCell, setActiveCell] = useState<{ row: number, col: number } | null>(null);
@@ -469,7 +470,7 @@ export function Crossword() {
                 {/* Desktop and Tablet */}
                 <div className="hidden md:flex items-center gap-1.5 lg:gap-3 shrink-0 relative z-20">
                     <div className="flex items-center gap-1 bg-white/5 p-0.5 lg:p-1 rounded-md lg:rounded-xl border border-white/10">
-                        {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
+                        {(['beginner', 'intermediate', 'hard', 'extreme'] as const).map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setDifficulty(level)}
@@ -478,7 +479,7 @@ export function Crossword() {
                                     : 'text-white/50 hover:text-white hover:bg-white/10'
                                     }`}
                             >
-                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
+                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : level === 'hard' ? 'Hard' : 'Extreme'}
                             </button>
                         ))}
                     </div>
@@ -496,7 +497,7 @@ export function Crossword() {
             <div className="md:hidden w-full px-2 z-10 shrink-0 mt-0.5 flex justify-center">
                 <div className="flex items-center justify-center gap-0.5 px-1 py-0.5 rounded-md bg-black/30 backdrop-blur-md border border-white/5 w-max mx-auto shadow-sm">
                     <div className="flex items-center gap-0.5 bg-white/5 p-0.5 rounded-md border border-white/10">
-                        {(['beginner', 'intermediate', 'hard'] as const).map((level) => (
+                        {(['beginner', 'intermediate', 'hard', 'extreme'] as const).map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setDifficulty(level)}
@@ -506,7 +507,7 @@ export function Crossword() {
                                     }`}
                                 style={{ minWidth: '25px' }}
                             >
-                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : 'Hard'}
+                                {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : level === 'hard' ? 'Hard' : 'Extr'}
                             </button>
                         ))}
                     </div>
@@ -560,6 +561,16 @@ export function Crossword() {
                                 )}
                                 {difficulty === 'hard' && (
                                     <HardCrosswordGrid
+                                        userAnswers={userAnswers}
+                                        activeCell={activeCell}
+                                        onCellClick={handleCellClick}
+                                        onInputChange={handleInputChange}
+                                        onKeyDown={handleKeyDown}
+                                        validated={showValidation}
+                                    />
+                                )}
+                                {difficulty === 'extreme' && (
+                                    <ExtremeCrosswordGrid
                                         userAnswers={userAnswers}
                                         activeCell={activeCell}
                                         onCellClick={handleCellClick}

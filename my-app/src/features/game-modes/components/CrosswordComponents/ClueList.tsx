@@ -24,7 +24,7 @@ export function ClueList({ clues, activeClue, onClueClick }: ClueListProps) {
                             key={`${clue.direction}-${clue.number}`}
                             onClick={() => handleClueClick(clue)}
                             className={`
-                                cursor-pointer text-sm p-3 rounded-lg transition-colors border border-transparent
+                                cursor-pointer text-sm p-3 rounded-lg transition-colors border border-transparent break-words whitespace-normal hyphens-auto
                                 ${isActive ? 'bg-amber-500/20 border-amber-500 text-white' : 'hover:bg-white/5 text-gray-400 hover:text-gray-200'}
                             `}
                         >

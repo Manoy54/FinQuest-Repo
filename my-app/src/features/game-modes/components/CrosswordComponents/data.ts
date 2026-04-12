@@ -79,13 +79,32 @@ const hardClues: Clue[] = [
     { number: 15, direction: 'across', text: 'An annuity that has no end date (a constant stream of identical cash flows).', answer: 'PERPETUITY', row: 21, col: 3 },
 ];
 
+const extremeClues: Clue[] = [
+    { number: 6, direction: 'down', text: 'An investor who is deemed to have sufficient knowledge and experience to evaluate the merits of high-risk investments.', answer: 'SOPHISTICATED', row: 9, col: 16 },
+    { number: 11, direction: 'across', text: 'A consumer behavior assumption that if a person prefers A to B and B to C, they must prefer A to C.', answer: 'TRANSITIVITY', row: 13, col: 9 },
+    { number: 2, direction: 'down', text: 'Financial statements that combine the assets, liabilities, and results of a parent company and its subsidiaries.', answer: 'CONSOLIDATED', row: 7, col: 14 },
+    { number: 13, direction: 'across', text: "The process of realigning the weightings of a portfolio's assets to maintain the original desired level of risk.", answer: 'REBALANCING', row: 7, col: 7 },
+    { number: 9, direction: 'down', text: 'The law of marginal utility stating that as consumption increases, the satisfaction gained from each additional unit declines', answer: 'DIMINISHING', row: 10, col: 18 },
+    { number: 3, direction: 'down', text: 'A document that allows a shareholder to cast their vote without being physically present at the annual meeting.', answer: 'PROXY', row: 9, col: 20 },
+    { number: 5, direction: 'down', text: 'Instruments like futures and options used to hedge risk or speculate on the price movement of an underlying asset.', answer: 'DERIVATIVES', row: 11, col: 10 },
+    { number: 14, direction: 'across', text: 'A type of creditor who has a specific claim (lien) over an asset provided as collateral by the debtor.', answer: 'SECURED', row: 21, col: 10 },
+    { number: 12, direction: 'down', text: 'The state of being unable to pay the money owed, by a person or company, on time', answer: 'INSOLVENCY', row: 1, col: 8 },
+    { number: 8, direction: 'down', text: "The corporate department responsible for managing the firm's liquidity, capital structure, and financial risk.", answer: 'TREASURY', row: 4, col: 12 },
+    { number: 6, direction: 'across', text: 'A debt instrument that ranks below other loans or securities with regard to claims on assets or earnings.', answer: 'SUBORDINATED', row: 17, col: 1 },
+    { number: 7, direction: 'across', text: 'A financial instrument that contains a written promise by one party to pay another a definite sum of money.', answer: 'PROMISSORY', row: 3, col: 2 },
+    { number: 4, direction: 'down', text: 'A type of risk appetite where an investor prefers a certain outcome over a risky one with the same expected value.', answer: 'AVERSION', row: 14, col: 5 },
+    { number: 10, direction: 'across', text: 'A rare type of inferior good where an increase in price actually causes an increase in demand due to the income effect.', answer: 'GIFFEN', row: 1, col: 7 },
+    { number: 1, direction: 'across', text: 'A type of debtor who has the means to pay but intentionally avoids or refuses to settle their obligations.', answer: 'RECALCITRANT', row: 5, col: 4 }
+];
+
 export const clues = {
     beginner: beginnerClues,
     intermediate: intermediateClues,
-    hard: hardClues
+    hard: hardClues,
+    extreme: extremeClues
 };
 
-export const generateGrid = (difficulty: 'beginner' | 'intermediate' | 'hard' = 'beginner'): Map<string, CellData> => {
+export const generateGrid = (difficulty: 'beginner' | 'intermediate' | 'hard' | 'extreme' = 'beginner'): Map<string, CellData> => {
     const grid = new Map<string, CellData>();
     const selectedClues = clues[difficulty];
 
