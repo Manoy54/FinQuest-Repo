@@ -122,10 +122,10 @@ export function Profile() {
             style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
             <AnimatedBackground />
 
-            <div className="relative z-10 w-full max-w-4xl px-3 md:px-4 py-3 md:py-20 flex flex-col gap-3 md:gap-8">
+            <div className="relative z-10 w-full max-w-4xl px-3 md:px-4 pt-14 md:pt-20 pb-3 md:pb-20 flex flex-col gap-3 md:gap-8">
 
-                {/* Back link */}
-                <BackToHomeButton />
+                {/* Back link — fixed at top-left via component */}
+                <BackToHomeButton className="!left-2 !top-2 md:!left-4 md:!top-4" />
 
                 {/* Header Card */}
                 <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl p-3 md:p-8 flex flex-col md:flex-row items-center gap-3 md:gap-8 shadow-2xl">
