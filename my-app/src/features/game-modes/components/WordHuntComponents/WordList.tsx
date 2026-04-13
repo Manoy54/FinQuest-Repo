@@ -256,7 +256,7 @@ export const WordList: React.FC<WordListProps> = ({ words }) => {
                     {/* Found Words Section */}
                     {foundCount > 0 && (
                         <>
-                            <div className="flex items-center gap-2 mt-3 mb-1 flex-shrink-0">
+                            <div className="flex items-center gap-2 mt-6 mb-3 flex-shrink-0">
                                 <div className="h-px flex-1 bg-green-500/20" />
                                 <span className="text-xs font-bold text-green-400/80 tracking-wider uppercase">Found ({foundCount})</span>
                                 <div className="h-px flex-1 bg-green-500/20" />

@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
-import { FaGamepad, FaSearch, FaPuzzlePiece, FaTrophy, FaChevronRight } from 'react-icons/fa';
+import { FaGamepad, FaSearch, FaPuzzlePiece, FaTrophy, FaChevronRight, FaBolt, FaLink, FaEye, FaPlayCircle } from 'react-icons/fa';
 
 export function GameplayPreview() {
     const [activeTab, setActiveTab] = useState(0);
 
     const tabs = [
-        { id: 'mm', label: 'Monetary Mastery', icon: <FaGamepad />, color: 'from-emerald-400 to-teal-500' },
-        { id: 'dd', label: 'Data Diver', icon: <FaSearch />, color: 'from-blue-400 to-indigo-500' },
-        { id: 'cc', label: 'Corporate Climb', icon: <FaPuzzlePiece />, color: 'from-purple-400 to-pink-500' },
-        { id: 'qc', label: 'Capital Cup', icon: <FaTrophy />, color: 'from-amber-400 to-orange-500' }
+        { id: 'tour', label: 'Game Tour', icon: <FaPlayCircle />, color: 'from-indigo-400 to-blue-500', video: '/gamepreviews/GAME TOUR.mp4' },
+        { id: 'mm', label: 'Monetary Mastery', icon: <FaGamepad />, color: 'from-emerald-400 to-teal-500', video: '/gamepreviews/MONETARY MASTER.mp4' },
+        { id: 'dd', label: 'Data Diver', icon: <FaSearch />, color: 'from-blue-400 to-indigo-500', video: '/gamepreviews/DATA DIVER.mp4' },
+        { id: 'cc', label: 'Corporate Climb', icon: <FaPuzzlePiece />, color: 'from-purple-400 to-pink-500', video: '/gamepreviews/CORPORATE CIMB.mp4' },
+        { id: 'qc', label: 'Capital Cup', icon: <FaTrophy />, color: 'from-amber-400 to-orange-500', video: '/gamepreviews/CAPITAL CUP.mp4' },
+        { id: 'sr', label: 'Speed Round', icon: <FaBolt />, color: 'from-pink-400 to-rose-500', video: '/gamepreviews/SPEED ROUND.mp4' },
+        { id: 'cn', label: 'Coinnect', icon: <FaLink />, color: 'from-cyan-400 to-blue-500', video: '/gamepreviews/COINNECT.mp4' },
+        { id: 'sd', label: 'Spot the Difference', icon: <FaEye />, color: 'from-violet-400 to-purple-500', video: '/gamepreviews/SPOT THE DIFFERENCE.mp4' }
     ];
 
     // Auto-rotate tabs
     useEffect(() => {
         const interval = setInterval(() => {
             setActiveTab((prev) => (prev + 1) % tabs.length);
-        }, 5000);
+        }, 12000); // Increased from 5s to 12s so videos can play longer
         return () => clearInterval(interval);
     }, []);
 
@@ -29,28 +33,28 @@ export function GameplayPreview() {
                     </p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-12 items-center">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
                     {/* Tabs / Controls */}
-                    <div className="w-full lg:w-1/3 flex flex-col gap-4">
+                    <div className="w-full lg:w-1/3 flex flex-row lg:flex-col gap-3 lg:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 snap-x justify-start items-stretch" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         {tabs.map((tab, index) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(index)}
-                                className={`group flex items-center gap-4 p-6 rounded-2xl text-left transition-all duration-300 border ${activeTab === index
-                                    ? 'bg-white/10 border-white/20 shadow-xl scale-105'
-                                    : 'bg-transparent border-transparent hover:bg-white/5'
+                                className={`group flex items-center gap-3 p-3 lg:p-4 rounded-xl lg:rounded-2xl text-left transition-all duration-300 border shrink-0 min-w-[220px] lg:min-w-0 snap-center ${activeTab === index
+                                    ? 'bg-white/10 border-white/20 shadow-xl lg:scale-105'
+                                    : 'bg-transparent border-white/5 hover:bg-white/5'
                                     }`}
                             >
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-gradient-to-br ${tab.color} text-white shadow-lg`}>
+                                <div className={`w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center text-lg lg:text-xl shrink-0 bg-gradient-to-br ${tab.color} text-white shadow-lg`}>
                                     {tab.icon}
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className={`font-bold text-lg ${activeTab === index ? 'text-white' : 'text-blue-100'}`}>
+                                    <h3 className={`font-bold text-sm lg:text-lg ${activeTab === index ? 'text-white' : 'text-blue-100'}`}>
                                         {tab.label}
                                     </h3>
                                 </div>
                                 {activeTab === index && (
-                                    <FaChevronRight className="text-white/50 animate-pulse" />
+                                    <FaChevronRight className="text-white/50 animate-pulse hidden lg:block" />
                                 )}
                             </button>
                         ))}
@@ -67,22 +71,23 @@ export function GameplayPreview() {
                             </div>
 
                             {/* Content Area */}
-                            <div className="absolute inset-0 pt-10 flex items-center justify-center bg-grid-white/[0.02]">
+                            <div className="absolute inset-0 pt-10 flex items-center justify-center bg-black">
                                 {tabs.map((tab, index) => (
                                     <div
                                         key={tab.id}
-                                        className={`absolute inset-0 flex items-center justify-center transition-all duration-700 px-8 pb-8 pt-14 ${activeTab === index
-                                            ? 'opacity-100 translate-x-0 scale-100'
-                                            : 'opacity-0 translate-x-8 scale-95 pointer-events-none'
+                                        className={`absolute inset-0 pt-10 flex items-center justify-center transition-opacity duration-700 bg-[#0a0f1c] ${activeTab === index
+                                            ? 'opacity-100 z-10'
+                                            : 'opacity-0 z-0'
                                             }`}
                                     >
-                                        <div className="w-full max-w-lg">
-                                            {/* Mockup Content based on active tab */}
-                                            {index === 0 && <MonetaryMasteryMockup />}
-                                            {index === 1 && <DataDiverMockup />}
-                                            {index === 2 && <ItCrosswordMockup />}
-                                            {index === 3 && <QuizBeeMockup />}
-                                        </div>
+                                        <video 
+                                            src={tab.video}
+                                            className="w-full h-full object-contain"
+                                            autoPlay 
+                                            loop 
+                                            muted 
+                                            playsInline 
+                                        />
                                     </div>
                                 ))}
                             </div>
@@ -94,87 +99,5 @@ export function GameplayPreview() {
                 </div>
             </div>
         </section>
-    );
-}
-
-// Visual Mockups for each game
-function MonetaryMasteryMockup() {
-    return (
-        <div className="bg-[#1e293b] rounded-2xl p-8 border border-white/10 shadow-xl relative overflow-hidden aspect-[4/3] flex flex-col items-center justify-center text-center">
-            <div className="text-sm uppercase tracking-widest text-emerald-400 font-bold mb-6">Flashcard Challenge</div>
-            <div className="w-64 h-40 bg-white rounded-xl shadow-lg transform rotate-[-2deg] flex items-center justify-center p-6 text-slate-800 font-bold text-xl mb-4 relative z-10">
-                What is Compound Interest?
-            </div>
-            <div className="w-64 h-40 bg-emerald-500 rounded-xl shadow-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[3deg] opacity-20 scale-95"></div>
-
-            <div className="flex gap-4 mt-8">
-                <div className="w-12 h-12 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center text-xl border border-red-500/30">✕</div>
-                <div className="w-12 h-12 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xl border border-green-500/30">✓</div>
-            </div>
-        </div>
-    );
-}
-
-function DataDiverMockup() {
-    return (
-        <div className="bg-[#1e293b] rounded-2xl p-6 border border-white/10 shadow-xl aspect-[4/3] flex flex-col items-center justify-center relative overflow-hidden">
-            <div className="text-sm uppercase tracking-widest text-blue-400 font-bold mb-4">Word Search Grid</div>
-            <div className="grid grid-cols-6 gap-2 opacity-80">
-                {[...Array(36)].map((_, i) => (
-                    <div key={i} className={`w-10 h-10 flex items-center justify-center rounded-lg text-lg font-bold ${[7, 8, 9, 10].includes(i) ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/40' : 'bg-white/5 text-white/30'
-                        }`}>
-                        {String.fromCharCode(65 + Math.floor(Math.random() * 26))}
-                    </div>
-                ))}
-            </div>
-            <div className="absolute bottom-6 right-6 px-4 py-2 bg-blue-500/20 border border-blue-500/30 rounded-full text-blue-300 text-sm font-mono">+50 XP</div>
-        </div>
-    );
-}
-
-function ItCrosswordMockup() {
-    return (
-        <div className="bg-[#1e293b] rounded-2xl p-6 border border-white/10 shadow-xl aspect-[4/3] flex items-center justify-center relative">
-            <div className="text-sm uppercase tracking-widest text-purple-400 font-bold absolute top-6 left-1/2 -translate-x-1/2">Crossword Puzzle</div>
-            <div className="grid grid-cols-5 gap-1 p-4 bg-black/20 rounded-xl">
-                {[...Array(25)].map((_, i) => {
-                    const isBlack = [4, 9, 14, 19, 21, 23].includes(i);
-                    const isSelected = i === 12;
-                    return (
-                        <div key={i} className={`w-10 h-10 ${isBlack ? 'bg-black/50' : 'bg-white/10'} rounded-md flex items-center justify-center ${isSelected ? 'ring-2 ring-purple-500 bg-purple-500/20' : ''}`}>
-                            {!isBlack && Math.random() > 0.7 && <span className="text-white/60 text-xs font-mono">{String.fromCharCode(65 + i % 26)}</span>}
-                        </div>
-                    )
-                })}
-            </div>
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-24 bg-white/5 rounded-lg flex flex-col gap-2 p-2 justify-center">
-                <div className="w-full h-1 bg-white/10 rounded"></div>
-                <div className="w-full h-1 bg-white/10 rounded"></div>
-                <div className="w-2/3 h-1 bg-white/10 rounded"></div>
-            </div>
-        </div>
-    );
-}
-
-function QuizBeeMockup() {
-    return (
-        <div className="bg-[#1e293b] rounded-2xl p-6 border border-white/10 shadow-xl aspect-[4/3] flex flex-col items-center justify-center relative overflow-hidden">
-            <div className="text-sm uppercase tracking-widest text-amber-400 font-bold mb-6">High Stakes Trivia</div>
-
-            <div className="w-full bg-white/5 p-4 rounded-xl text-center mb-4 border border-white/10">
-                <p className="text-blue-100 font-medium">Which asset class typically has the highest risk?</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 w-full">
-                <div className="p-3 bg-white/5 rounded-lg text-sm text-center text-white/60">Bonds</div>
-                <div className="p-3 bg-amber-500 text-black font-bold rounded-lg text-sm text-center shadow-lg shadow-amber-500/20 transform scale-105">Stocks</div>
-                <div className="p-3 bg-white/5 rounded-lg text-sm text-center text-white/60">Cash</div>
-                <div className="p-3 bg-white/5 rounded-lg text-sm text-center text-white/60">CDs</div>
-            </div>
-
-            <div className="absolute top-4 right-4 text-amber-500 font-black text-xl">
-                1250 pts
-            </div>
-        </div>
     );
 }

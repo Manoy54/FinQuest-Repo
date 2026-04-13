@@ -200,7 +200,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
     return (
         <div
-            className="select-none touch-none p-4 md:p-6 pt-12 md:pt-16 rounded-3xl md:rounded-[2.5rem] relative group flex flex-col items-center justify-center gap-3 w-full"
+            className="select-none touch-none p-4 md:p-6 pt-12 md:pt-16 rounded-3xl md:rounded-[2.5rem] relative group flex flex-col items-center justify-center gap-3 w-full max-[767px]:max-w-[360px] max-[767px]:mx-auto max-[480px]:p-3 max-[480px]:pt-6"
             style={{
                 background: 'rgba(15, 23, 42, 0.4)',
                 backdropFilter: 'blur(16px)',
@@ -214,14 +214,13 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
             {/* Glow Effect */}
             <div className="absolute inset-0 bg-blue-500/5 rounded-3xl md:rounded-[2.5rem] blur-xl -z-10 group-hover:bg-blue-500/10 transition-colors duration-500" />
 
-            {/* Preview Pill - only rendered when selecting */}
             {currentWord && (
-                <div className="absolute top-3 md:top-6 z-50 h-8 md:h-10 min-w-[140px] md:min-w-[160px] rounded-full flex items-center justify-center px-4 md:px-6 shadow-xl border-2 border-white/20 animate-in fade-in zoom-in duration-200"
+                <div className="absolute top-3 md:top-6 z-50 h-8 md:h-10 min-w-[140px] md:min-w-[160px] rounded-full flex items-center justify-center px-4 md:px-6 shadow-xl border-2 border-white/20 animate-in fade-in zoom-in duration-200 max-[767px]:top-1 max-[767px]:h-6 max-[767px]:min-w-[100px] max-[767px]:px-3"
                     style={{
                         background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 100%)'
                     }}
                 >
-                    <span className="text-sm md:text-lg font-black text-white tracking-widest uppercase filter drop-shadow-md">
+                    <span className="text-sm md:text-lg font-black text-white tracking-widest uppercase filter drop-shadow-md max-[767px]:text-xs">
                         {currentWord}
                     </span>
                 </div>
@@ -284,6 +283,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                     ${grid.length > 9 ? 'text-lg md:text-2xl' : 'text-2xl md:text-4xl'} font-black rounded-md
                                     cursor-pointer border border-solid
                                     select-none relative z-20
+                                    max-[767px]:!w-[clamp(18px,6vw,28px)] max-[767px]:!h-[clamp(18px,6vw,28px)] max-[767px]:!text-[clamp(10px,2.5vw,12px)] max-[767px]:!aspect-auto
                                     ${!foundColor ? 'bg-slate-800/80 text-white' : ''} 
                                     ${foundColor ? 'text-white z-30' : ''}
                                     ${isSelected ? 'text-white z-30' : ''}
