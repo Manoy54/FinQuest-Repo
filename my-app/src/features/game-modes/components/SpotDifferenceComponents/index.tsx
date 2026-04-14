@@ -47,7 +47,11 @@ export const PUZZLES: ImagePuzzle[] = [
         originalImage: '/spot-diff/Original - 100 Peso Bill.jpg',
         editedImage: '/spot-diff/Edited - 100 Peso Bill.jpg',
         differences: [
-            { id: 'diff-1', x: 60, y: 20, width: 30, height: 15, description: 'Missing digit in top-right serial number', difficulty: 'Easy' }
+            { id: 'diff-1', x: 55, y: 25, width: 35, height: 20, description: 'Missing digit in top-right serial number', difficulty: 'Easy' },
+            { id: 'diff-2', x: 25, y: 50, width: 25, height: 25, description: 'Missing spur on the bird\'s back leg', difficulty: 'Medium' },
+            { id: 'diff-3', x: 45, y: 15, width: 15, height: 20, description: 'Altered eye of the bird (spiral pattern)', difficulty: 'Hard' },
+            { id: 'diff-4', x: 0, y: 30, width: 15, height: 35, description: 'Two horizontal lines added below the vertical 100', difficulty: 'Hard' },
+            { id: 'diff-5', x: 55, y: 48, width: 35, height: 25, description: 'Altered signature block', difficulty: 'Hard' }
         ]
     },
     {
@@ -58,7 +62,9 @@ export const PUZZLES: ImagePuzzle[] = [
         originalImage: '/spot-diff/Original - 1k Bill.jpg',
         editedImage: '/spot-diff/Edited - 1k Bill.jpg',
         differences: [
-            { id: 'diff-1', x: 35, y: 60, width: 25, height: 25, description: 'Black line striking across the pearl', difficulty: 'Easy' }
+            { id: 'diff-1', x: 35, y: 60, width: 25, height: 25, description: 'Black line striking across the pearl', difficulty: 'Easy' },
+            { id: 'diff-2', x: 5, y: 55, width: 28, height: 25, description: 'Baybayin script has been altered/scrambled', difficulty: 'Medium' },
+            { id: 'diff-3', x: 88, y: 15, width: 12, height: 75, description: 'Decreased thickness of the right vertical security band', difficulty: 'Hard' }
         ]
     },
     {
@@ -81,7 +87,9 @@ export const PUZZLES: ImagePuzzle[] = [
         originalImage: '/spot-diff/Original _ Jollibee.png',
         editedImage: '/spot-diff/Edited - Jollibee.jpg',
         differences: [
-            { id: 'diff-1', x: 30, y: 35, width: 40, height: 25, description: 'Solid black pupils missing white glint reflections', difficulty: 'Medium' }
+            { id: 'diff-1', x: 30, y: 35, width: 40, height: 25, description: 'Solid black pupils missing white glint reflections', difficulty: 'Medium' },
+            { id: 'diff-2', x: 45, y: 10, width: 30, height: 25, description: 'Color change on the horn part', difficulty: 'Easy' },
+            { id: 'diff-3', x: 55, y: 75, width: 25, height: 20, description: 'Color change on the tongue', difficulty: 'Easy' }
         ]
     },
     {
@@ -92,7 +100,8 @@ export const PUZZLES: ImagePuzzle[] = [
         originalImage: '/spot-diff/Original - PNB.jpg',
         editedImage: '/spot-diff/Edited - PNB.jpg',
         differences: [
-            { id: 'diff-1', x: 40, y: 5, width: 20, height: 20, description: 'Missing middle gold star above shield', difficulty: 'Easy' }
+            { id: 'diff-1', x: 40, y: 5, width: 20, height: 20, description: 'Missing middle gold star above shield', difficulty: 'Easy' },
+            { id: 'diff-2', x: 55, y: 50, width: 20, height: 30, description: 'Altered front paws on the lion', difficulty: 'Medium' }
         ]
     }
 ];

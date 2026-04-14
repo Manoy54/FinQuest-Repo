@@ -29,16 +29,16 @@ export function SpotDifference() {
     const [flashLabel, setFlashLabel] = useState<string | null>(null);
     const [showHowToPlay, setShowHowToPlay] = useState(true);
     const [docComplete, setDocComplete] = useState(false);
-    
+
     // For handling missing images
     const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
     const [imgErrorCount, setImgErrorCount] = useState(0);
-    
+
     // Debug: show last click
-    // const [lastClick, setLastClick] = useState<{x: number, y: number} | null>(null);
-    
+    const [lastClick, setLastClick] = useState<{ x: number, y: number } | null>(null);
+
     // For hit visual effects
-    const [mistakeMarkers, setMistakeMarkers] = useState<{id: number, x: number, y: number}[]>([]);
+    const [mistakeMarkers, setMistakeMarkers] = useState<{ id: number, x: number, y: number }[]>([]);
     const [shake, setShake] = useState(false);
 
     const startGame = useCallback(() => {
@@ -78,7 +78,7 @@ export function SpotDifference() {
     const handleSuccessClick = (e: React.MouseEvent<HTMLDivElement>, diff: DifferenceZone) => {
         e.stopPropagation();
         if (!puzzle || docComplete || foundDiffs.includes(diff.id)) return;
-        
+
         setFoundDiffs(prev => [...prev, diff.id]);
         setFlashLabel(diff.id);
         setTimeout(() => setFlashLabel(null), 600);
@@ -92,11 +92,12 @@ export function SpotDifference() {
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
 
-        // setLastClick({x, y});
+        setLastClick({ x, y });
+        console.log(`Click at x: ${x.toFixed(1)}, y: ${y.toFixed(1)}`);
         setWrongClicks(p => p + 1);
         const newMarker = { id: Date.now(), x, y };
         setMistakeMarkers(prev => [...prev, newMarker]);
-        
+
         // Remove marker after animation
         setTimeout(() => {
             setMistakeMarkers(prev => prev.filter(m => m.id !== newMarker.id));
@@ -109,7 +110,7 @@ export function SpotDifference() {
 
     const nextDocument = () => {
         if (!puzzle) return;
-        
+
         const earned = foundDiffs.length;
         const bonusXp = wrongClicks === 0 ? BONUS_XP_NO_MISTAKES : 0;
         const bonusCoins = wrongClicks === 0 ? BONUS_COINS_NO_MISTAKES : 0;
@@ -258,21 +259,21 @@ export function SpotDifference() {
                         ✓ Original
                     </h3>
                     <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-black/30 flex items-center justify-center">
-                         {imageErrors[puzzle.originalImage] ? (
+                        {imageErrors[puzzle.originalImage] ? (
                             <div className="text-white/30 text-sm text-center p-4 border border-dashed border-white/20 w-full h-full flex flex-col items-center justify-center gap-2">
                                 <span>Image not found.</span>
                                 <span>Needs public{puzzle.originalImage}</span>
-                                <button onClick={() => setImgErrorCount(p => p+1)} className="px-3 py-1 bg-white/10 rounded mt-2 text-xs">Retry</button>
+                                <button onClick={() => setImgErrorCount(p => p + 1)} className="px-3 py-1 bg-white/10 rounded mt-2 text-xs">Retry</button>
                             </div>
-                         ) : (
-                            <img 
+                        ) : (
+                            <img
                                 key={`orig-${currentDoc}-${imgErrorCount}`}
-                                src={puzzle.originalImage} 
-                                alt="Original" 
+                                src={puzzle.originalImage}
+                                alt="Original"
                                 className="w-full h-full object-contain"
-                                onError={() => setImageErrors(prev => ({...prev, [puzzle.originalImage]: true}))}
+                                onError={() => setImageErrors(prev => ({ ...prev, [puzzle.originalImage]: true }))}
                             />
-                         )}
+                        )}
                     </div>
                 </div>
 
@@ -281,67 +282,73 @@ export function SpotDifference() {
                     <h3 className="text-[10px] md:text-xs font-black text-amber-400 uppercase tracking-widest mb-3 md:mb-4 text-center border-b border-white/10 pb-2 shrink-0">
                         🔎 Spot {puzzle.differences.length} Differences!
                     </h3>
-                    
-                    <div 
+
+                    <div
                         className="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-black/30 cursor-crosshair flex items-center justify-center"
                         onClick={handleWrongClick}
                     >
-                         {imageErrors[puzzle.editedImage] ? (
+                        {imageErrors[puzzle.editedImage] ? (
                             <div className="text-white/30 text-sm text-center p-4 border border-dashed border-white/20 w-full h-full flex flex-col items-center justify-center gap-2">
                                 <span>Image not found.</span>
                                 <span>Needs public{puzzle.editedImage}</span>
-                                <button onClick={() => setImgErrorCount(p => p+1)} className="px-3 py-1 bg-white/10 rounded mt-2 text-xs relative z-50">Retry</button>
+                                <button onClick={() => setImgErrorCount(p => p + 1)} className="px-3 py-1 bg-white/10 rounded mt-2 text-xs relative z-50">Retry</button>
                             </div>
-                         ) : (
-                             <img 
+                        ) : (
+                            <img
                                 key={`edited-${currentDoc}-${imgErrorCount}`}
-                                src={puzzle.editedImage} 
-                                alt="Edited" 
+                                src={puzzle.editedImage}
+                                alt="Edited"
                                 className="w-full h-full object-contain pointer-events-none"
-                                onError={() => setImageErrors(prev => ({...prev, [puzzle.editedImage]: true}))}
-                             />
-                         )}
-                         
-                         {/* Hotspot Zones */}
-                         {puzzle.differences.map(diff => {
-                             const isFound = foundDiffs.includes(diff.id);
-                             const isFlashing = flashLabel === diff.id;
-                             
-                             return (
-                                 <div
-                                     key={diff.id}
-                                     style={{
-                                         left: `${diff.x}%`,
-                                         top: `${diff.y}%`,
-                                         width: `${diff.width}%`,
-                                         height: `${diff.height}%`
-                                     }}
-                                     className={`absolute cursor-pointer rounded-lg transition-all duration-300 ${
-                                         isFound ? 'border-4 border-emerald-400 bg-emerald-400/20 shadow-[0_0_15px_rgba(52,211,153,0.6)] z-10' : 'border-2 border-transparent hover:border-white/30 z-20'
-                                     } ${isFlashing ? 'scale-110 bg-emerald-400/50' : ''}`}
-                                     onClick={(e) => handleSuccessClick(e, diff)}
-                                 >
+                                onError={() => setImageErrors(prev => ({ ...prev, [puzzle.editedImage]: true }))}
+                            />
+                        )}
+
+                        {/* Hotspot Zones */}
+                        {puzzle.differences.map(diff => {
+                            const isFound = foundDiffs.includes(diff.id);
+                            const isFlashing = flashLabel === diff.id;
+
+                            return (
+                                <div
+                                    key={diff.id}
+                                    style={{
+                                        left: `${diff.x}%`,
+                                        top: `${diff.y}%`,
+                                        width: `${diff.width}%`,
+                                        height: `${diff.height}%`
+                                    }}
+                                    className={`absolute cursor-pointer rounded-lg transition-all duration-300 ${isFound ? 'border-4 border-emerald-400 bg-emerald-400/20 shadow-[0_0_15px_rgba(52,211,153,0.6)] z-10' : 'border-2 border-transparent hover:border-white/30 z-20'
+                                        } ${isFlashing ? 'scale-110 bg-emerald-400/50' : ''}`}
+                                    onClick={(e) => handleSuccessClick(e, diff)}
+                                >
                                     {isFound && (
                                         <div className="absolute -top-3 -right-3 bg-emerald-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg">
                                             ✓
                                         </div>
                                     )}
-                                 </div>
-                             );
-                         })}
+                                </div>
+                            );
+                        })}
 
-                         {/* Mistake Markers (X) */}
-                         {mistakeMarkers.map(marker => (
-                             <div 
+                        {/* Debug: Last click coords */}
+                        {lastClick && (
+                            <div style={{ position: 'absolute', top: 4, left: 4, background: 'rgba(0,0,0,0.8)', color: '#0f0', padding: '4px 8px', borderRadius: 4, fontSize: 11, fontFamily: 'monospace', zIndex: 50, pointerEvents: 'none' }}>
+                                x: {lastClick.x.toFixed(1)}%, y: {lastClick.y.toFixed(1)}%
+                            </div>
+                        )}
+
+                        {/* Mistake Markers (X) */}
+                        {mistakeMarkers.map(marker => (
+                            <div
                                 key={marker.id}
                                 style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
                                 className="absolute w-8 h-8 -ml-4 -mt-4 text-red-500 text-3xl font-black pointer-events-none z-30 drop-shadow-md animate-[pulse_0.2s_ease-out_forwards]"
-                             >
-                                 ✕
-                             </div>
-                         ))}
+                            >
+                                ✕
+                            </div>
+                        ))}
                     </div>
-                    
+
                     {/* Differences Found List */}
                     {foundDiffs.length > 0 && (
                         <div className="mt-4 flex flex-wrap gap-2">
