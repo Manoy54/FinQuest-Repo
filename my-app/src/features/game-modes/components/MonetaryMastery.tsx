@@ -35,7 +35,7 @@ export function MonetaryMastery() {
     // Randomly select a question number between 10 and 40 to trigger the rating
     const [ratingTarget] = useState(() => Math.floor(Math.random() * (40 - 10 + 1)) + 10);
     const { playSound } = useGameSounds();
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
     const lastAwardedExp = useRef(0);
     const lastAwardedCoins = useRef(0);
@@ -82,14 +82,20 @@ export function MonetaryMastery() {
             const earnedXp = exp - lastAwardedExp.current;
             const earnedCoins = coins - lastAwardedCoins.current;
 
-            if (earnedXp > 0) addXp(earnedXp);
-            if (earnedCoins > 0) addCoins(earnedCoins);
+            recordGameResult({
+                gameMode: 'monetary_mastery',
+                score: currentLevelScore,
+                maxPossibleScore: activeCards.length,
+                xpEarned: earnedXp,
+                coinsEarned: earnedCoins,
+                difficulty: `level-${Math.floor((level - 1) / 10) + 1}`,
+            });
 
             lastAwardedExp.current = exp;
             lastAwardedCoins.current = coins;
             hasAwardedRef.current = true;
         }
-    }, [gameComplete, exp, coins, addXp, addCoins]);
+    }, [gameComplete, exp, coins, recordGameResult, currentLevelScore, activeCards.length, level]);
 
     const handleFlip = () => {
         playSound('flip');

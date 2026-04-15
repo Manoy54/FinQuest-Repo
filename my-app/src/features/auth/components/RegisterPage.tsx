@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase/client';
+import { ensureSupabaseProfile, isUsernameAvailable } from '../../../lib/supabase/profile';
 const FQLogo = '/logo.png';
 
 export function RegisterPage() {
@@ -12,13 +13,21 @@ export function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState<{ username?: string; email?: string; password?: string; confirmPassword?: string }>({});
     const [showSuccess, setShowSuccess] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('Thank you for creating an account. Proceed to sign in.');
+
+    function showTimedErrors(nextErrors: { username?: string; email?: string; password?: string; confirmPassword?: string }) {
+        setErrors(nextErrors);
+        setTimeout(() => setErrors({}), 3000);
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const normalizedUsername = username.trim();
+        const normalizedEmail = email.trim().toLowerCase();
 
         const newErrors: { username?: string; email?: string; password?: string; confirmPassword?: string } = {};
-        if (!username.trim()) newErrors.username = 'Fill this area to create account';
-        if (!email.trim()) newErrors.email = 'Fill this area to create account';
+        if (!normalizedUsername) newErrors.username = 'Fill this area to create account';
+        if (!normalizedEmail) newErrors.email = 'Fill this area to create account';
         if (!password.trim()) newErrors.password = 'Fill this area to create account';
         if (!confirmPassword.trim()) {
             newErrors.confirmPassword = 'Fill this area to create account';
@@ -27,9 +36,7 @@ export function RegisterPage() {
         }
 
         if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
-            // Clear errors after 3 seconds
-            setTimeout(() => setErrors({}), 3000);
+            showTimedErrors(newErrors);
             return;
         }
 
@@ -37,14 +44,26 @@ export function RegisterPage() {
         setErrors({});
 
         if (isSupabaseConfigured) {
+            try {
+                const usernameIsAvailable = await isUsernameAvailable(normalizedUsername);
+                if (!usernameIsAvailable) {
+                    showTimedErrors({ username: 'This username is already taken' });
+                    return;
+                }
+            } catch (availabilityError) {
+                console.error('Username availability check failed:', availabilityError);
+                showTimedErrors({ email: 'Could not connect to the profile database. Please try again.' });
+                return;
+            }
+
             // Use Supabase auth when configured
-            const { error } = await supabase.auth.signUp({
-                email,
+            const { data, error } = await supabase.auth.signUp({
+                email: normalizedEmail,
                 password,
                 options: {
                     data: {
-                        username: username,
-                        display_name: username
+                        username: normalizedUsername,
+                        display_name: normalizedUsername
                     }
                 }
             });
@@ -54,16 +73,36 @@ export function RegisterPage() {
                 setErrors({ email: error.message });
                 return;
             }
-        } else {
+
+            try {
+                if (data.user) {
+                    await ensureSupabaseProfile(data.user);
+                }
+            } catch (profileError) {
+                console.error('Profile creation fallback failed after sign-up:', profileError);
+            }
+
+            setSuccessMessage(
+                data.session
+                    ? 'Thank you for creating an account. Proceed to sign in.'
+                    : 'Check your email to confirm the account, then return here to sign in.'
+            );
+        } else if (import.meta.env.DEV) {
             // Fallback: localStorage-based registration (demo/dev mode)
             const existingUsers = JSON.parse(localStorage.getItem('finquest_users') || '[]');
-            const userExists = existingUsers.some((u: { email: string }) => u.email === email);
+            const userExists = existingUsers.some((u: { email: string }) => u.email === normalizedEmail);
             if (userExists) {
                 setErrors({ email: 'An account with this email already exists' });
                 return;
             }
-            existingUsers.push({ username, email, password });
+            existingUsers.push({ username: normalizedUsername, email: normalizedEmail, password });
             localStorage.setItem('finquest_users', JSON.stringify(existingUsers));
+            setSuccessMessage('Thank you for creating an account. Proceed to sign in.');
+        } else {
+            showTimedErrors({
+                email: 'Supabase is not configured for this deployment. Please check Vercel environment variables.',
+            });
+            return;
         }
 
         // Clear any existing avatar config and auth state to ensure new user goes through setup
@@ -276,7 +315,7 @@ export function RegisterPage() {
 
                         <h3 className="text-sm md:text-2xl font-bold text-white mb-1 md:mb-2 text-center">Registration Successful!</h3>
                         <p className="text-zinc-400 text-[10px] md:text-lg mb-4 md:mb-8 text-center">
-                            Thank you for creating an account. Proceed to sign in.
+                            {successMessage}
                         </p>
 
                         <Link

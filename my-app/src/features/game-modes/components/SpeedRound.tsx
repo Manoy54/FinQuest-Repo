@@ -15,7 +15,7 @@ const BONUS_COINS = 100;
 type GamePhase = 'START' | 'COUNTDOWN' | 'PLAYING' | 'RESULTS';
 
 export function SpeedRound() {
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
 
     const [phase, setPhase] = useState<GamePhase>('START');
@@ -85,11 +85,17 @@ export function SpeedRound() {
 
             setTotalXp(earnedXp);
             setTotalCoins(earnedCoins);
-            if (earnedXp > 0) addXp(earnedXp);
-            if (earnedCoins > 0) addCoins(earnedCoins);
+            recordGameResult({
+                gameMode: 'speed_round',
+                score: correct,
+                maxPossibleScore: Math.max(1, correct + wrong),
+                xpEarned: earnedXp,
+                coinsEarned: earnedCoins,
+                timeSpentSeconds: GAME_DURATION,
+            });
             hasAwardedRef.current = true;
         }
-    }, [phase, correct, addXp, addCoins]);
+    }, [phase, correct, wrong, recordGameResult]);
 
     const handleAnswer = (choiceIndex: number) => {
         if (showFeedback || phase !== 'PLAYING') return;

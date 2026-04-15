@@ -23,7 +23,7 @@ interface CardItem {
 }
 
 export function MatchingGame() {
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
 
     const [phase, setPhase] = useState<Phase>('START');
@@ -113,11 +113,17 @@ export function MatchingGame() {
     // Award on results
     useEffect(() => {
         if (phase === 'RESULTS' && !hasAwardedRef.current) {
-            if (totalXp > 0) addXp(totalXp);
-            if (totalCoins > 0) addCoins(totalCoins);
+            recordGameResult({
+                gameMode: 'match_up',
+                score: totalMatched,
+                maxPossibleScore: PAIRS_PER_ROUND * TOTAL_ROUNDS,
+                xpEarned: totalXp,
+                coinsEarned: totalCoins,
+                timeSpentSeconds: timer,
+            });
             hasAwardedRef.current = true;
         }
-    }, [phase, totalXp, totalCoins, addXp, addCoins]);
+    }, [phase, totalXp, totalCoins, recordGameResult, totalMatched, timer]);
 
     const handleCardClick = (card: CardItem) => {
         if (card.matched || phase !== 'PLAYING') return;

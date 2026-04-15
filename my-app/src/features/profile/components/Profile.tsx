@@ -9,6 +9,8 @@ import { useUserContext } from '../../../context/UserContext';
 import { useAuth } from '../../../context/AuthContext';
 import { ACHIEVEMENTS, loadAchievements, getCompletionPercentage, CATEGORY_LABELS, type Achievement } from '../utils/achievementSystem';
 import { loadStreak } from '../utils/streakSystem';
+import { GAME_MODES, calculateLevelFromXp } from '../../../lib/gameStats';
+import { getRankForLevel } from '../utils/levelSystem';
 
 type ReactNiceAvatarConfig = ReturnType<typeof genConfig>;
 
@@ -24,16 +26,6 @@ const avatarConfigOptions = {
     shirtStyle: ['hoody', 'short', 'polo']
 };
 
-const GAME_MODES = [
-    { name: 'Capital Cup', key: 'quizBeeHighScore', route: '/quiz-bee' },
-    { name: 'Monetary Mastery', key: 'monetaryMasteryHighScore', route: '/monetary-mastery' },
-    { name: 'Data Diver', key: 'wordHuntHighScore', route: '/word-hunt' },
-    { name: 'Corporate Climb', key: 'crosswordHighScore', route: '/crossword' },
-    { name: 'Speed Round', key: 'speedRoundHighScore', route: '/speed-round' },
-    { name: 'Match Up', key: 'matchingGameHighScore', route: '/matching-game' },
-    { name: 'Spot the Difference', key: 'spotDiffHighScore', route: '/spot-difference' },
-];
-
 function ProgressRing({ percent, size = 80, strokeWidth = 6, color = '#10b981' }: { percent: number; size?: number; strokeWidth?: number; color?: string }) {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
@@ -47,9 +39,28 @@ function ProgressRing({ percent, size = 80, strokeWidth = 6, color = '#10b981' }
     );
 }
 
+function formatRelativeTime(value: string): string {
+    const timestamp = new Date(value).getTime();
+    if (!Number.isFinite(timestamp)) return 'Recently';
+
+    const diffSeconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
+    if (diffSeconds < 60) return 'Just now';
+
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes === 1 ? '' : 's'} ago`;
+
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'} ago`;
+
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`;
+}
+
 export function Profile() {
-    const { xp, coins } = useUserContext();
-    const { displayName, level, rank, avatarConfig: contextAvatarConfig, completeAvatarSetup } = useAuth();
+    const { xp, coins, gameStats, recentActivity } = useUserContext();
+    const { displayName, avatarConfig: contextAvatarConfig, completeAvatarSetup } = useAuth();
+    const profileLevel = calculateLevelFromXp(xp);
+    const profileRank = getRankForLevel(profileLevel);
 
     const [config, setConfig] = useState<ReactNiceAvatarConfig>(() => {
         return (contextAvatarConfig as unknown as ReactNiceAvatarConfig) || genConfig();
@@ -64,7 +75,7 @@ export function Profile() {
     const achievementPercent = getCompletionPercentage();
     const streakData = loadStreak();
 
-    const gamesPlayed = GAME_MODES.filter(g => localStorage.getItem(g.key)).length;
+    const gamesPlayed = GAME_MODES.filter(game => (gameStats[game.id]?.plays ?? 0) > 0).length;
     const gameCompletionPercent = Math.round((gamesPlayed / GAME_MODES.length) * 100);
 
     const filteredAchievements = badgeFilter === 'all'
@@ -141,7 +152,7 @@ export function Profile() {
 
                     <div className="flex-1 text-center md:text-left mt-1 md:mt-0">
                         <h1 className="text-lg md:text-4xl font-black text-white mb-0 md:mb-2 tracking-tight leading-tight">{displayName || 'Player'}</h1>
-                        <p className="text-white/60 text-xs md:text-lg mb-1.5 md:mb-4">{rank} • Level {level}</p>
+                        <p className="text-white/60 text-xs md:text-lg mb-1.5 md:mb-4">{profileRank} • Level {profileLevel}</p>
                         <div className="flex flex-wrap justify-center md:justify-start gap-1.5 md:gap-3">
                             <span className="px-2 md:px-4 py-0.5 md:py-1.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[9px] md:text-sm font-bold">📅 Joined Jan 2026</span>
                             {streakData.currentStreak > 0 && (
@@ -152,7 +163,7 @@ export function Profile() {
 
                     <div className="flex gap-2 md:gap-4 w-full md:w-auto mt-1 md:mt-0">
                         <div className="text-center py-1.5 md:py-6 px-2 md:px-8 bg-white/5 rounded-xl md:rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
-                            <div className="text-base md:text-4xl font-black text-amber-400 mb-0 md:mb-2 leading-none">{Math.floor(xp / 2).toLocaleString()}</div>
+                            <div className="text-base md:text-4xl font-black text-amber-400 mb-0 md:mb-2 leading-none">{xp.toLocaleString()}</div>
                             <div className="text-[8px] md:text-sm text-white/50 uppercase tracking-wider font-bold">XP</div>
                         </div>
                         <div className="text-center py-1.5 md:py-6 px-2 md:px-8 bg-white/5 rounded-xl md:rounded-2xl flex-1 md:min-w-[160px] border border-white/5">
@@ -265,17 +276,18 @@ export function Profile() {
                             <span className="text-blue-400">📊</span> Recent Activity
                         </h2>
                         <div className="space-y-1.5 md:space-y-4">
-                            {[
-                                { game: 'Monetary Mastery', action: 'Completed Level 3', time: '2 mins ago', xp: '+150 XP' },
-                                { game: 'Corporate Climb', action: 'Solved Daily Puzzle', time: '1 hour ago', xp: '+300 XP' },
-                                { game: 'Data Diver', action: 'New High Score', time: 'Yesterday', xp: '+500 XP' },
-                            ].map((item, i) => (
-                                <div key={i} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+                            {recentActivity.length === 0 && (
+                                <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-white/40 text-xs md:text-sm">
+                                    Complete a game to start recording profile activity.
+                                </div>
+                            )}
+                            {recentActivity.slice(0, 5).map((item) => (
+                                <div key={item.id} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
                                     <div>
-                                        <div className="text-white font-medium text-xs md:text-base leading-tight">{item.game}</div>
-                                        <div className="text-white/40 text-[9px] md:text-sm leading-tight">{item.action} • {item.time}</div>
+                                        <div className="text-white font-medium text-xs md:text-base leading-tight">{item.gameName}</div>
+                                        <div className="text-white/40 text-[9px] md:text-sm leading-tight">{item.action} • {formatRelativeTime(item.createdAt)}</div>
                                     </div>
-                                    <div className="text-amber-400 font-bold text-[9px] md:text-sm bg-amber-400/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full">{item.xp}</div>
+                                    <div className="text-amber-400 font-bold text-[9px] md:text-sm bg-amber-400/10 px-2 md:px-3 py-0.5 md:py-1 rounded-full">+{item.xpEarned} XP</div>
                                 </div>
                             ))}
                         </div>
@@ -287,12 +299,13 @@ export function Profile() {
                         </h2>
                         <div className="space-y-1 md:space-y-3">
                             {GAME_MODES.map(game => {
-                                const played = !!localStorage.getItem(game.key);
+                                const stats = gameStats[game.id];
+                                const played = !!stats && stats.plays > 0;
                                 return (
-                                    <Link key={game.key} to={game.route} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-white/5 no-underline">
+                                    <Link key={game.id} to={game.route} className="flex items-center justify-between p-1.5 md:p-3 rounded-xl hover:bg-white/5 transition-colors border border-white/5 no-underline gap-2">
                                         <span className={`font-bold text-[10px] md:text-sm leading-tight ${played ? 'text-white' : 'text-white/40'}`}>{game.name}</span>
-                                        <span className={`text-[7px] md:text-[10px] uppercase tracking-widest font-black px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full ${played ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-white/30 border border-white/10'}`}>
-                                            {played ? '✓ Played' : 'Not Played'}
+                                        <span className={`text-[7px] md:text-[10px] uppercase tracking-widest font-black px-1.5 md:px-2.5 py-0.5 md:py-1 rounded-full whitespace-nowrap ${played ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-white/5 text-white/30 border border-white/10'}`}>
+                                            {played ? `${stats?.bestScore ?? 0}/${stats?.maxPossibleScore ?? 0}` : 'Not Played'}
                                         </span>
                                     </Link>
                                 );

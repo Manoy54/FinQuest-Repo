@@ -10,16 +10,15 @@ export interface TriviaItem {
 export async function fetchDailyTriviaContent(): Promise<TriviaItem[]> {
   try {
     // Attempt 1: Fetch from NewsData.io (if API key is present)
-    // @ts-ignore
-    const apiKey = (typeof process !== 'undefined' ? process.env.NEWSDATA_API_KEY : '') || (import.meta as any).env?.VITE_NEWSDATA_API_KEY;
+    const apiKey = import.meta.env.VITE_NEWSDATA_API_KEY ?? '';
     if (apiKey) {
       const url = `https://newsdata.io/api/1/news?apikey=${apiKey}&q=economy OR finance OR inflation OR "bangko sentral" OR "bsp"&country=ph&language=en`;
       const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
         if (data.results && data.results.length > 0) {
-          return data.results.slice(0, 5).map((article: any) => ({
-            title: article.title,
+          return data.results.slice(0, 5).map((article: { title?: string; description?: string; source_id?: string; link?: string }) => ({
+            title: article.title || "Financial update",
             summary: article.description || "Read more about this financial update.",
             source: article.source_id || "NewsData.io",
             link: article.link || url,
@@ -60,8 +59,8 @@ export async function fetchDailyTriviaContent(): Promise<TriviaItem[]> {
   return getFallbackTrivia();
 }
 
-function extractRssItems(xmlString: string) {
-  const items = [];
+function extractRssItems(xmlString: string): TriviaItem[] {
+  const items: TriviaItem[] = [];
   const itemRegex = /<item>([\s\S]*?)<\/item>/g;
   let match;
   while ((match = itemRegex.exec(xmlString)) !== null) {
@@ -77,7 +76,7 @@ function extractRssItems(xmlString: string) {
     const linkMatch = /<link>([\s\S]*?)<\/link>/.exec(itemContent);
     const link = linkMatch ? linkMatch[1].trim() : "https://www.bsp.gov.ph";
 
-    items.push({ title, summary: plainDesc, link });
+    items.push({ title, summary: plainDesc, source: "BSP Official News", link });
   }
   return items;
 }

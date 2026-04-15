@@ -218,7 +218,8 @@ function CustomScrollbar({ parallaxRef }: { parallaxRef: React.RefObject<IParall
     const thumbWidthPercent = (1 / totalPages) * 100;
 
     const getContainer = useCallback((): HTMLDivElement | null => {
-        return (parallaxRef.current as any)?.container?.current ?? null;
+        const parallax = parallaxRef.current as (IParallax & { container?: React.RefObject<HTMLDivElement | null> }) | null;
+        return parallax?.container?.current ?? null;
     }, [parallaxRef]);
 
     /* Sync scroll position → progress */

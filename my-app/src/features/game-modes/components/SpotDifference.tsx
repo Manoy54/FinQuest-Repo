@@ -14,7 +14,7 @@ const BONUS_COINS_NO_MISTAKES = 50;
 type Phase = 'START' | 'PLAYING' | 'RESULTS';
 
 export function SpotDifference() {
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
 
     const [phase, setPhase] = useState<Phase>('START');
@@ -69,11 +69,16 @@ export function SpotDifference() {
     // Award on results
     useEffect(() => {
         if (phase === 'RESULTS' && !hasAwardedRef.current) {
-            if (totalXp > 0) addXp(totalXp);
-            if (totalCoins > 0) addCoins(totalCoins);
+            recordGameResult({
+                gameMode: 'spot_the_difference',
+                score: totalFound,
+                maxPossibleScore: totalDiffs,
+                xpEarned: totalXp,
+                coinsEarned: totalCoins,
+            });
             hasAwardedRef.current = true;
         }
-    }, [phase, totalXp, totalCoins, addXp, addCoins]);
+    }, [phase, totalXp, totalCoins, recordGameResult, totalFound, totalDiffs]);
 
     const handleSuccessClick = (e: React.MouseEvent<HTMLDivElement>, diff: DifferenceZone) => {
         e.stopPropagation();

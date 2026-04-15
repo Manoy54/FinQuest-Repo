@@ -21,7 +21,7 @@ import { HUD } from '../../../components/navigation/HUD';
 import { useUserContext } from '../../../context/UserContext.tsx';
 
 export function Crossword() {
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
 
     const [difficulty, setDifficulty] = useState<'beginner' | 'intermediate' | 'hard' | 'extreme'>('beginner');
@@ -152,14 +152,20 @@ export function Crossword() {
             const exp = score * 2;
             const coins = score; // Assuming 1:1 for coins based on inline template
 
-            if (exp > 0) addXp(exp);
-            if (coins > 0) addCoins(coins);
+            recordGameResult({
+                gameMode: 'corporate_climb',
+                score,
+                maxPossibleScore: maxScore,
+                xpEarned: exp,
+                coinsEarned: coins,
+                difficulty,
+            });
 
             hasAwardedRef.current = true;
         } else if (!gameComplete) {
             hasAwardedRef.current = false;
         }
-    }, [gameComplete, score, addXp, addCoins]);
+    }, [gameComplete, score, maxScore, difficulty, recordGameResult]);
 
     const progress = currentClues.length > 0 ? (score / maxScore) * 100 : 0;
 

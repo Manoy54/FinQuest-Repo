@@ -200,7 +200,7 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
     return (
         <div
-            className="select-none touch-none p-4 md:p-6 pt-12 md:pt-16 rounded-3xl md:rounded-[2.5rem] relative group flex flex-col items-center justify-center gap-3 w-full max-[767px]:max-w-[360px] max-[767px]:mx-auto max-[480px]:p-3 max-[480px]:pt-6"
+            className="select-none touch-none h-full min-h-0 max-h-full max-w-full overflow-hidden p-2 md:p-3 pt-7 md:pt-8 rounded-2xl md:rounded-3xl relative group flex flex-col items-center justify-center w-full max-[767px]:max-w-[380px] max-[767px]:mx-auto max-[480px]:p-2 max-[480px]:pt-7"
             style={{
                 background: 'rgba(15, 23, 42, 0.4)',
                 backdropFilter: 'blur(16px)',
@@ -228,9 +228,11 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
 
             <div
                 ref={containerRef}
-                className="grid gap-1.5 relative z-10"
+                className="grid relative z-10 flex-1 min-h-0 max-h-full max-w-full aspect-square"
                 style={{
-                    gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`
+                    gridTemplateColumns: `repeat(${grid[0].length}, minmax(0, 1fr))`,
+                    gridTemplateRows: `repeat(${grid.length}, minmax(0, 1fr))`,
+                    gap: 'clamp(3px, 0.65vmin, 8px)'
                 }}
             >
                 {/* SVG Overlay for Drag Line */}
@@ -279,19 +281,23 @@ export const Grid: React.FC<GridProps> = ({ grid, onWordSelection, foundColors, 
                                 onPointerDown={(e) => handlePointerDown(e, r, c)}
                                 onPointerEnter={() => handlePointerEnter(r, c)}
                                 className={`
-                                    w-full aspect-square flex items-center justify-center
-                                    ${grid.length > 9 ? 'text-lg md:text-2xl' : 'text-2xl md:text-4xl'} font-black rounded-md
+                                    w-full h-full min-w-0 min-h-0 aspect-square flex items-center justify-center
+                                    font-black leading-none rounded-md
                                     cursor-pointer border border-solid
                                     select-none relative z-20
-                                    max-[767px]:!w-[clamp(18px,6vw,28px)] max-[767px]:!h-[clamp(18px,6vw,28px)] max-[767px]:!text-[clamp(10px,2.5vw,12px)] max-[767px]:!aspect-auto
                                     ${!foundColor ? 'bg-slate-800/80 text-white' : ''} 
                                     ${foundColor ? 'text-white z-30' : ''}
                                     ${isSelected ? 'text-white z-30' : ''}
                                     ${!foundColor && !isSelected ? 'shadow-[0_2px_4px_rgba(0,0,0,0.3)] border-white/5' : 'border-transparent'}
                                     ${foundColor || isSelected ? 'bg-transparent shadow-none' : ''}
                                 `}
+                                style={{
+                                    fontSize: grid.length > 9
+                                        ? 'clamp(0.8rem, 3vmin, 1.75rem)'
+                                        : 'clamp(0.95rem, 4vmin, 2.35rem)'
+                                }}
                             >
-                                <span className="relative z-10 drop-shadow-sm pointer-events-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
+                                <span className="relative z-10 drop-shadow-sm pointer-events-none leading-none" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
                                     {cell.letter}
                                 </span>
                             </div>

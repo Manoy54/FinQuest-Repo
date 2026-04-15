@@ -16,7 +16,7 @@ export function Home() {
     // const [navExpanded, setNavExpanded] = useState(false);
     // const [navHeight, setNavHeight] = useState(51);
 
-    const handleNavExpandChange = useCallback((_expanded: boolean, _height: number) => {
+    const handleNavExpandChange = useCallback(() => {
         // setNavExpanded(_expanded);
         // setNavHeight(_expanded ? _height : 51);
     }, []);

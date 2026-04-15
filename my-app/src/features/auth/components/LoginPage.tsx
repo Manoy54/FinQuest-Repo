@@ -5,6 +5,7 @@ import { BackToHomeButton } from '../../../components/ui/BackToHomeButton';
 const FQLogo = '/logo.png';
 import { useAuth } from '../../../context/AuthContext';
 import { supabase, isSupabaseConfigured } from '../../../lib/supabase/client';
+import { ensureSupabaseProfile } from '../../../lib/supabase/profile';
 
 export function LoginPage() {
     const [email, setEmail] = useState('');
@@ -30,7 +31,7 @@ export function LoginPage() {
         if (isSupabaseConfigured) {
             // Supabase Auth
             const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
+                email: email.trim().toLowerCase(),
                 password
             });
 
@@ -41,17 +42,27 @@ export function LoginPage() {
             }
 
             if (data.user) {
-                const usernameLabel = data.user.user_metadata?.username || data.user.email;
-                const { needsAvatarSetup } = login(usernameLabel);
-                setTimeout(() => {
-                    navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
-                }, 0);
+                try {
+                    const profile = await ensureSupabaseProfile(data.user);
+                    const usernameLabel = profile?.display_name || profile?.username || data.user.user_metadata?.username || data.user.email;
+                    const { needsAvatarSetup } = login(usernameLabel);
+                    setTimeout(() => {
+                        navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
+                    }, 0);
+                } catch (profileError) {
+                    console.error('Profile sync failed after login:', profileError);
+                    await supabase.auth.signOut();
+                    setErrors({ email: 'Signed in, but your profile record could not be created. Please apply the latest Supabase migration and try again.' });
+                    setTimeout(() => setErrors({}), 5000);
+                    return;
+                }
+
             }
-        } else {
+        } else if (import.meta.env.DEV) {
             // Fallback: localStorage-based login (demo/dev mode)
             const existingUsers = JSON.parse(localStorage.getItem('finquest_users') || '[]');
             const user = existingUsers.find(
-                (u: { email: string; password: string }) => u.email === email && u.password === password
+                (u: { email: string; password: string }) => u.email === email.trim().toLowerCase() && u.password === password
             );
 
             if (!user) {
@@ -65,6 +76,9 @@ export function LoginPage() {
             setTimeout(() => {
                 navigate(needsAvatarSetup ? '/avatar-setup' : '/home');
             }, 0);
+        } else {
+            setErrors({ email: 'Supabase is not configured for this deployment. Please check Vercel environment variables.' });
+            setTimeout(() => setErrors({}), 3000);
         }
     };
 

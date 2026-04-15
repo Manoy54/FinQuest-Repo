@@ -57,7 +57,7 @@ const QUESTION_COINS = 20;
 
 export function QuizBee() {
     // Game State
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
     const lastAwardedExp = useRef(0);
     const lastAwardedCoins = useRef(0);
@@ -283,8 +283,14 @@ export function QuizBee() {
             const earnedXp = xp - lastAwardedExp.current;
             const earnedCoins = coins - lastAwardedCoins.current;
 
-            if (earnedXp > 0) addXp(earnedXp);
-            if (earnedCoins > 0) addCoins(earnedCoins);
+            recordGameResult({
+                gameMode: 'capital_cup',
+                score: totalCorrect,
+                maxPossibleScore: totalQuestions,
+                xpEarned: earnedXp,
+                coinsEarned: earnedCoins,
+                difficulty: currentTier.toLowerCase(),
+            });
 
             lastAwardedExp.current = xp;
             lastAwardedCoins.current = coins;
@@ -293,7 +299,7 @@ export function QuizBee() {
         } else if (gameState === 'START' || gameState === 'PLAYING') {
             hasAwardedRef.current = false;
         }
-    }, [gameState, xp, coins, addXp, addCoins]);
+    }, [gameState, xp, coins, recordGameResult, totalCorrect, totalQuestions, currentTier]);
 
     if (gameState === 'START') {
         return (

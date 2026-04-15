@@ -67,7 +67,7 @@ const selectWordsForLevel = (level: GameLevel, random: () => number) => {
 };
 
 export function WordHunt() {
-    const { addXp, addCoins } = useUserContext();
+    const { recordGameResult } = useUserContext();
     const hasAwardedRef = useRef(false);
     const lastAwardedExp = useRef(0);
     const lastAwardedCoins = useRef(0);
@@ -124,9 +124,16 @@ export function WordHunt() {
         if (gameComplete && !hasAwardedRef.current) {
             const earnedXp = xp - lastAwardedExp.current;
             const earnedCoins = coins - lastAwardedCoins.current;
+            const score = words.filter(w => w.isFound).length;
 
-            if (earnedXp > 0) addXp(earnedXp);
-            if (earnedCoins > 0) addCoins(earnedCoins);
+            recordGameResult({
+                gameMode: 'data_diver',
+                score,
+                maxPossibleScore: words.length,
+                xpEarned: earnedXp,
+                coinsEarned: earnedCoins,
+                difficulty: currentLevel.id,
+            });
 
             lastAwardedExp.current = xp;
             lastAwardedCoins.current = coins;
@@ -134,7 +141,7 @@ export function WordHunt() {
         } else if (!gameComplete) {
             hasAwardedRef.current = false;
         }
-    }, [gameComplete, xp, coins, addXp, addCoins]);
+    }, [gameComplete, xp, coins, recordGameResult, words, currentLevel.id]);
 
 
 
@@ -412,33 +419,6 @@ export function WordHunt() {
         return unlockedLevels.includes(nextLevelId);
     }, [currentLevel, unlockedLevels]);
 
-    // Scaling Logic
-    const [scale, setScale] = useState(1);
-    const [stageWidth, setStageWidth] = useState(1280);
-    const [stageHeight, setStageHeight] = useState(800);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const isMobile = window.innerWidth < 768;
-            const TARGET_WIDTH = isMobile ? 640 : 1280;
-            const TARGET_HEIGHT = isMobile ? 500 : 800;
-
-            const HUD_OFFSET = isMobile ? 70 : 100;
-            const scaleX = window.innerWidth / TARGET_WIDTH;
-            const scaleY = (window.innerHeight - HUD_OFFSET) / TARGET_HEIGHT;
-
-            const newScale = Math.min(scaleX, scaleY);
-
-            setScale(newScale);
-            setStageWidth(TARGET_WIDTH);
-            setStageHeight(TARGET_HEIGHT);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
     if (gameComplete) {
         const score = words.filter(w => w.isFound).length;
         return (
@@ -459,7 +439,7 @@ export function WordHunt() {
 
 
     return (
-        <div className="min-h-screen w-screen bg-[#1a1a2e] flex flex-col relative font-sans px-2"
+        <div className="min-h-[100dvh] md:h-[100dvh] w-full overflow-y-auto overflow-x-hidden md:overflow-hidden bg-[#1a1a2e] flex flex-col relative font-sans px-2"
             style={{
                 background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)'
             }}
@@ -479,7 +459,7 @@ export function WordHunt() {
                 customLevelLabel={playerRank}
                 onHowToPlay={() => setShowHowToPlay(true)}
                 className="hover:bg-white/5 transition-colors"
-                gap="32px"
+                gap="8px"
             >
                 {/* Timer Display in HUD */}
                 {formattedTime && (
@@ -494,13 +474,13 @@ export function WordHunt() {
             </HUD>
 
             {/* Main Content Area */}
-            <div className="flex-1 w-full flex flex-col items-center relative z-10 pb-12">
+            <div className="flex-1 min-h-0 w-full overflow-visible md:overflow-hidden flex flex-col items-center relative z-10 pb-3 md:pb-2">
 
                 {/* Mobile Layout: Scrollable flow */}
-                <div className="md:hidden w-full flex flex-col px-4 py-3 gap-5">
+                <div className="md:hidden w-full max-w-full flex flex-col px-2 py-2 gap-2">
                     {/* Grid Wrapper */}
                     <div className="w-full flex items-center justify-center">
-                        <div className="w-full max-w-[95vw]">
+                        <div className="w-full max-w-[96vw] h-[min(48dvh,390px)] min-h-[340px]">
                             <Grid
                                 grid={grid}
                                 onWordSelection={handleWordSelection}
@@ -511,8 +491,8 @@ export function WordHunt() {
                     </div>
 
                     {/* Mission List Wrapper */}
-                    <div className="w-full mb-6">
-                        <div className="w-full rounded-2xl shadow-2xl"
+                    <div className="w-full">
+                        <div className="w-full rounded-2xl shadow-2xl overflow-visible"
                             style={{
                                 background: 'rgba(0,0,0,0.3)',
                                 backdropFilter: 'blur(8px)',
@@ -524,23 +504,20 @@ export function WordHunt() {
                     </div>
                 </div>
 
-                {/* Desktop Layout: Scaled Stage */}
-                <div className="hidden md:block">
+                {/* Desktop Layout */}
+                <div className="hidden md:flex w-full flex-1 min-h-0 items-center justify-center overflow-hidden px-2 pb-2">
                     <div
-                        className="relative flex flex-col items-center shadow-2xl overflow-hidden"
+                        className="relative h-full w-full max-w-[1340px] flex flex-col items-center shadow-2xl overflow-hidden"
                         style={{
-                            width: `${stageWidth}px`,
-                            height: `${stageHeight}px`,
-                            transform: `scale(${scale})`,
                             border: '1px solid rgba(255,255,255,0.05)',
-                            borderRadius: '24px',
+                            borderRadius: '18px',
                             background: 'rgba(0,0,0,0.2)',
                             backdropFilter: 'blur(10px)'
                         }}
                     >
-                        <div className="flex-1 w-full px-8 pb-2 pt-1 flex gap-4 overflow-hidden z-10 justify-center items-center">
-                            <div className="w-[60%] h-full flex items-center justify-center">
-                                <div className="w-full max-h-full flex items-center justify-center">
+                        <div className="h-full min-h-0 w-full px-3 py-3 flex gap-3 overflow-hidden z-10 justify-center items-stretch">
+                            <div className="w-[61%] min-w-0 h-full flex items-center justify-center">
+                                <div className="w-full h-full min-h-0 flex items-center justify-center">
                                     <Grid
                                         grid={grid}
                                         onWordSelection={handleWordSelection}
@@ -549,8 +526,8 @@ export function WordHunt() {
                                     />
                                 </div>
                             </div>
-                            <div className="w-[38%] max-h-full flex flex-col justify-center">
-                                <div className="w-full max-h-full">
+                            <div className="w-[39%] min-w-[360px] h-full min-h-0 flex flex-col justify-center">
+                                <div className="w-full h-full min-h-0">
                                     <WordList words={words} />
                                 </div>
                             </div>

@@ -86,14 +86,14 @@ export function BaseGrid({
                             onKeyDown={e => onKeyDown(e, actualRow, actualCol)}
                             className={`
                                 w-full h-full text-center text-lg md:text-3xl font-black uppercase
-                                rounded-sm outline-none transition-all duration-200
+                                rounded-sm outline-none transition-colors duration-100 md:transition-all md:duration-200
                                 shadow-[0_2px_0_0_rgba(0,0,0,0.1)] border-none ring-0
                                 ${isActive
-                                    ? 'bg-blue-500 text-white shadow-lg scale-110 z-20 ring-4 ring-blue-500/20'
-                                    : 'bg-white text-gray-800 hover:bg-white/100 hover:scale-105 hover:z-10'}
+                                    ? 'bg-blue-500 text-white shadow-md md:shadow-lg z-20 md:scale-110 ring-2 md:ring-4 ring-blue-500/20'
+                                    : 'bg-white text-gray-800 hover:bg-white/100 md:hover:scale-105 md:hover:z-10'}
                                 ${isCorrect ? '!bg-green-500 !text-white !shadow-green-500/40' : ''}
                                 ${isWrong ? '!bg-red-500   !text-white !shadow-red-500/40' : ''}
-                                cursor-pointer caret-transparent
+                                cursor-pointer caret-transparent max-md:transform-none
                             `}
                             style={{
                                 textShadow: isActive || isCorrect || isWrong
@@ -114,7 +114,7 @@ export function BaseGrid({
 
     return (
         <div
-            className="flex items-center justify-center transition-all duration-200"
+            className="flex items-center justify-center transition-none md:transition-all md:duration-200"
             style={{
                 width: baseWidth * zoom,
                 height: baseHeight * zoom,
@@ -123,7 +123,7 @@ export function BaseGrid({
             }}
         >
             <div
-                className="grid gap-[2px] md:gap-[3px] p-1 bg-transparent rounded-none transition-transform duration-200 ease-out"
+                className="grid gap-[2px] md:gap-[3px] p-1 bg-transparent rounded-none transition-none md:transition-transform md:duration-200 md:ease-out"
                 style={{
                     gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))`,
                     gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
