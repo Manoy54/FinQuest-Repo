@@ -8,6 +8,7 @@ export interface GridInteractionProps {
     onInputChange: (row: number, col: number, char: string) => void;
     onKeyDown: (e: React.KeyboardEvent, row: number, col: number) => void;
     validated: boolean;
+    zoom?: number;
 }
 
 export function BaseGrid({
@@ -18,6 +19,7 @@ export function BaseGrid({
     onInputChange,
     onKeyDown,
     validated,
+    zoom = 1,
 }: { grid: Map<string, CellData> } & GridInteractionProps) {
 
     const inputRefs = useRef<Map<string, HTMLInputElement>>(new Map());
@@ -105,21 +107,34 @@ export function BaseGrid({
         return cells;
     };
 
+    // Base dimensions for the grid
+    const cellBaseSize = 40; // 40px base size per cell
+    const baseWidth = numCols * cellBaseSize;
+    const baseHeight = numRows * cellBaseSize;
+
     return (
         <div
-            className="grid gap-[3px] p-1 bg-transparent rounded-none"
+            className="flex items-center justify-center transition-all duration-200"
             style={{
-                gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))`,
-                gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
-                width: '100%',
-                height: '100%',
-                minWidth: '500px',
-                aspectRatio: `${numCols} / ${numRows}`,
-                maxHeight: '100%',
-                maxWidth: '100%',
+                width: baseWidth * zoom,
+                height: baseHeight * zoom,
+                padding: '4rem', // 64px padding allowance on all sides
+                boxSizing: 'content-box', // Ensure padding adds to the total scrollable width
             }}
         >
-            {renderCells()}
+            <div
+                className="grid gap-[2px] md:gap-[3px] p-1 bg-transparent rounded-none transition-transform duration-200 ease-out"
+                style={{
+                    gridTemplateColumns: `repeat(${numCols}, minmax(0, 1fr))`,
+                    gridTemplateRows: `repeat(${numRows}, minmax(0, 1fr))`,
+                    width: `${baseWidth}px`,
+                    height: `${baseHeight}px`,
+                    transform: `scale(${zoom})`,
+                    transformOrigin: 'center center',
+                }}
+            >
+                {renderCells()}
+            </div>
         </div>
     );
 }

@@ -494,18 +494,17 @@ export function Crossword() {
             </HUD>
 
             {/* Mobile only: Controls bar */}
-            <div className="md:hidden w-full px-2 z-10 shrink-0 mt-0.5 flex justify-center">
-                <div className="flex items-center justify-center gap-0.5 px-1 py-0.5 rounded-md bg-black/30 backdrop-blur-md border border-white/5 w-max mx-auto shadow-sm">
-                    <div className="flex items-center gap-0.5 bg-white/5 p-0.5 rounded-md border border-white/10">
+            <div className="md:hidden w-full px-2 z-10 shrink-0 mt-1 max-w-full overflow-hidden">
+                <div className="flex items-stretch justify-between gap-1.5 p-0.5 rounded-lg bg-black/40 backdrop-blur-md border border-white/5 shadow-inner">
+                    <div className="flex-1 grid grid-cols-2 gap-0.5 bg-white/5 p-0.5 rounded-md border border-white/10">
                         {(['beginner', 'intermediate', 'hard', 'extreme'] as const).map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setDifficulty(level)}
-                                className={`px-1 py-0.5 rounded-sm text-[6px] font-black uppercase tracking-tight transition-all ${difficulty === level
-                                    ? 'bg-blue-500 text-white'
-                                    : 'text-white/40'
+                                className={`w-full h-5 rounded-sm text-[8px] sm:text-[9px] font-black uppercase tracking-tight transition-colors flex items-center justify-center leading-none ${difficulty === level
+                                    ? 'bg-blue-500 text-white shadow-sm'
+                                    : 'text-white/40 active:bg-white/10'
                                     }`}
-                                style={{ minWidth: '25px' }}
                             >
                                 {level === 'beginner' ? 'Easy' : level === 'intermediate' ? 'Med' : level === 'hard' ? 'Hard' : 'Extr'}
                             </button>
@@ -513,8 +512,7 @@ export function Crossword() {
                     </div>
                     <button
                         onClick={handleCheck}
-                        className="px-1.5 py-0.5 rounded-sm font-black text-[6px] uppercase tracking-tight bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-sm hover:scale-105 transition-transform"
-                        style={{ minWidth: '30px' }}
+                        className="w-16 sm:w-20 shrink-0 rounded-md font-black text-[9px] sm:text-[10px] uppercase tracking-wide bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-sm active:scale-95 transition-transform flex items-center justify-center leading-none"
                     >
                         Check
                     </button>
@@ -529,56 +527,54 @@ export function Crossword() {
                 <div className="w-full lg:flex-1 flex flex-col min-h-[450px] lg:min-h-0 bg-white/5 rounded-2xl border border-white/5 shadow-2xl relative">
 
                     {/* Scrollable Grid Container */}
-                    <div ref={gridWrapperRef} className="flex-1 overflow-auto always-visible-scrollbar relative">
-                        <div className="min-w-full min-h-full flex items-center justify-center p-32 md:p-64">
-                            <div
-                                className="transition-transform duration-200 ease-out pointer-events-auto"
-                                style={{
-                                    transform: `scale(${zoom})`,
-                                    transformOrigin: 'center center',
-                                }}
-                            >
+                    <div ref={gridWrapperRef} className="flex-1 overflow-auto always-visible-scrollbar relative pointer-events-auto flex">
+                        <div className="w-max h-max min-w-full min-h-full p-4 md:p-8 flex">
+                            <div className="m-auto">
                                 {/* Each difficulty has its own self-contained grid component */}
                                 {difficulty === 'beginner' && (
-                                    <EasyCrosswordGrid
-                                        userAnswers={userAnswers}
-                                        activeCell={activeCell}
-                                        onCellClick={handleCellClick}
-                                        onInputChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                        validated={showValidation}
-                                    />
-                                )}
-                                {difficulty === 'intermediate' && (
-                                    <MediumCrosswordGrid
-                                        userAnswers={userAnswers}
-                                        activeCell={activeCell}
-                                        onCellClick={handleCellClick}
-                                        onInputChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                        validated={showValidation}
-                                    />
-                                )}
-                                {difficulty === 'hard' && (
-                                    <HardCrosswordGrid
-                                        userAnswers={userAnswers}
-                                        activeCell={activeCell}
-                                        onCellClick={handleCellClick}
-                                        onInputChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                        validated={showValidation}
-                                    />
-                                )}
-                                {difficulty === 'extreme' && (
-                                    <ExtremeCrosswordGrid
-                                        userAnswers={userAnswers}
-                                        activeCell={activeCell}
-                                        onCellClick={handleCellClick}
-                                        onInputChange={handleInputChange}
-                                        onKeyDown={handleKeyDown}
-                                        validated={showValidation}
-                                    />
-                                )}
+                                <EasyCrosswordGrid
+                                    userAnswers={userAnswers}
+                                    activeCell={activeCell}
+                                    onCellClick={handleCellClick}
+                                    onInputChange={handleInputChange}
+                                    onKeyDown={handleKeyDown}
+                                    validated={showValidation}
+                                    zoom={zoom}
+                                />
+                            )}
+                            {difficulty === 'intermediate' && (
+                                <MediumCrosswordGrid
+                                    userAnswers={userAnswers}
+                                    activeCell={activeCell}
+                                    onCellClick={handleCellClick}
+                                    onInputChange={handleInputChange}
+                                    onKeyDown={handleKeyDown}
+                                    validated={showValidation}
+                                    zoom={zoom}
+                                />
+                            )}
+                            {difficulty === 'hard' && (
+                                <HardCrosswordGrid
+                                    userAnswers={userAnswers}
+                                    activeCell={activeCell}
+                                    onCellClick={handleCellClick}
+                                    onInputChange={handleInputChange}
+                                    onKeyDown={handleKeyDown}
+                                    validated={showValidation}
+                                    zoom={zoom}
+                                />
+                            )}
+                            {difficulty === 'extreme' && (
+                                <ExtremeCrosswordGrid
+                                    userAnswers={userAnswers}
+                                    activeCell={activeCell}
+                                    onCellClick={handleCellClick}
+                                    onInputChange={handleInputChange}
+                                    onKeyDown={handleKeyDown}
+                                    validated={showValidation}
+                                    zoom={zoom}
+                                />
+                            )}
                             </div>
                         </div>
                     </div>

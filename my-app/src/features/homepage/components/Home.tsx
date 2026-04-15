@@ -103,7 +103,7 @@ export function Home() {
                 {/* Welcome Hero Section */}
                 <div className="text-center mb-7 md:mb-10 shrink-0 mt-4 md:mt-8">
                     <h1
-                        className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-2"
+                        className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black tracking-tight mb-2 pb-2 leading-relaxed"
                         style={{
                             fontFamily: "'Literata', serif",
                             background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ffd700 100%)',
